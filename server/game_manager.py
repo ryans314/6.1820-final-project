@@ -27,6 +27,23 @@ class GameManager:
         # Create the object and store it by ID
         self.players[player_id] = Player(player_id=player_id, username=username)
 
+    def remove_player(self, player_id: str):
+        self.players.pop(player_id, None)
+    
+    async def broadcast_lobby(self):
+        """Send list of players to all connected phones"""
+        await self.connection_manager.broadcast_to_phones({
+            "type": "player_list",
+            "players": self.get_player_list()
+        })
+
+    def get_player_list(self) -> list[dict]:
+        """Return a list of players for broadcasting"""
+        return [
+            {"player_id": p.player_id, "username": p.username}
+            for p in self.players.values()
+        ]
+    
     async def start_game(self):
         if len(self.players) < 3:
             print("Not enough players!")
@@ -38,8 +55,17 @@ class GameManager:
 
         self.state = "in_progress"
 
+        # Send players their roles
+        for player_id, player in self.players.items():
+            await self.connection_manager.send_to_phone(player_id, {
+                "type": "game_start",
+                "is_imposter": player.is_imposter,
+                "players": self.get_player_list()
+            })
+
         #assign tasks to non-imposters
         self.assign_tasks()
+        
         
 
     def assign_tasks(self) -> None:

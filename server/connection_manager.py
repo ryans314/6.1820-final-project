@@ -24,3 +24,11 @@ class ConnectionManager:
     async def send_to_puck(self, puck_id: str, message: dict):
         if puck_id in self.active_pucks:
             await self.active_pucks[puck_id].send_json(message)
+    
+    async def send_to_phone(self, player_id: str, message: dict): 
+        if player_id in self.active_phones:
+            await self.active_phones[player_id].send_json(message)
+    
+    async def broadcast_to_phones(self, message: dict): 
+        for ws in self.active_phones.values():
+            await ws.send_json(message)
