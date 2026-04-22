@@ -1,6 +1,13 @@
-
+from __future__ import annotations
 from dataclasses import dataclass, field
 import random
+from typing import Callable, Optional
+
+@dataclass
+class Interaction:
+    player_id: str
+    puck_id: int
+    time: Optional[float] = None #0 = tap, else, expect an interaction every 0.5 seconds for length seconds
 
 @dataclass
 class Player:
@@ -8,20 +15,93 @@ class Player:
     username: str
     is_imposter: bool = False
     status: str = "alive"  # "alive", "ghost", etc.
-    completed_tasks: list[str] = field(default_factory=list)
-    current_task: str = None
+    completed_tasks: list[Task] = field(default_factory=list)
+    current_task: Task = None
 
     def complete_task(self, task_id: str):
         if task_id not in self.completed_tasks:
             self.completed_tasks.append(task_id)
             self.current_task = None
+   
+@dataclass
+class Task:
+    task_id: int
+    task_type: str
+    players: list[Player]
+    expected_interactions: list[Interaction]
+    order_matters: int
+    status: int = 0 #0 = not done, 1 = done
+
+    def update_status(self):
+        self.status = int(all(done for _, done in self.expected_interactions))
+    
+    def check_new_interaction(self, interaction: Interaction):
+        for i, (inter, done) in enumerate(self.expected_interactions):
+            if not done:
+                if interaction.player_id == inter.player_id and interaction.puck_id == inter.puck_id:
+                    self.expected_interactions[i] = (inter, 1)
+                    break
+                if self.order_matters: #only check for first none completed task
+                    break
+        self.update_status()
+     
+class TapAll(Task):
+    expected_no_players=3
+    def __init__(self, players: list[Player], task_id: int):
+        super().__init__(
+            task_id=task_id,
+            task_type="TapAll",
+            status=0,
+            players=players,
+            expected_interactions=[
+                (Interaction(players[0], 1), 0),
+                (Interaction(players[1], 2), 0),
+                (Interaction(players[2], 3), 0),
+            ],
+            order_matters=0,
+        )
+        
+class TapOrder(Task):
+    expected_no_players=2
+    def __init__(self, players: list[Player], task_id: int):
+        super().__init__(
+            task_id=task_id,
+            task_type="TapOrder",
+            status=0,
+            players=players,
+            expected_interactions=[
+                (Interaction(players[0], 1), 0),
+                (Interaction(players[1], 2), 0),
+                (Interaction(players[0], 1), 0),
+                (Interaction(players[1], 2), 0),
+            ],
+            order_matters=1,
+        )
+
+class TapOne(Task):
+    expected_no_players=1
+    def __init__(self, players: list[Player], task_id: int):
+        super().__init__(
+            task_id=task_id,
+            task_type="TapOne",
+            status=0,
+            players=players,
+            expected_interactions=[
+                (Interaction(players[0], 1), 0)],
+            order_matters=0,
+        )
+
+taskTemplates = [TapOne, TapOrder, TapAll]
 
 class GameManager:
     def __init__(self, connection_manager):
         self.connection_manager = connection_manager
         self.players: dict[str, Player] = {}
         self.state: str = "lobby"  # "lobby", "in_progress", "ended"
-        self.tap_sequence: list[str, str] = []  # List of (phone_id, puck_id) tuples
+        self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
+        self.active_tasks: list[Task] = []
+        self.round_num: int
+        self.puck_colors: dict[int, str]
 
     def add_player(self, player_id: str, username: str):
         # Create the object and store it by ID
@@ -64,17 +144,61 @@ class GameManager:
             })
 
         #assign tasks to non-imposters
-        self.assign_tasks()
-        
-        
+        await self.start_round()
 
-    def assign_tasks(self) -> None:
-        pass
+    def assign_colors(self):
+        colors = ["red", "blue", "purple", "green", "white", "brown", "yellow"]
+        selected = random.sample(colors, 3)
+        self.puck_colors = {1: selected[0], 2: selected[1], 3: selected[2]}
+        #will need more code for communicating colors with pucks
+            
 
-    def handle_tap(self, phone_id: str, puck_id: str) -> None:
-        pass        
+    async def start_round(self) -> None:
+        self.puck_colors = self.assign_colors()
+        unassigned = list(self.players.values())
+        task_id = 0
+
+        # randomly assign tasks to players
+        while unassigned:
+            template = random.choice(taskTemplates)
+            required = template.expected_no_players
+
+            if len(unassigned) < required:
+                template = TapOne
+                required = 1
+
+            assigned = random.sample(unassigned, required)
+            task = template(players=assigned, task_id=task_id)
+            task_id += 1
+
+            for player in assigned:
+                player.current_task = task
+                await self.assign_task(player)
+                unassigned.remove(player)
+
+            self.active_tasks.append(task)
+
+    async def assign_task(self, player):
+        current_task = player.current_task
+        other_players = None
+        if current_task.expected_no_players > 1:
+            other_players = [p.player_id for p in current_task.players if p.player_id != player.player_id]
+
+        await self.connection_manager.send_to_phone(player.player_id, {
+                "type": "task",
+                "task_id": current_task.task_id,
+                "task_type": current_task.task_type,
+                "other_players": other_players
+            })
+        
+    def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
+        interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
+        for t in self.active_tasks:
+            t.check_new_interaction(interact)
 
     def check_task_completion(self):
+        # loop through active tasks and see if status is now 1
+        # if it is, move to completed for each player and remove from active tasks for both player and game
         pass
 
     def check_game_over(self) -> bool:
