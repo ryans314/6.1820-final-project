@@ -177,7 +177,7 @@ class GameManager:
                 unassigned.remove(player)
 
             self.active_tasks.append(task)
-
+            
     async def assign_task(self, player):
         current_task = player.current_task
         other_players = None
@@ -185,7 +185,7 @@ class GameManager:
             other_players = [p.player_id for p in current_task.players if p.player_id != player.player_id]
 
         await self.connection_manager.send_to_phone(player.player_id, {
-                "type": "task",
+                "type": "new_task",
                 "task_id": current_task.task_id,
                 "task_type": current_task.task_type,
                 "other_players": other_players
@@ -195,6 +195,7 @@ class GameManager:
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
         for t in self.active_tasks:
             t.check_new_interaction(interact)
+        # complete n-1 tasks for round to end
 
     def check_task_completion(self):
         # loop through active tasks and see if status is now 1
