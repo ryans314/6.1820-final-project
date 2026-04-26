@@ -28,7 +28,7 @@ class NetworkManager: ObservableObject {
     @Published var errorMessage: String?
     
     private let uuid = UIDevice.current.identifierForVendor!.uuidString
-    private let urlBaseStr = "ws://10.29.223.168:8000/ws/phone"
+    private let urlBaseStr = "ws://10.29.164.56:8000/ws/phone" // change depending on where server is
     private var username: String = ""
     
     func connect(username: String) {
@@ -136,7 +136,7 @@ class NetworkManager: ObservableObject {
                     self.errorMessage = json["message"] as? String
                     
                 case "new_task":
-                    self.currentTask = json["task"] as? String
+                    self.currentTask = json["task_type"] as? String
                     
                 case "game_status":
                     self.gameStatus = json["status"] as? String ?? self.gameStatus
