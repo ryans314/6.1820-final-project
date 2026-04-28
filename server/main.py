@@ -1,7 +1,8 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import JSONResponse, HTMLResponse
 from connection_manager import ConnectionManager
 from game_manager import GameManager
-import datetime
+from datetime import datetime
 
 app = FastAPI()
 
@@ -56,13 +57,37 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                 
                 # # Tell puck to change color
                 # await manager.send_to_puck(target_puck, {"action": "change_color", "color": "green"})
-
+            elif client_type == "phone" and data.get("type") == "infect":
+                infected_id = data.get("target_id")
+                print(f"{infected_id} infected")
     except WebSocketDisconnect:
         manager.disconnect(client_type, client_id)
         if client_type == "phone":
             game.remove_player(client_id)
             await game.broadcast_lobby()
         print(f"Client {client_id} disconnected")
+        
+
+# ONLY IF WE ARE USING CUSTOM URL SCHEME
+# @app.get("/.well-known/apple-app-site-association")
+# async def aasa():
+#     return JSONResponse({
+#         "applinks": {
+#             "details": [
+#                 {
+#                     "appIDs": ["bellesee.game"],
+#                     "components": [
+#                         { "/": "/scan*" }
+#                     ]
+#                 }
+#             ]
+#         }
+#     })
+
+# @app.get("/scan")
+# async def scan_fallback():
+#     # shown in Safari if app isn't installed
+#     return HTMLResponse("<h1>Open this link on your phone with the app installed.</h1>")
 
 if __name__ == "__main__":
     import uvicorn

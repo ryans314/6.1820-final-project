@@ -100,7 +100,7 @@ class GameManager:
         self.state: str = "lobby"  # "lobby", "in_progress", "ended"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
-        self.round_num: int
+        self.round_num: int = 1
         self.puck_colors: dict[int, str]
 
     def add_player(self, player_id: str, username: str):
@@ -157,6 +157,8 @@ class GameManager:
         self.puck_colors = self.assign_colors()
         unassigned = list(self.players.values())
         task_id = 0
+        
+        round_num = self.round_num
 
         # randomly assign tasks to players
         while unassigned:
@@ -173,12 +175,14 @@ class GameManager:
 
             for player in assigned:
                 player.current_task = task
-                await self.assign_task(player)
+                await self.assign_task(player, round_num)
                 unassigned.remove(player)
 
             self.active_tasks.append(task)
-            
-    async def assign_task(self, player):
+        
+        self.round_num += 1
+
+    async def assign_task(self, player, round_num):
         current_task = player.current_task
         other_players = None
         if current_task.expected_no_players > 1:
@@ -186,12 +190,13 @@ class GameManager:
 
         await self.connection_manager.send_to_phone(player.player_id, {
                 "type": "new_task",
+                "round": str(round_num),
                 "task_id": current_task.task_id,
                 "task_type": current_task.task_type,
                 "other_players": other_players
             })
         
-    def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
+    async def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
         for t in self.active_tasks:
             t.check_new_interaction(interact)
@@ -200,6 +205,10 @@ class GameManager:
     def check_task_completion(self):
         # loop through active tasks and see if status is now 1
         # if it is, move to completed for each player and remove from active tasks for both player and game
+        # use task_complete to let phone know as task is done
+        # await self.connection_manager.send_to_phone(player_id, {
+        #     "type": "task_complete"
+        # })
         pass
 
     def check_game_over(self) -> bool:
