@@ -51,7 +51,7 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             # Phone taps puck
             elif client_type == "phone" and data.get("type") == "nfc_tap":
                 target_puck = data.get("puck_id")
-                game.handle_tap(client_id, target_puck, datetime.now())
+                await game.handle_tap(client_id, target_puck, datetime.datetime.now())
                 print(f"Phone {client_id} tapped Puck {target_puck}")
                 
                 # # Tell puck to change color

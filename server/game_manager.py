@@ -1,7 +1,9 @@
 from __future__ import annotations
+from connection_manager import ConnectionManager
 from dataclasses import dataclass, field
 import random
 from typing import Callable, Optional
+import asyncio
 
 @dataclass
 class Interaction:
@@ -19,6 +21,7 @@ class Player:
     current_task: Task = None
 
     def complete_task(self, task_id: str):
+        assert task_id == self.current_task.task_id
         if task_id not in self.completed_tasks:
             self.completed_tasks.append(task_id)
             self.current_task = None
@@ -29,65 +32,105 @@ class Task:
     task_type: str
     players: list[Player]
     expected_interactions: list[Interaction]
-    order_matters: int
-    status: int = 0 #0 = not done, 1 = done
+    order_matters: bool #NOTE: order_matters allows interruptions
+    is_completed: bool = False
 
-    def update_status(self):
-        self.status = int(all(done for _, done in self.expected_interactions))
+    def update_completion_status(self) -> bool:
+        """
+        Update status to be 1 if completed (or 0 if not completed)
+
+        Returns True if task is (newly) completed
+
+        Generally should only be called on uncompleted or newly completed tasks
+        """
+
+        
+        if self.is_completed:
+            print("WARNING: update_completion_status called on completed Task")
+
+        self.is_completed = int(all(done for _, done in self.expected_interactions))
+        
+        if self.is_completed:
+            print("Task is completed!")
+            return True
     
-    def check_new_interaction(self, interaction: Interaction):
+    def check_new_interaction(self, interaction: Interaction) -> bool:
+        """
+        Check if interaction is relevant to the task, and if it is update the task's interaction
+        to mark the necessary interaction completed
+
+        Returns True if the task is completed or False if not
+        """
+        print(f"checking task {self.task_id} for players {self.players}")
+        if self.is_completed:
+            print("Task already completed")
+            return
         for i, (inter, done) in enumerate(self.expected_interactions):
+            print(f"Checking interaction {i}: {inter}, with status {done}")
             if not done:
+                print(f"expected interaction player id: {interaction.player_id}")
+                print(f"given interaction player id: {inter.player_id}")
+                print(f"expected interaction puck id: {interaction.puck_id}")
+                print(f"given interaction puck id: {inter.puck_id}")
+                print(f"players: {interaction.player_id == inter.player_id} | pucks: {interaction.puck_id == inter.puck_id}")
                 if interaction.player_id == inter.player_id and interaction.puck_id == inter.puck_id:
                     self.expected_interactions[i] = (inter, 1)
+                    print("Updated task interaction")
                     break
                 if self.order_matters: #only check for first none completed task
                     break
-        self.update_status()
+        return self.update_completion_status()
      
 class TapAll(Task):
+    """
+    Task: 3 players must tap 3 different pucks
+    """
     expected_no_players=3
     def __init__(self, players: list[Player], task_id: int):
         super().__init__(
             task_id=task_id,
             task_type="TapAll",
-            status=0,
             players=players,
             expected_interactions=[
-                (Interaction(players[0], 1), 0),
-                (Interaction(players[1], 2), 0),
-                (Interaction(players[2], 3), 0),
+                (Interaction(players[0].player_id, 1), 0),
+                (Interaction(players[1].player_id, 2), 0),
+                (Interaction(players[2].player_id, 3), 0),
             ],
             order_matters=0,
         )
         
 class TapOrder(Task):
+    """
+    Two players must tap two separate pucks, alternating twice
+    Example: P1 taps puck1, P2 taps puck2, P1 taps puck1, P2 taps puck2
+    """
     expected_no_players=2
     def __init__(self, players: list[Player], task_id: int):
         super().__init__(
             task_id=task_id,
             task_type="TapOrder",
-            status=0,
             players=players,
             expected_interactions=[
-                (Interaction(players[0], 1), 0),
-                (Interaction(players[1], 2), 0),
-                (Interaction(players[0], 1), 0),
-                (Interaction(players[1], 2), 0),
+                (Interaction(players[0].player_id, 1), 0),
+                (Interaction(players[1].player_id, 2), 0),
+                (Interaction(players[0].player_id, 1), 0),
+                (Interaction(players[1].player_id, 2), 0),
             ],
             order_matters=1,
         )
 
 class TapOne(Task):
+    """
+    One player must tap a single puck
+    """
     expected_no_players=1
     def __init__(self, players: list[Player], task_id: int):
         super().__init__(
             task_id=task_id,
             task_type="TapOne",
-            status=0,
             players=players,
             expected_interactions=[
-                (Interaction(players[0], 1), 0)],
+                (Interaction(players[0].player_id, 1), 0)],
             order_matters=0,
         )
 
@@ -95,7 +138,7 @@ taskTemplates = [TapOne, TapOrder, TapAll]
 
 class GameManager:
     def __init__(self, connection_manager):
-        self.connection_manager = connection_manager
+        self.connection_manager: ConnectionManager  = connection_manager
         self.players: dict[str, Player] = {}
         self.state: str = "lobby"  # "lobby", "in_progress", "ended"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
@@ -124,10 +167,13 @@ class GameManager:
             for p in self.players.values()
         ]
     
-    async def start_game(self):
+    async def start_game(self) -> bool:
+        """
+        Starts the game. Returns True on success, False on failure
+        """
         if len(self.players) < 3:
             print("Not enough players!")
-            return
+            return False
         
         # Assign imposter
         imposter_id = random.choice(list(self.players.keys()))
@@ -145,6 +191,7 @@ class GameManager:
 
         #assign tasks to non-imposters
         await self.start_round()
+        return True
 
     def assign_colors(self):
         colors = ["red", "blue", "purple", "green", "white", "brown", "yellow"]
@@ -177,7 +224,13 @@ class GameManager:
                 unassigned.remove(player)
 
             self.active_tasks.append(task)
-            
+    
+    async def start_voting(self) -> None:
+        """
+        After all tasks are completed, start voting
+        """
+        pass
+
     async def assign_task(self, player):
         current_task = player.current_task
         other_players = None
@@ -191,16 +244,49 @@ class GameManager:
                 "other_players": other_players
             })
         
-    def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
+    async def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
+        """
+        Handle tapping a puck:
+        - update relevant interactions
+        - mark tasks completed as necessary
+        - notify phones if tap resulted in task completion
+        - trigger end of round voting if n-1 tasks completed
+        """
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
         for t in self.active_tasks:
             t.check_new_interaction(interact)
-        # complete n-1 tasks for round to end
+        
+        if await self.check_task_completion():
+            if len(self.active_tasks) == 1:
+                await self.start_voting()
+        
 
-    def check_task_completion(self):
-        # loop through active tasks and see if status is now 1
+
+    async def check_task_completion(self):
+        """
+        Checks all current tasks for completion. Update game state to reflect completed tasks
+        and notify any phones of task completion.
+
+        Returns True if any tasks were completed
+        """
+        # loop through active tasks and see if is_completed
         # if it is, move to completed for each player and remove from active tasks for both player and game
-        pass
+        players_to_notify = []
+        for task in self.active_tasks[:]:
+            if task.is_completed:
+                for player in task.players:
+                    player.complete_task(task.task_id)
+                    players_to_notify.append(player.player_id)
+                self.active_tasks.remove(task)
+        
+        if players_to_notify:
+            await self.connection_manager.send_to_phone(players_to_notify, {
+                "type": "task_complete"
+            })
+            return True
+        
+        return False
+
 
     def check_game_over(self) -> bool:
         pass
