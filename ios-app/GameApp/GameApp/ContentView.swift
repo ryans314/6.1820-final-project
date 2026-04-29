@@ -10,7 +10,7 @@ import CoreNFC
 import Combine
 
 struct ContentView: View {
-    @StateObject private var networkManager = NetworkManager()
+    @ObservedObject var networkManager: NetworkManager
     
     var body: some View {
         VStack(spacing: 20) {
@@ -25,12 +25,12 @@ struct ContentView: View {
                 // --- Game Screen ---
                 GameView(networkManager: networkManager)
             }
-//            if networkManager.connectionFailed {
-//                Text("Connection failed, please try again")
-//                    .foregroundColor(.red)
-//                    .font(.subheadline)
-//            }
-//            
+            if networkManager.connectionFailed {
+                Text("Connection failed, please try again")
+                    .foregroundColor(.red)
+                    .font(.subheadline)
+            }
+            
 //            if !networkManager.isConnected {
 //                Button(networkManager.connectionFailed ? "Reconnect" : "Connect") {
 //                    networkManager.connect()
@@ -58,7 +58,7 @@ struct ContentView: View {
 //                    networkManager.sendTap(puckId: "puck_A1")
 //                }.buttonStyle(.borderedProminent)
 //            }
-//            
+            
             
             
             
@@ -139,100 +139,165 @@ struct LobbyView: View {
     }
 }
 
-class NFCReader: ObservableObject {
-    var objectWillChange = PassthroughSubject<Void, Never>()
-    
-    @Published var lastScannedId: String? = nil
-    @Published var errorMessage: String? = nil
-    
-    private var session: NFCNDEFReaderSession? = nil
-    private var onScan: ((String) -> Void)? = nil
-    private let delegate = NFCDelegate() // separate NSObject delegate
-
-    func beginScanning(onScan: @escaping (String) -> Void) {
-        guard NFCNDEFReaderSession.readingAvailable else {
-            errorMessage = "NFC not available on this device"
-            return
-        }
-        self.onScan = onScan
-        errorMessage = nil
-        delegate.onScan = { [weak self] puckId in
-            self?.lastScannedId = puckId
-            self?.onScan?(puckId)
-        }
-        delegate.onError = { [weak self] message in
-            self?.errorMessage = message
-        }
-        session = NFCNDEFReaderSession(delegate: delegate, queue: .main, invalidateAfterFirstRead: true)
-        session?.alertMessage = "Hold your iPhone near the puck to scan."
-        session?.begin()
-    }
-}
-
-// MARK: - NFC Delegate (NSObject required by CoreNFC)
-class NFCDelegate: NSObject, NFCNDEFReaderSessionDelegate {
-    var onScan: ((String) -> Void)? = nil
-    var onError: ((String) -> Void)? = nil
-
-    func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-        guard let record = messages.first?.records.first else {
-            onError?("Could not read tag data")
-            return
-        }
-        let (text, _) = record.wellKnownTypeTextPayload()
-        if let text = text {
-            onScan?(text)
-        } else if let payload = String(data: record.payload, encoding: .utf8) {
-            let puckId = payload.count > 3 ? String(payload.dropFirst(3)) : payload
-            onScan?(puckId)
-        } else {
-            onError?("Could not parse tag payload")
-        }
-    }
-
-    func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        let nfcError = error as? NFCReaderError
-        if nfcError?.code != .readerSessionInvalidationErrorUserCanceled {
-            onError?(error.localizedDescription)
-        }
-    }
-}
-
 struct GameView: View {
     @ObservedObject var networkManager: NetworkManager
-    @StateObject private var nfcReader = NFCReader()
+    @StateObject private var uwbManager = UWBManager()
     
     var body: some View {
         VStack(spacing: 20) {
             Text("Role: You Are \(networkManager.isImposter ? "The Imposter" : "Safe")")
                 .bold().font(.title)
             
-            Text("Current Task: \(networkManager.currentTask ?? "Waiting...")")
+            Text("Current Round: \(networkManager.currentRound ?? "...")/3")
             
-            Button("Scan NFC Tag") {
-            nfcReader.beginScanning { puckId in
-                networkManager.sendTap(puckId: puckId)
+            if (networkManager.currentTask == "Completed") {
+                Text("Task completed!")
+            } else {
+                Text("Your Task: \(networkManager.currentTask ?? "Waiting...")")
+            }
+            
+            Button("Simulate NFC Tap" ) {
+                networkManager.sendTap(puckId: "1")
+            }.buttonStyle(.borderedProminent)
+            
+            // Only show UWB section for imposter
+            if networkManager.isImposter {
+                Divider()
+                
+                if uwbManager.hasNearbyPlayer {
+                    Text("⚠️ Player within range!")
+                        .foregroundColor(.red)
+                        .bold()
+                    
+                    Button("🦠 Infect") {
+                        // Send infect action to server
+                        // Find the closest player
+                        if let closest = uwbManager.nearbyPlayers.min(by: { $0.value < $1.value }) {
+                            networkManager.sendInfect(targetId: closest.key)
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                } else {
+                    Text("No players within 5m")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+                
+                // Debug: show all nearby distances
+                ForEach(Array(uwbManager.nearbyPlayers.keys), id: \.self) { id in
+                    Text("\(id): \(String(format: "%.1f", uwbManager.nearbyPlayers[id] ?? 0))m")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
         }
-        .buttonStyle(.borderedProminent)
-        
-        if let lastScanned = nfcReader.lastScannedId {
-            Text("Last Scanned: \(lastScanned)")
-                .font(.caption)
-                .foregroundColor(.secondary)
+        .onAppear {
+            uwbManager.isImposter = networkManager.isImposter
+            uwbManager.start(clientId: networkManager.uuid)
         }
-        
-        if let error = nfcReader.errorMessage {
-            Text(error)
-                .font(.caption)
-                .foregroundColor(.red)
+        .onDisappear {
+            uwbManager.stop()
         }
-
-                 
-        }
-        
     }
 }
+
 #Preview {
-        ContentView()
+    ContentView(networkManager: NetworkManager())
 }
+
+// If using NFCCore
+//class NFCReader: ObservableObject {
+//    var objectWillChange = PassthroughSubject<Void, Never>()
+//
+//    @Published var lastScannedId: String? = nil
+//    @Published var errorMessage: String? = nil
+//
+//    private var session: NFCNDEFReaderSession? = nil
+//    private var onScan: ((String) -> Void)? = nil
+//    private let delegate = NFCDelegate() // separate NSObject delegate
+//
+//    func beginScanning(onScan: @escaping (String) -> Void) {
+//        guard NFCNDEFReaderSession.readingAvailable else {
+//            errorMessage = "NFC not available on this device"
+//            return
+//        }
+//        self.onScan = onScan
+//        errorMessage = nil
+//        delegate.onScan = { [weak self] puckId in
+//            self?.lastScannedId = puckId
+//            self?.onScan?(puckId)
+//        }
+//        delegate.onError = { [weak self] message in
+//            self?.errorMessage = message
+//        }
+//        session = NFCNDEFReaderSession(delegate: delegate, queue: .main, invalidateAfterFirstRead: true)
+//        session?.alertMessage = "Hold your iPhone near the puck to scan."
+//        session?.begin()
+//    }
+//}
+
+// MARK: - NFC Delegate (NSObject required by CoreNFC)
+//class NFCDelegate: NSObject, NFCNDEFReaderSessionDelegate {
+//    var onScan: ((String) -> Void)? = nil
+//    var onError: ((String) -> Void)? = nil
+//
+//    func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
+//        guard let record = messages.first?.records.first else {
+//            onError?("Could not read tag data")
+//            return
+//        }
+//        let (text, _) = record.wellKnownTypeTextPayload()
+//        if let text = text {
+//            onScan?(text)
+//        } else if let payload = String(data: record.payload, encoding: .utf8) {
+//            let puckId = payload.count > 3 ? String(payload.dropFirst(3)) : payload
+//            onScan?(puckId)
+//        } else {
+//            onError?("Could not parse tag payload")
+//        }
+//    }
+//
+//    func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
+//        let nfcError = error as? NFCReaderError
+//        if nfcError?.code != .readerSessionInvalidationErrorUserCanceled {
+//            onError?(error.localizedDescription)
+//        }
+//    }
+//}
+
+//struct GameView: View {
+//    @ObservedObject var networkManager: NetworkManager
+//    @StateObject private var nfcReader = NFCReader()
+//    
+//    var body: some View {
+//        VStack(spacing: 20) {
+//            Text("Role: You Are \(networkManager.isImposter ? "The Imposter" : "Safe")")
+//                .bold().font(.title)
+//            
+//            Text("Current Task: \(networkManager.currentTask ?? "Waiting...")")
+//            
+//            Button("Scan NFC Tag") {
+//            nfcReader.beginScanning { puckId in
+//                networkManager.sendTap(puckId: puckId)
+//            }
+//        }
+//        .buttonStyle(.borderedProminent)
+//        
+//        if let lastScanned = nfcReader.lastScannedId {
+//            Text("Last Scanned: \(lastScanned)")
+//                .font(.caption)
+//                .foregroundColor(.secondary)
+//        }
+//        
+//        if let error = nfcReader.errorMessage {
+//            Text(error)
+//                .font(.caption)
+//                .foregroundColor(.red)
+//        }
+//
+//                 
+//        }
+//        
+//    }
+//}

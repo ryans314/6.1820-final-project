@@ -61,17 +61,14 @@ class Task:
 
         Returns True if the task is completed or False if not
         """
-        print(f"checking task {self.task_id} for players {self.players}")
+        print(f"checking task {self.task_id}")
         if self.is_completed:
             print("Task already completed")
             return
         for i, (inter, done) in enumerate(self.expected_interactions):
-            print(f"Checking interaction {i}: {inter}, with status {done}")
             if not done:
-                print(f"expected interaction player id: {interaction.player_id}")
-                print(f"given interaction player id: {inter.player_id}")
-                print(f"expected interaction puck id: {interaction.puck_id}")
-                print(f"given interaction puck id: {inter.puck_id}")
+                print(f"Expected, Given player id: ({inter.player_id}, {interaction.player_id})")
+                print(f"Expected, Given puck: ({inter.puck_id}, {interaction.puck_id})")
                 print(f"players: {interaction.player_id == inter.player_id} | pucks: {interaction.puck_id == inter.puck_id}")
                 if interaction.player_id == inter.player_id and interaction.puck_id == inter.puck_id:
                     self.expected_interactions[i] = (inter, 1)
@@ -143,7 +140,7 @@ class GameManager:
         self.state: str = "lobby"  # "lobby", "in_progress", "ended"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
-        self.round_num: int
+        self.round_num: int = 1
         self.puck_colors: dict[int, str]
 
     def add_player(self, player_id: str, username: str):
@@ -204,7 +201,8 @@ class GameManager:
         self.puck_colors = self.assign_colors()
         unassigned = list(self.players.values())
         task_id = 0
-
+        
+        round_num = self.round_num
         # randomly assign tasks to players
         while unassigned:
             template = random.choice(taskTemplates)
@@ -220,10 +218,12 @@ class GameManager:
 
             for player in assigned:
                 player.current_task = task
-                await self.assign_task(player)
+                await self.assign_task(player, round_num)
                 unassigned.remove(player)
 
             self.active_tasks.append(task)
+            self.round_num += 1
+
     
     async def start_voting(self) -> None:
         """
@@ -231,7 +231,7 @@ class GameManager:
         """
         pass
 
-    async def assign_task(self, player):
+    async def assign_task(self, player, round_num):
         current_task = player.current_task
         other_players = None
         if current_task.expected_no_players > 1:
@@ -239,6 +239,7 @@ class GameManager:
 
         await self.connection_manager.send_to_phone(player.player_id, {
                 "type": "new_task",
+                "round": str(round_num),
                 "task_id": current_task.task_id,
                 "task_type": current_task.task_type,
                 "other_players": other_players
@@ -256,10 +257,12 @@ class GameManager:
         for t in self.active_tasks:
             t.check_new_interaction(interact)
         
+        # If a task was completed, check for end of round conditions
         if await self.check_task_completion():
             if len(self.active_tasks) == 1:
+                print("End of Round!")
                 await self.start_voting()
-        
+                #TODO: start voting
 
 
     async def check_task_completion(self):
@@ -271,6 +274,10 @@ class GameManager:
         """
         # loop through active tasks and see if is_completed
         # if it is, move to completed for each player and remove from active tasks for both player and game
+        # use task_complete to let phone know as task is done
+        # await self.connection_manager.send_to_phone(player_id, {
+        #     "type": "task_complete"
+        # })
         players_to_notify = []
         for task in self.active_tasks[:]:
             if task.is_completed:
