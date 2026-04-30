@@ -190,15 +190,15 @@ class GameManager:
         await self.start_round()
         return True
 
-    def assign_colors(self):
+    def assign_colors(self) -> dict[int, str]:
         colors = ["red", "blue", "purple", "green", "white", "brown", "yellow"]
         selected = random.sample(colors, 3)
-        self.puck_colors = {1: selected[0], 2: selected[1], 3: selected[2]}
-        #will need more code for communicating colors with pucks
-            
+        return {1: selected[0], 2: selected[1], 3: selected[2]}
 
     async def start_round(self) -> None:
         self.puck_colors = self.assign_colors()
+        for puck_id, color in self.puck_colors.items():
+            await self.connection_manager.send_to_puck(str(puck_id), {"action": "change_color", "color": color})
         unassigned = list(self.players.values())
         task_id = 0
         
