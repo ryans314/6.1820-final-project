@@ -141,7 +141,7 @@ class GameManager:
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
         self.round_num: int = 1
-        self.puck_colors: dict[int, str]
+        self.puck_colors: dict[int, str] = {}
 
     def add_player(self, player_id: str, username: str):
         # Create the object and store it by ID
@@ -189,6 +189,16 @@ class GameManager:
         #assign tasks to non-imposters
         await self.start_round()
         return True
+
+    def get_puck_color(self, puck_id: str) -> str | None:
+        """Return stored color for a puck given its string ID (e.g. 'puck_1')."""
+        if not self.puck_colors:
+            return None
+        try:
+            index = int(puck_id.split("_")[-1])
+            return self.puck_colors.get(index)
+        except (ValueError, AttributeError):
+            return None
 
     def assign_colors(self) -> dict[int, str]:
         colors = ["red", "blue", "purple", "green", "white", "brown", "yellow"]

@@ -32,9 +32,12 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             "status": "ok"
         })
 
-        #Broadcast updated lobby to all players
         if client_type == "phone":
             await game.broadcast_lobby()
+        elif client_type == "puck":
+            color = game.get_puck_color(client_id)
+            if color:
+                await manager.send_to_puck(client_id, {"action": "change_color", "color": color})
 
         while True:
             # Wait for JSON data from the phone/puck
@@ -88,6 +91,11 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
 # async def scan_fallback():
 #     # shown in Safari if app isn't installed
 #     return HTMLResponse("<h1>Open this link on your phone with the app installed.</h1>")
+
+@app.get("/puck/{puck_id}/color/{color}")
+async def set_puck_color(puck_id: str, color: str):
+    await manager.send_to_puck(puck_id, {"action": "change_color", "color": color})
+    return {"puck": puck_id, "color": color}
 
 if __name__ == "__main__":
     import uvicorn
