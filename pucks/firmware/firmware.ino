@@ -58,6 +58,12 @@ void handleMessage(const String& text) {
         wheelTransition(colorFromName(color));
         Serial.print("Color: ");
         Serial.println(color);
+    } else if (strcmp(action, "flash") == 0) {
+        // Brief white flash to confirm tap, then restore previous color
+        uint32_t prev = ring.getPixelColor(0);
+        setColor(ring.Color(255, 255, 255));
+        delay(80);
+        setColor(prev);
     }
 }
 
