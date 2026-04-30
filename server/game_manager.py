@@ -32,7 +32,7 @@ class Task:
     task_type: str
     players: list[Player]
     expected_interactions: list[Interaction]
-    order_matters: bool #NOTE: order_matters allows interruptions
+    order_matters: bool #TODO: order_matters allows interruptions, fix this
     is_completed: bool = False
 
     def update_completion_status(self) -> bool:
@@ -294,9 +294,42 @@ class GameManager:
         
         return False
 
+    async def handle_infection(self, infector_id: str, infected_id: str, time: float) -> None:
+        """
+        Handle infection:
+        - update infected player's status
+        - notify phones of infection after a delay (10-20 seconds)
+        """
+        # Verify infector is imposter
+        infector_player = self.players.get(infector_id)
+        if not infector_player or not infector_player.is_imposter:
+            print(f"Player {infector_id} is not an imposter or does not exist. Cannot infect.")
+            return
+        
+        # Verify infected player is alive
+        infected_player = self.players.get(infected_id)
+        if not infected_player or infected_player.status != "alive":
+            print(f"Player {infected_id} is not alive or does not exist. Cannot be infected.")
+            return
+        
+        infected_player.status = "infected"
+        delay = random.uniform(10,20)
+        print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
+        
+        await asyncio.sleep(delay)
+        await self.connection_manager.send_to_phone(infected_id, {
+            "type": "infected"
+        })
+
+        if self.check_game_over():
+            self.end_game()
+        
 
     def check_game_over(self) -> bool:
-        pass
-
+        if all(p.status != "alive" for p in self.players.values() if not p.is_imposter):
+            print("All non-imposters have been infected. Imposter wins!")
+            return True
+        return False
+    
     def end_game(self) -> None:
         pass
