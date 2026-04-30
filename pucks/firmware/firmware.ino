@@ -14,18 +14,21 @@ WiFiClient client;
 Adafruit_NeoPixel ring(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 bool wsConnected = false;
 
-// --- NeoPixel ---
+
 
 uint32_t colorFromName(const char* name) {
     if (strcmp(name, "red")    == 0) return ring.Color(255,   0,   0);
-    if (strcmp(name, "green")  == 0) return ring.Color(  0, 255,   0);
+    if (strcmp(name, "green")  == 0) return ring.Color(  0, 180,   0);
     if (strcmp(name, "blue")   == 0) return ring.Color(  0,   0, 255);
-    if (strcmp(name, "purple") == 0) return ring.Color(128,   0, 128);
-    if (strcmp(name, "white")  == 0) return ring.Color(255, 255, 255);
-    if (strcmp(name, "yellow") == 0) return ring.Color(255, 200,   0);
-    if (strcmp(name, "brown")  == 0) return ring.Color(139,  69,  19);
+    if (strcmp(name, "purple") == 0) return ring.Color(180,   0, 255);
+    if (strcmp(name, "white")  == 0) return ring.Color(255, 180, 100);
+    if (strcmp(name, "yellow") == 0) return ring.Color(255, 255,   0);
+    if (strcmp(name, "brown")  == 0) return ring.Color( 80,  40,   0);
+    if (strcmp(name, "orange") == 0) return ring.Color(255, 120,   0);
+    if (strcmp(name, "pink")   == 0) return ring.Color(255,  80, 120);
+    if (strcmp(name, "cyan")   == 0) return ring.Color(  0, 255, 180);
     if (strcmp(name, "off")    == 0) return ring.Color(  0,   0,   0);
-    return ring.Color(255, 255, 255);
+    return ring.Color(255, 180, 100);
 }
 
 void setColor(uint32_t color) {
@@ -135,7 +138,7 @@ void scanWifi() {
 }
 
 void connectWifi() {
-    scanWifi();
+    //scanWifi();
     Serial.print("Connecting to WiFi");
     WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
     unsigned long timeout = millis() + 20000;
@@ -224,7 +227,7 @@ void setup() {
     connectWebSocket();
 
     if (wsConnected) {
-        setColor(ring.Color(255, 255, 255));
+        setColor(ring.Color(255, 255, 255)); //flash white to show it is connected
         delay(300);
         setColor(ring.Color(0, 0, 0));
     } else {
