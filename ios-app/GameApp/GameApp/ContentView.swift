@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreNFC
 import Combine
+import NearbyInteraction
 
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
@@ -71,11 +72,27 @@ struct ConnectView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var username: String = ""
     
+    private var supportsUWB: Bool {
+            NISession.deviceCapabilities.supportsPreciseDistanceMeasurement
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             Text("GAME NAME")
                 .font(.largeTitle).bold()
         }
+        
+        if !supportsUWB {
+                HStack(spacing: 8) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundColor(.orange)
+                Text("Some game features may not work as your device does not support UWB")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.horizontal, 20)
+        }
+                
         
         TextField("Enter username", text: $username)
             .textFieldStyle(.roundedBorder)

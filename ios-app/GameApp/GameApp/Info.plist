@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,8 +19,8 @@
 	</array>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_myapp._tcp</string>
-		<string>_myapp._udp</string>
+		<string>_puck-game._tcp</string>
+		<string>_puck-game._udp</string>
 	</array>
 </dict>
 </plist>

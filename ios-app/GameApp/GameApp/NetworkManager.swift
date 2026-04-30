@@ -29,7 +29,7 @@ class NetworkManager: ObservableObject {
     @Published var currentRound: String?
     @Published var uuid = UIDevice.current.identifierForVendor!.uuidString
     
-    private let urlBaseStr = "wss://e5bf-192-42-89-168.ngrok-free.app/ws/phone" // change depending on where server is
+    private let urlBaseStr = "wss://667a-192-42-89-2.ngrok-free.app/ws/phone" // change depending on where server is
     private var username: String = ""
     
     func connect(username: String) {
@@ -132,6 +132,7 @@ class NetworkManager: ObservableObject {
                 case "game_start":
                     self.gameStarted = true
                     self.gameStatus = "in_progress"
+                    self.isImposter = json["is_imposter"] as! Bool
                     
                 case "error":
                     self.errorMessage = json["message"] as? String
