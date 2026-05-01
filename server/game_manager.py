@@ -31,7 +31,7 @@ class Task:
     task_id: int
     task_type: str
     players: list[Player]
-    expected_interactions: list[Interaction]
+    expected_interactions: list[tuple[Interaction, bool]]
     order_matters: bool #TODO: order_matters allows interruptions, fix this
     is_completed: bool = False
 
@@ -66,12 +66,14 @@ class Task:
             print("Task already completed")
             return
         for i, (inter, done) in enumerate(self.expected_interactions):
+            expected_player_id = str(inter.player_id)
+            given_player_id = str(interaction.player_id)
+            expected_puck_id = int(inter.puck_id)
+            given_puck_id = int(interaction.puck_id)
             if not done:
-                print(f"Expected, Given player id: ({inter.player_id}, {interaction.player_id})")
-                print(f"Expected, Given puck: ({inter.puck_id}, {interaction.puck_id})")
-                print(f"players: {interaction.player_id == inter.player_id} | pucks: {interaction.puck_id == inter.puck_id}")
-                if interaction.player_id == inter.player_id and interaction.puck_id == inter.puck_id:
-                    self.expected_interactions[i] = (inter, 1)
+                print(f"players match: {expected_player_id == given_player_id} ({expected_player_id}, {given_player_id}) | pucks match: {given_puck_id == expected_puck_id} ({given_puck_id}, {expected_puck_id})")
+                if expected_player_id == given_player_id and expected_puck_id == given_puck_id:
+                    self.expected_interactions[i] = (inter, True)
                     print("Updated task interaction")
                     break
                 if self.order_matters: #only check for first none completed task
@@ -89,9 +91,9 @@ class TapAll(Task):
             task_type="TapAll",
             players=players,
             expected_interactions=[
-                (Interaction(players[0].player_id, 1), 0),
-                (Interaction(players[1].player_id, 2), 0),
-                (Interaction(players[2].player_id, 3), 0),
+                (Interaction(players[0].player_id, 1), False),
+                (Interaction(players[1].player_id, 2), False),
+                (Interaction(players[2].player_id, 3), False),
             ],
             order_matters=0,
         )
@@ -108,10 +110,10 @@ class TapOrder(Task):
             task_type="TapOrder",
             players=players,
             expected_interactions=[
-                (Interaction(players[0].player_id, 1), 0),
-                (Interaction(players[1].player_id, 2), 0),
-                (Interaction(players[0].player_id, 1), 0),
-                (Interaction(players[1].player_id, 2), 0),
+                (Interaction(players[0].player_id, 1), False),
+                (Interaction(players[1].player_id, 2), False),
+                (Interaction(players[0].player_id, 1), False),
+                (Interaction(players[1].player_id, 2), False),
             ],
             order_matters=1,
         )
@@ -127,7 +129,7 @@ class TapOne(Task):
             task_type="TapOne",
             players=players,
             expected_interactions=[
-                (Interaction(players[0].player_id, 1), 0)],
+                (Interaction(players[0].player_id, 1), False)],
             order_matters=0,
         )
 
