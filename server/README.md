@@ -42,3 +42,101 @@ The first message sent from the client to the server **must** be an identificati
 ```
 
 Furthermore, all messages must have a `type` attribute which specifies the type of action being taken. 
+
+
+# API
+## From Server
+
+### player_list
+```
+{
+"type": "player_list",
+"players": {
+    "player_id": phone id established in initial connection, 
+    "username":  name given by player when joining
+    }
+}
+```
+
+### new_task
+```
+{
+    "type": "new_task",
+    "round": 1 2 or 3,
+    "task_id": tracks each task assigned,
+    "task_type": tracks the type of task,
+    "task_description: description to be given to players,
+    "other_players": lists other players if a multiplayer task, None otherwise
+}
+```
+
+### TODO: incorrect_puck
+```
+{
+    "type": "incorrect_puck"
+}
+```
+
+### task_complete
+```
+{
+    "type": "task_complete"
+}
+```
+
+### TODO: game_status
+```
+{
+    "type": "game_status",
+    "state": either "lobby" "lobby" "in_progress" "voting" or  "ended"
+}
+```
+
+### TODO: infected
+```
+{
+    "type": "infected",
+    "delay": how many seconds ago were you infected,
+}
+```
+
+### TODO: imposter_revealed
+```
+{
+    "type": "imposter_revealed",
+    "imposter": imposter username
+}
+```
+
+## From Phone
+### start_game
+```
+{
+    "type": "start_game"
+}
+```
+
+### nfc_tap
+```
+{
+    "type": "infect",
+    "target_id": the player id
+}
+```
+
+### infect
+only sent by imposter
+```
+{
+    "type": "nfc_tap",
+    "puck_id": puckId (1 2 or 3)
+}
+```
+
+### TODO: imposter_reveal
+sent after voting starts
+```
+{
+    "type": "imposter_reveal"
+}
+```

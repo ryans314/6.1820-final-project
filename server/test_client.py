@@ -5,12 +5,11 @@ import json
 clients = [
     {"client_type": "phone", "client_id": "device-001", "username": "Alice"},
     {"client_type": "phone", "client_id": "device-002", "username": "Bob"},
-    {"client_type": "phone", "client_id": "device-004", "username": "CCC"},
-    {"client_type": "puck",  "client_id": "device-003", "username": "C"},
+    {"client_type": "puck",  "client_id": "device-003", "username": "Charlie"},
 ]
 
 async def run_client(client: dict, identified_event: asyncio.Event, all_identified: asyncio.Event):
-    uri = f"ws://localhost:8000/ws/{client['client_type']}/{client['client_id']}"
+    uri = f"wss://recollect-conjure-thesis.ngrok-free.dev/ws/{client['client_type']}/{client['client_id']}"
     
     try:
         async with websockets.connect(uri) as ws:
