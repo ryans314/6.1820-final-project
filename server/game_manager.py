@@ -65,21 +65,39 @@ class Task:
         if self.is_completed:
             print("Task already completed")
             return
+        if not self.player_in_task(interaction.player_id):
+            print(f"Player {interaction.player_id} not in task {self.task_id}")
+            return
+        
+        success = False
         for i, (inter, done) in enumerate(self.expected_interactions):
             expected_player_id = str(inter.player_id)
             given_player_id = str(interaction.player_id)
             expected_puck_id = int(inter.puck_id)
             given_puck_id = int(interaction.puck_id)
             if not done:
-                print(f"players match: {expected_player_id == given_player_id} ({expected_player_id}, {given_player_id}) | pucks match: {given_puck_id == expected_puck_id} ({given_puck_id}, {expected_puck_id})")
+                print(f"players match? {expected_player_id == given_player_id} ({expected_player_id}, {given_player_id}) | pucks match? {given_puck_id == expected_puck_id} ({given_puck_id}, {expected_puck_id})")
                 if expected_player_id == given_player_id and expected_puck_id == given_puck_id:
                     self.expected_interactions[i] = (inter, True)
                     print("Updated task interaction")
+                    success = True
                     break
                 if self.order_matters: #only check for first none completed task
                     break
+            
+        #Reset progress for entire task if tapping wasn't a success and order matters (and player was in the task, checked earlier)
+        if not success and self.order_matters:
+            print(f"Player in task, but wrong action/order. Resetting progress on task {self.task_id}")
+            self.reset_task_progress()
         return self.update_completion_status()
      
+    def player_in_task(self, player_id: str) -> bool:
+        return any(player.player_id == player_id for player in self.players)
+    
+    def reset_task_progress(self):
+        for i in range(len(self.expected_interactions)):
+            inter, _ = self.expected_interactions[i]
+            self.expected_interactions[i] = (inter, False)
 class TapAll(Task):
     """
     Task: 3 players must tap 3 different pucks
@@ -138,7 +156,7 @@ taskTemplates = [TapOne, TapOrder, TapAll]
 class GameManager:
     def __init__(self, connection_manager):
         self.connection_manager: ConnectionManager  = connection_manager
-        self.players: dict[str, Player] = {}
+        self.players: dict[str, Player] = {} #player_id : Player Object
         self.state: str = "lobby"  # "lobby", "in_progress", "ended"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
@@ -243,7 +261,7 @@ class GameManager:
         """
         pass
 
-    async def assign_task(self, player, round_num):
+    async def assign_task(self, player: Player, round_num: int) -> None:
         current_task = player.current_task
         other_players = None
         if current_task.expected_no_players > 1:
@@ -254,7 +272,11 @@ class GameManager:
                 "round": str(round_num),
                 "task_id": current_task.task_id,
                 "task_type": current_task.task_type,
-                "other_players": other_players
+                "other_players": other_players,
+                "target_pucks": [ #ordered list of [player_username, puck_color]
+                [self._player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
+                      for inter, _ in current_task.expected_interactions
+                ]
             })
         
     async def handle_tap(self, player_id: str, puck_id: str, time: float) -> None:
@@ -345,3 +367,7 @@ class GameManager:
     
     def end_game(self) -> None:
         pass
+
+    def _player_id_to_username(self, player_id: str) -> str:
+        player = self.players.get(player_id)
+        return player.username if player else "Unknown"
