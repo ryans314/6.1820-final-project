@@ -10,6 +10,71 @@ import CoreNFC
 import Combine
 import NearbyInteraction
 
+extension NetworkManager {
+    
+    static var demo: NetworkManager {
+        let view_type = "agent_task_infected" // options: (entry, lobby, imposter_no_task, agent_no_task, imposter_task, agent_task, agent_task_infected, imposter_task_error, agent_task_error, imposter_task_complete, agent_task_complete, voting, imposter_reveal)
+        
+        let nm = NetworkManager()
+        nm.isConnected      = true
+        nm.connectionFailed = false
+        nm.gameStarted = true
+        nm.gameStatus = "in_progress"
+        nm.isImposter = false
+        nm.taskError = false
+        nm.currentTask = "OneTap"
+        nm.taskDescription = "Tap the red puck"
+        nm.currentRound     = "2"
+        nm.imposter = nil
+        nm.isInfected = false
+        nm.lobbyPlayers     = [
+            LobbyPlayer(id: "uuid-001", username: "alice"),
+            LobbyPlayer(id: "uuid-002", username: "bob"),
+            LobbyPlayer(id: "uuid-003", username: "carol"),
+        ]
+        
+        if (view_type == "entry") {
+            nm.gameStarted = false
+            nm.isConnected = false
+        } else if (view_type == "lobby") {
+            nm.gameStarted = false
+            nm.gameStatus = "Lobby"
+        }
+        
+        if (view_type == "imposter_no_task" || view_type == "imposter_task" || view_type == "imposter_task_error" || view_type == "imposter_task_complete" ) {
+            nm.isImposter = true
+        }
+        
+        if (view_type == "imposter_no_task" || view_type == "agent_no_task") {
+            nm.currentTask = nil
+            nm.taskDescription = nil
+        }
+        
+        if (view_type == "imposter_task_error" || view_type == "agent_task_error") {
+            nm.taskError = true
+        }
+        
+        if (view_type == "imposter_task_complete" || view_type == "agent_task_complete") {
+            nm.currentTask = "Completed"
+        }
+        
+        if (view_type == "voting") {
+            nm.gameStatus = "voting"
+        }
+        
+        if (view_type == "imposter_reveal") {
+            nm.gameStatus = "imposter_revealed"
+            nm.imposter = "Belle"
+        }
+        
+        if (view_type == "agent_task_infected") {
+            nm.isInfected = true
+        }
+    
+        return nm
+    }
+}
+
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
     
@@ -24,45 +89,19 @@ struct ContentView: View {
                 LobbyView(networkManager: networkManager)
             } else {
                 // --- Game Screen ---
-                GameView(networkManager: networkManager)
+                if (networkManager.gameStatus == "in_progress") {
+                    GameView(networkManager: networkManager)
+                } else if (networkManager.gameStatus == "voting") {
+                    VotingView(networkManager: networkManager)
+                } else if (networkManager.gameStatus == "imposter_revealed") {
+                    ImposterRevealView(networkManager: networkManager)
+                }
             }
             if networkManager.connectionFailed {
                 Text("Connection failed, please try again")
                     .foregroundColor(.red)
                     .font(.subheadline)
             }
-            
-//            if !networkManager.isConnected {
-//                Button(networkManager.connectionFailed ? "Reconnect" : "Connect") {
-//                    networkManager.connect()
-//                }
-//                .buttonStyle(.borderedProminent)
-//            }
-//            
-//            if networkManager.isConnected {
-//                Text("Game Status: \(networkManager.gameStatus)")
-//                    .foregroundColor(.green)
-//                
-//                if networkManager.isImposter {
-//                    Text("Role: IMPOSTER")
-//                        .foregroundColor(.red)
-//                        .bold()
-//                } else {
-//                    Text("Role: Healthy")
-//                        .foregroundColor(.green)
-//                        .bold()
-//                }
-//                
-//                Text("Current Task: \(networkManager.currentTask ?? "Waiting...")")
-//                
-//                Button("Simulate NFC Tap" ) {
-//                    networkManager.sendTap(puckId: "puck_A1")
-//                }.buttonStyle(.borderedProminent)
-//            }
-            
-            
-            
-            
         }
         .padding()
     }
@@ -159,23 +198,29 @@ struct LobbyView: View {
 struct GameView: View {
     @ObservedObject var networkManager: NetworkManager
     @StateObject private var uwbManager = UWBManager()
+    @State private var showInfectedAlert = false
     
     var body: some View {
         VStack(spacing: 20) {
             Text("Role: You Are \(networkManager.isImposter ? "The Imposter" : "Safe")")
                 .bold().font(.title)
-            
+            if (networkManager.isInfected) {
+                Text("You're infected")
+            }
             Text("Current Round: \(networkManager.currentRound ?? "...")/3")
             
             if (networkManager.currentTask == "Completed") {
                 Text("Task completed!")
             } else {
                 Text("Your Task: \(networkManager.currentTask ?? "Waiting...")")
+                Text(networkManager.taskDescription ?? "")
+                
+                if (networkManager.taskError) {
+                    Text("You tapped the wrong puck!")
+                }
             }
             
-            Button("Simulate NFC Tap" ) {
-                networkManager.sendTap(puckId: "1")
-            }.buttonStyle(.borderedProminent)
+            
             
             // Only show UWB section for imposter
             if networkManager.isImposter {
@@ -212,109 +257,49 @@ struct GameView: View {
         .onAppear {
             uwbManager.isImposter = networkManager.isImposter
             uwbManager.start(clientId: networkManager.uuid)
+            if networkManager.isInfected { showInfectedAlert = true }
         }
         .onDisappear {
             uwbManager.stop()
         }
+        .onChange(of: networkManager.isInfected) { _, infected in
+            if infected { showInfectedAlert = true }
+        }
+        .alert("You've Been Infected!", isPresented: $showInfectedAlert) {
+            Button("OK") { }
+        } message: {
+            Text("The imposter got you. You are now infected.")
+        }
     }
 }
 
-#Preview {
-    ContentView(networkManager: NetworkManager())
+
+struct VotingView: View {
+    @ObservedObject var networkManager: NetworkManager
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("Time to vote!")
+                .font(.largeTitle).bold()
+            
+            Button("Done voting!") {
+                networkManager.imposterReveal()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.green)
+            
+        }
+    }
 }
 
-// If using NFCCore
-//class NFCReader: ObservableObject {
-//    var objectWillChange = PassthroughSubject<Void, Never>()
-//
-//    @Published var lastScannedId: String? = nil
-//    @Published var errorMessage: String? = nil
-//
-//    private var session: NFCNDEFReaderSession? = nil
-//    private var onScan: ((String) -> Void)? = nil
-//    private let delegate = NFCDelegate() // separate NSObject delegate
-//
-//    func beginScanning(onScan: @escaping (String) -> Void) {
-//        guard NFCNDEFReaderSession.readingAvailable else {
-//            errorMessage = "NFC not available on this device"
-//            return
-//        }
-//        self.onScan = onScan
-//        errorMessage = nil
-//        delegate.onScan = { [weak self] puckId in
-//            self?.lastScannedId = puckId
-//            self?.onScan?(puckId)
-//        }
-//        delegate.onError = { [weak self] message in
-//            self?.errorMessage = message
-//        }
-//        session = NFCNDEFReaderSession(delegate: delegate, queue: .main, invalidateAfterFirstRead: true)
-//        session?.alertMessage = "Hold your iPhone near the puck to scan."
-//        session?.begin()
-//    }
-//}
-
-// MARK: - NFC Delegate (NSObject required by CoreNFC)
-//class NFCDelegate: NSObject, NFCNDEFReaderSessionDelegate {
-//    var onScan: ((String) -> Void)? = nil
-//    var onError: ((String) -> Void)? = nil
-//
-//    func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
-//        guard let record = messages.first?.records.first else {
-//            onError?("Could not read tag data")
-//            return
-//        }
-//        let (text, _) = record.wellKnownTypeTextPayload()
-//        if let text = text {
-//            onScan?(text)
-//        } else if let payload = String(data: record.payload, encoding: .utf8) {
-//            let puckId = payload.count > 3 ? String(payload.dropFirst(3)) : payload
-//            onScan?(puckId)
-//        } else {
-//            onError?("Could not parse tag payload")
-//        }
-//    }
-//
-//    func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-//        let nfcError = error as? NFCReaderError
-//        if nfcError?.code != .readerSessionInvalidationErrorUserCanceled {
-//            onError?(error.localizedDescription)
-//        }
-//    }
-//}
-
-//struct GameView: View {
-//    @ObservedObject var networkManager: NetworkManager
-//    @StateObject private var nfcReader = NFCReader()
-//    
-//    var body: some View {
-//        VStack(spacing: 20) {
-//            Text("Role: You Are \(networkManager.isImposter ? "The Imposter" : "Safe")")
-//                .bold().font(.title)
-//            
-//            Text("Current Task: \(networkManager.currentTask ?? "Waiting...")")
-//            
-//            Button("Scan NFC Tag") {
-//            nfcReader.beginScanning { puckId in
-//                networkManager.sendTap(puckId: puckId)
-//            }
-//        }
-//        .buttonStyle(.borderedProminent)
-//        
-//        if let lastScanned = nfcReader.lastScannedId {
-//            Text("Last Scanned: \(lastScanned)")
-//                .font(.caption)
-//                .foregroundColor(.secondary)
-//        }
-//        
-//        if let error = nfcReader.errorMessage {
-//            Text(error)
-//                .font(.caption)
-//                .foregroundColor(.red)
-//        }
-//
-//                 
-//        }
-//        
-//    }
-//}
+struct ImposterRevealView: View {
+    @ObservedObject var networkManager: NetworkManager
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            Text("The imposter is \(networkManager.imposter ?? "")")
+                .font(.largeTitle).bold()
+            
+        }
+    }
+}

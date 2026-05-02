@@ -39,7 +39,7 @@ class UWBManager: NSObject, ObservableObject {
 
     func start(clientId: String) {
         self.clientId = clientId
-        myPeerID = MCPeerID(displayId: clientId)
+        myPeerID = MCPeerID(displayName: clientId)
 
         uwbLog("▶️ Starting — clientId=\(clientId) role=\(isImposter ? "IMPOSTER" : "crewmate")")
 
@@ -78,19 +78,19 @@ class UWBManager: NSObject, ObservableObject {
     // NISession must be initialised on the main thread to reliably produce
     // a discoveryToken. We're already called from main via asyncAfter — keep it that way.
     private func startNISession(with peer: MCPeerID) {
-        uwbLog("🛰️ Starting NISession for peer: \(peer.displayId)")
+        uwbLog("🛰️ Starting NISession for peer: \(peer.displayName)")
         let niSession = NISession()
         niSession.delegate = self
 
         queue.async(flags: .barrier) {
             self.peerSessions[peer] = niSession
-            uwbLog("💾 Stored NISession for \(peer.displayId) — total sessions: \(self.peerSessions.count)")
+            uwbLog("💾 Stored NISession for \(peer.displayName) — total sessions: \(self.peerSessions.count)")
         }
 
         if niSession.discoveryToken != nil {
-            uwbLog("🪙 Token ready immediately for \(peer.displayId), sending now")
+            uwbLog("🪙 Token ready immediately for \(peer.displayName), sending now")
         } else {
-            uwbLog("⏳ Token not ready yet for \(peer.displayId), starting retry loop (max 5 attempts)")
+            uwbLog("⏳ Token not ready yet for \(peer.displayName), starting retry loop (max 5 attempts)")
         }
         sendToken(niSession.discoveryToken, to: peer, retries: 5)
     }
@@ -99,17 +99,17 @@ class UWBManager: NSObject, ObservableObject {
     private func sendToken(_ token: NIDiscoveryToken?, to peer: MCPeerID, retries: Int) {
         if let token = token {
             guard let data = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true) else {
-                uwbLog("❌ Failed to archive discovery token for \(peer.displayId)")
+                uwbLog("❌ Failed to archive discovery token for \(peer.displayName)")
                 return
             }
             do {
                 try mcSession.send(data, toPeers: [peer], with: .reliable)
-                uwbLog("📤 Sent discovery token to \(peer.displayId) (\(data.count) bytes)")
+                uwbLog("📤 Sent discovery token to \(peer.displayName) (\(data.count) bytes)")
             } catch {
-                uwbLog("❌ Failed to send token to \(peer.displayId): \(error.localizedDescription)")
+                uwbLog("❌ Failed to send token to \(peer.displayName): \(error.localizedDescription)")
             }
         } else if retries > 0 {
-            uwbLog("🔄 Token nil for \(peer.displayId), retrying in 0.2s (\(retries) retries left)")
+            uwbLog("🔄 Token nil for \(peer.displayName), retrying in 0.2s (\(retries) retries left)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
                 guard let self = self else { return }
                 var session: NISession?
@@ -117,7 +117,7 @@ class UWBManager: NSObject, ObservableObject {
                 self.sendToken(session?.discoveryToken, to: peer, retries: retries - 1)
             }
         } else {
-            uwbLog("❌ Gave up sending token to \(peer.displayId) — token never became available")
+            uwbLog("❌ Gave up sending token to \(peer.displayName) — token never became available")
         }
     }
 
@@ -130,14 +130,14 @@ class UWBManager: NSObject, ObservableObject {
     }
 
     private func removePeer(_ peer: MCPeerID) {
-        uwbLog("🔌 Removing peer: \(peer.displayId)")
+        uwbLog("🔌 Removing peer: \(peer.displayName)")
         queue.async(flags: .barrier) {
             self.peerSessions[peer]?.invalidate()
             self.peerSessions.removeValue(forKey: peer)
-            uwbLog("🗑️ Removed NISession for \(peer.displayId) — remaining sessions: \(self.peerSessions.count)")
+            uwbLog("🗑️ Removed NISession for \(peer.displayName) — remaining sessions: \(self.peerSessions.count)")
         }
         DispatchQueue.main.async {
-            self.nearbyPlayers.removeValue(forKey: peer.displayId)
+            self.nearbyPlayers.removeValue(forKey: peer.displayName)
             self.updateNearbyStatus()
         }
     }
@@ -153,10 +153,10 @@ extension UWBManager: MCSessionDelegate {
         case .notConnected: stateLabel = "❌ not connected"
         @unknown default:   stateLabel = "❓ unknown"
         }
-        uwbLog("🔗 MCSession peer \(peer.displayId) → \(stateLabel)")
+        uwbLog("🔗 MCSession peer \(peer.displayName) → \(stateLabel)")
 
         if state == .connected {
-            uwbLog("⏳ Waiting 0.3s before starting NISession with \(peer.displayId)")
+            uwbLog("⏳ Waiting 0.3s before starting NISession with \(peer.displayName)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.startNISession(with: peer)
             }
@@ -166,18 +166,18 @@ extension UWBManager: MCSessionDelegate {
     }
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peer: MCPeerID) {
-        uwbLog("📥 Received \(data.count) bytes from \(peer.displayId)")
+        uwbLog("📥 Received \(data.count) bytes from \(peer.displayName)")
 
         guard let token = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NIDiscoveryToken.self, from: data) else {
-            uwbLog("❌ Failed to unarchive NIDiscoveryToken from \(peer.displayId) — data may be malformed")
+            uwbLog("❌ Failed to unarchive NIDiscoveryToken from \(peer.displayName) — data may be malformed")
             return
         }
-        uwbLog("🪙 Successfully decoded discovery token from \(peer.displayId)")
+        uwbLog("🪙 Successfully decoded discovery token from \(peer.displayName)")
 
         var niSession: NISession?
         queue.sync { niSession = peerSessions[peer] }
         guard let niSession = niSession else {
-            uwbLog("❌ No NISession found for \(peer.displayId) — token received too early?")
+            uwbLog("❌ No NISession found for \(peer.displayName) — token received too early?")
             return
         }
 
@@ -190,7 +190,7 @@ extension UWBManager: MCSessionDelegate {
         // so crewmates range silently and never act on distance updates.
         let config = NINearbyPeerConfiguration(peerToken: token)
         niSession.run(config)
-        uwbLog("▶️ NISession.run(config) called for peer \(peer.displayId) [role=\(isImposter ? "IMPOSTER" : "crewmate")]")
+        uwbLog("▶️ NISession.run(config) called for peer \(peer.displayName) [role=\(isImposter ? "IMPOSTER" : "crewmate")]")
     }
 
     func session(_ session: MCSession, didReceive stream: InputStream, withName: String, fromPeer: MCPeerID) {}
@@ -202,7 +202,7 @@ extension UWBManager: MCSessionDelegate {
 extension UWBManager: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peer: MCPeerID,
                     withContext: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        uwbLog("📨 Received invitation from \(peer.displayId) — accepting")
+        uwbLog("📨 Received invitation from \(peer.displayName) — accepting")
         invitationHandler(true, mcSession)
     }
 
@@ -214,15 +214,15 @@ extension UWBManager: MCNearbyServiceAdvertiserDelegate {
 // MARK: - MCNearbyServiceBrowser Delegate
 extension UWBManager: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peer: MCPeerID, withDiscoveryInfo: [String: String]?) {
-        let willInvite = myPeerID.displayId > peer.displayId
-        uwbLog("👀 Found peer: \(peer.displayId) — \(willInvite ? "inviting (we are lexicographically greater)" : "waiting for their invite")")
+        let willInvite = myPeerID.displayName > peer.displayName
+        uwbLog("👀 Found peer: \(peer.displayName) — \(willInvite ? "inviting (we are lexicographically greater)" : "waiting for their invite")")
         if willInvite {
             browser.invitePeer(peer, to: mcSession, withContext: nil, timeout: 10)
         }
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peer: MCPeerID) {
-        uwbLog("👋 Lost peer from browser: \(peer.displayId)")
+        uwbLog("👋 Lost peer from browser: \(peer.displayName)")
         removePeer(peer)
     }
 
@@ -245,14 +245,14 @@ extension UWBManager: NISessionDelegate {
         }
 
         guard let distance = nearbyObjects.first?.distance else {
-            uwbLog("⚠️ didUpdate for \(peer.displayId) — distance unavailable (direction only?)")
+            uwbLog("⚠️ didUpdate for \(peer.displayName) — distance unavailable (direction only?)")
             return
         }
 
         DispatchQueue.main.async {
-            self.nearbyPlayers[peer.displayId] = distance
+            self.nearbyPlayers[peer.displayName] = distance
             self.updateNearbyStatus()
-            uwbLog("📡 \(peer.displayId) is \(String(format: "%.2f", distance))m away | nearby=\(self.hasNearbyPlayer)")
+            uwbLog("📡 \(peer.displayName) is \(String(format: "%.2f", distance))m away | nearby=\(self.hasNearbyPlayer)")
         }
     }
 
@@ -267,10 +267,10 @@ extension UWBManager: NISessionDelegate {
         case .timeout:      reasonLabel = "timeout"
         @unknown default:   reasonLabel = "unknown"
         }
-        uwbLog("🚫 NISession removed \(peer.displayId) — reason: \(reasonLabel)")
+        uwbLog("🚫 NISession removed \(peer.displayName) — reason: \(reasonLabel)")
 
         DispatchQueue.main.async {
-            self.nearbyPlayers.removeValue(forKey: peer.displayId)
+            self.nearbyPlayers.removeValue(forKey: peer.displayName)
             self.updateNearbyStatus()
         }
     }
@@ -278,7 +278,7 @@ extension UWBManager: NISessionDelegate {
     func sessionWasSuspended(_ session: NISession) {
         var peer: MCPeerID?
         queue.sync { peer = peerSessions.first { $0.value === session }?.key }
-        uwbLog("😴 NISession suspended for peer: \(peer?.displayId ?? "unknown")")
+        uwbLog("😴 NISession suspended for peer: \(peer?.displayName ?? "unknown")")
     }
 
     func sessionSuspensionEnded(_ session: NISession) {
@@ -294,13 +294,13 @@ extension UWBManager: NISessionDelegate {
             uwbLog("⚠️ sessionSuspensionEnded — couldn't match NISession to a peer")
             return
         }
-        uwbLog("⏰ NISession suspension ended for \(peer.displayId) — re-sending token")
+        uwbLog("⏰ NISession suspension ended for \(peer.displayName) — re-sending token")
         sendToken(session.discoveryToken, to: peer, retries: 5)
     }
 
     func session(_ session: NISession, didInvalidateWith error: Error) {
         var peer: MCPeerID?
         queue.sync { peer = peerSessions.first { $0.value === session }?.key }
-        uwbLog("❌ NISession invalidated for \(peer?.displayId ?? "unknown"): \(error.localizedDescription)")
+        uwbLog("❌ NISession invalidated for \(peer?.displayName ?? "unknown"): \(error.localizedDescription)")
     }
 }

@@ -65,7 +65,7 @@ Furthermore, all messages must have a `type` attribute which specifies the type 
     "round": 1 2 or 3,
     "task_id": tracks each task assigned,
     "task_type": tracks the type of task,
-    "task_description: description to be given to players,
+    "task_description": description to be given to players,
     "other_players": lists other players if a multiplayer task, None otherwise
 }
 ```
@@ -88,15 +88,14 @@ Furthermore, all messages must have a `type` attribute which specifies the type 
 ```
 {
     "type": "game_status",
-    "state": either "lobby" "lobby" "in_progress" "voting" or  "ended"
+    "state": either "lobby" "lobby" "in_progress" "voting" or  "imposter_revealed"
 }
 ```
 
 ### TODO: infected
 ```
 {
-    "type": "infected",
-    "delay": how many seconds ago were you infected,
+    "type": "infected"
 }
 ```
 

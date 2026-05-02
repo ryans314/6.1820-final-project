@@ -9,7 +9,16 @@ import SwiftUI
 
 @main
 struct GameAppApp: App {
-    @StateObject private var networkManager = NetworkManager()
+    private let isDemoMode = true
+    @StateObject private var networkManager: NetworkManager
+
+    init() {
+        if isDemoMode {
+            _networkManager = StateObject(wrappedValue: NetworkManager.demo)
+        } else {
+            _networkManager = StateObject(wrappedValue: NetworkManager())
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -32,3 +41,4 @@ struct GameAppApp: App {
         networkManager.sendTap(puckId: puckId)
     }
 }
+

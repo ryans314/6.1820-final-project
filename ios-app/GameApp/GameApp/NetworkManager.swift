@@ -27,9 +27,13 @@ class NetworkManager: ObservableObject {
     @Published var isImposter: Bool = false
     @Published var errorMessage: String?
     @Published var currentRound: String?
+    @Published var taskError: Bool = false
+    @Published var taskDescription: String?
     @Published var uuid = UIDevice.current.identifierForVendor!.uuidString
+    @Published var imposter: String?
+    @Published var isInfected: Bool = false
     
-    private let urlBaseStr = "wss://667a-192-42-89-2.ngrok-free.app/ws/phone" // change depending on where server is
+    private let urlBaseStr = "wss://recollect-conjure-thesis.ngrok-free.dev/ws/phone" // change depending on where server is
     private var username: String = ""
     
     func connect(username: String) {
@@ -140,12 +144,23 @@ class NetworkManager: ObservableObject {
                 case "new_task":
                     self.currentTask = json["task_type"] as? String
                     self.currentRound = json["round"] as? String
+                    self.taskDescription = json["task_description"] as? String
                     
                 case "game_status":
                     self.gameStatus = json["status"] as? String ?? self.gameStatus
                 
                 case "task_complete":
                     self.currentTask = "Completed"
+
+                case "incorrect_puck":
+                    self.taskError = true
+                
+                case "imposter_revealed":
+                    self.imposter = json["imposter"] as? String
+                    
+                case "infected":
+                    self.isInfected = true
+                    
                 default:
                     print("Unknown message type: \(json["type"] ?? "nil")")
                 }
@@ -178,6 +193,22 @@ class NetworkManager: ObservableObject {
             "target_id": targetId
         ]
         if let jsonData = try? JSONSerialization.data(withJSONObject: message),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            webSocketTask?.send(.string(jsonString)) { error in
+                if let error = error {
+                    print("Error sending tap: \(error)")
+                }
+            }
+        }
+    }
+    
+    func imposterReveal() {
+        
+        let json: [String: Any] = [
+            "type": "imposter_reveal"
+        ]
+        
+        if let jsonData = try? JSONSerialization.data(withJSONObject: json),
            let jsonString = String(data: jsonData, encoding: .utf8) {
             webSocketTask?.send(.string(jsonString)) { error in
                 if let error = error {
