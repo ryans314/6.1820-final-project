@@ -30,6 +30,7 @@ class Player:
 class Task:
     task_id: int
     task_type: str
+    task_description: str
     players: list[Player]
     expected_interactions: list[tuple[Interaction, bool]]
     order_matters: bool #TODO: order_matters allows interruptions, fix this
@@ -92,6 +93,7 @@ class TapAll(Task):
     """
     Task: 3 players must tap 3 different pucks
     """
+    task_description = "Each player must tap their assigned puck in any order."
     expected_no_players=3
     def __init__(self, players: list[Player], task_id: int):
         super().__init__(
@@ -111,17 +113,20 @@ class TapOrder(Task):
     Two players must tap two separate pucks, alternating twice
     Example: P1 taps puck1, P2 taps puck2, P1 taps puck1, P2 taps puck2
     """
+    task_description = "Both players must tap their assigned puck, alternating turns. If a player taps out of turn, progress will reset."
     expected_no_players=2
     def __init__(self, players: list[Player], task_id: int):
+        puck1 = random.randint(1,3)
+        puck2 = random.choice([p for p in range(1,4) if p != puck1])
         super().__init__(
             task_id=task_id,
             task_type="TapOrder",
             players=players,
             expected_interactions=[
-                (Interaction(players[0].player_id, 1), False),
-                (Interaction(players[1].player_id, 2), False),
-                (Interaction(players[0].player_id, 1), False),
-                (Interaction(players[1].player_id, 2), False),
+                (Interaction(players[0].player_id, puck1), False),
+                (Interaction(players[1].player_id, puck2), False),
+                (Interaction(players[0].player_id, puck1), False),
+                (Interaction(players[1].player_id, puck2), False),
             ],
             order_matters=1,
         )
@@ -130,14 +135,16 @@ class TapOne(Task):
     """
     One player must tap a single puck
     """
+    task_description = "You must tap your assigned puck."
     expected_no_players=1
     def __init__(self, players: list[Player], task_id: int):
+        puck_id = random.randint(1,3)
         super().__init__(
             task_id=task_id,
             task_type="TapOne",
             players=players,
             expected_interactions=[
-                (Interaction(players[0].player_id, 1), False)],
+                (Interaction(players[0].player_id, puck_id), False)],
             order_matters=0,
         )
 
@@ -263,6 +270,7 @@ class GameManager:
                 "task_id": current_task.task_id,
                 "task_type": current_task.task_type,
                 "other_players": other_players,
+                "task_description": current_task.task_description,
                 "target_pucks": [ #ordered list of [player_username, puck_color]
                 [self._player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
                       for inter, _ in current_task.expected_interactions
