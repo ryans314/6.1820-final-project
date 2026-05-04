@@ -30,13 +30,12 @@ class Player:
 class Task:
     task_id: int
     task_type: str
-    task_description: str
     players: list[Player]
     expected_interactions: list[tuple[Interaction, bool]]
-    order_matters: bool #TODO: order_matters allows interruptions, fix this
+    order_matters: bool 
     is_completed: bool = False
     task_progress: float = 0.0 #between 0 and 1, used for tasks that require holding or repeated interactions
-
+    
     def update_task_progress(self) -> str:
         """
         Update is_completed and task_progress.
@@ -94,7 +93,7 @@ class TapAll(Task):
     Task: 3 players must tap 3 different pucks
     """
     task_description = "Each player must tap their assigned puck in any order."
-    expected_no_players=3
+    expected_num_players=3
     def __init__(self, players: list[Player], task_id: int):
         super().__init__(
             task_id=task_id,
@@ -114,7 +113,7 @@ class TapOrder(Task):
     Example: P1 taps puck1, P2 taps puck2, P1 taps puck1, P2 taps puck2
     """
     task_description = "Both players must tap their assigned puck, alternating turns. If a player taps out of turn, progress will reset."
-    expected_no_players=2
+    expected_num_players=2
     def __init__(self, players: list[Player], task_id: int):
         puck1 = random.randint(1,3)
         puck2 = random.choice([p for p in range(1,4) if p != puck1])
@@ -136,7 +135,7 @@ class TapOne(Task):
     One player must tap a single puck
     """
     task_description = "You must tap your assigned puck."
-    expected_no_players=1
+    expected_num_players=1
     def __init__(self, players: list[Player], task_id: int):
         puck_id = random.randint(1,3)
         super().__init__(
@@ -148,16 +147,16 @@ class TapOne(Task):
             order_matters=0,
         )
 
-taskTemplates = [TapOne, TapOrder, TapAll]
+taskTemplates: list[Task] = [TapOne, TapOrder, TapAll]
 
 class GameManager:
     def __init__(self, connection_manager):
         self.connection_manager: ConnectionManager  = connection_manager
         self.players: dict[str, Player] = {} #player_id : Player Object
-        self.state: str = "lobby"  # "lobby", "in_progress", "ended"
+        self.state: str = "lobby"  # "lobby", "in_progress", "voting", "imposter_revealed"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
-        self.round_num: int = 1
+        self.round_num: int = 0
         self.puck_colors: dict[int, str] = {}
 
     def add_player(self, player_id: str, username: str):
@@ -195,6 +194,7 @@ class GameManager:
 
         self.state = "in_progress"
 
+
         # Send players their roles
         for player_id, player in self.players.items():
             await self.connection_manager.send_to_phone(player_id, {
@@ -223,6 +223,8 @@ class GameManager:
         return {1: selected[0], 2: selected[1], 3: selected[2]}
 
     async def start_round(self) -> None:
+        print("starting new round")
+        self.round_num += 1
         self.puck_colors = self.assign_colors()
         for puck_id, color in self.puck_colors.items():
             await self.connection_manager.send_to_puck(f"puck_{puck_id}", {"action": "change_color", "color": color})
@@ -233,7 +235,7 @@ class GameManager:
         # randomly assign tasks to players
         while unassigned:
             template = random.choice(taskTemplates)
-            required = template.expected_no_players
+            required = template.expected_num_players
 
             if len(unassigned) < required:
                 template = TapOne
@@ -249,19 +251,29 @@ class GameManager:
                 unassigned.remove(player)
 
             self.active_tasks.append(task)
-            self.round_num += 1
 
-    
+    async def end_round(self) -> None:
+        """At the end of a round, reset the game state to prepare for the next round (clear active tasks)"""
+        self.active_tasks.clear()
+        await self.connection_manager.broadcast_to_phones({
+            "type": "end_round"
+        })
+
     async def start_voting(self) -> None:
         """
         After all tasks are completed, start voting
         """
-        pass
+        self.state = "voting"
+        await self.connection_manager.broadcast_to_phones({
+            "type": "game_status",
+            "status": "voting"
+        })
 
     async def assign_task(self, player: Player, round_num: int) -> None:
+        print("Assigning task to player", player.username)
         current_task = player.current_task
         other_players = None
-        if current_task.expected_no_players > 1:
+        if current_task.expected_num_players > 1:
             other_players = [p.player_id for p in current_task.players if p.player_id != player.player_id]
 
         await self.connection_manager.send_to_phone(player.player_id, {
@@ -311,8 +323,6 @@ class GameManager:
         if await self.check_task_completion():
             if len(self.active_tasks) == 1:
                 print("End of Round!")
-                await self.start_voting()
-                #TODO: start voting
 
 
     async def check_task_completion(self):
@@ -373,16 +383,40 @@ class GameManager:
 
         if self.check_game_over():
             self.end_game()
-        
+    
+    def check_round_over(self) -> bool:
+        """Check if all but one tasks for the round are completed"""
+        if len(self.active_tasks) <= 1 and len([t for t in self.active_tasks if t.is_completed]) <= 1:
+            return True
+        return False
 
-    def check_game_over(self) -> bool:
+    def check_imposter_wins(self) -> bool:
+        """
+        Check if the imposter wins (all other players infected)
+        """
         if all(p.status != "alive" for p in self.players.values() if not p.is_imposter):
             print("All non-imposters have been infected. Imposter wins!")
             return True
         return False
-    
-    def end_game(self) -> None:
-        pass
+
+    async def reveal_imposter(self) -> None:
+        """
+        Reveal the imposter to all players and end the game
+        """
+        imposter = next((p for p in self.players.values() if p.is_imposter), None)
+        if imposter:
+            print(f"The imposter was {imposter.username}!")
+            await self.connection_manager.broadcast_to_phones({
+                "type": "imposter_reveal",
+                "imposter_username": imposter.username
+            })
+            self.state = "imposter_revealed"
+            await self.connection_manager.broadcast_to_phones({
+                "type": "game_status",
+                "status": "imposter_revealed"
+            })
+        else:
+            print("Error: No imposter found during reveal!")
 
     def _player_id_to_username(self, player_id: str) -> str:
         player = self.players.get(player_id)

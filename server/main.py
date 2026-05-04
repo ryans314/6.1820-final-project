@@ -54,6 +54,12 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                         "message": "Error in starting game - are there at least 3 players?"
                     })
 
+            elif game.state == "voting":
+                if msg_type == "imposter_reveal":
+                    await game.reveal_imposter()
+                    break
+                continue # ignore all other messages during voting
+
             # Phone taps puck
             elif client_type == "phone" and data.get("type") == "nfc_tap":
                 target_puck = data.get("puck_id")
@@ -61,16 +67,25 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                 await manager.send_to_puck(f"puck_{target_puck}", {"action": "flash"})
                 print(f"Phone {client_id} tapped Puck {target_puck}")
                 
-                # # Tell puck to change color
-                # await manager.send_to_puck(target_puck, {"action": "change_color", "color": "green"})
             elif client_type == "phone" and data.get("type") == "infect":
                 infected_id = data.get("target_id")
                 print(f"{infected_id} infected")
                 asyncio.create_task(game.handle_infection(client_id, infected_id, datetime.now()))
             
-            if game.check_game_over():
+            if game.check_imposter_wins():
                 game.end_game()
                 break
+
+            if game.check_round_over():
+                print("Round over!")
+                await game.end_round()
+                if game.round_num == 3: 
+                    await game.start_voting()
+                    continue
+
+                await game.start_round()
+               
+            
 
     except WebSocketDisconnect:
         manager.disconnect(client_type, client_id)

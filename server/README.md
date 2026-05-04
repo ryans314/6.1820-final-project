@@ -58,6 +58,17 @@ Furthermore, all messages must have a `type` attribute which specifies the type 
 }
 ```
 
+### game_start
+Sent at the start of the game to tell players their roles and the list of other players
+
+```json
+{
+    "type": "game_start",
+    "is_imposter": "{is the player the imposter?} (bool)",
+    "players": "dict of all players mapping {player_id: username}"
+}
+```
+
 ### new_task
 - round_number should be limited to {"1", "2", "3"}
 - target_pucks is an ordered list of len 2 lists, where the first element in target pucks represents the first player to tap and the color of the puck they need to tap, the 2nd element represents the 2nd player to tap and the color of the puck they need to tap, and so on.
@@ -139,6 +150,13 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
 ```json
 {
     "type": "start_game"
+}
+```
+
+### end_round
+```json
+{
+    "type": "end_round"
 }
 ```
 
