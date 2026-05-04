@@ -287,11 +287,11 @@ class GameManager:
                 print("Successful Tap!")
                 # TODO: notify phone of success
                 await self.connection_manager.send_to_phone(player_id, {
-                    "type": "tap_success"
+                    "type": "correct_puck"
                 })
             else:
                 await self.connection_manager.send_to_phone(player_id, {
-                    "type": "tap_failure"
+                    "type": "incorrect_puck"
                 })
             if old_progress != t.task_progress:
                 await self.connection_manager.send_to_phone([p.player_id for p in t.players], {
