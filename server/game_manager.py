@@ -34,32 +34,20 @@ class Task:
     expected_interactions: list[tuple[Interaction, bool]]
     order_matters: bool #TODO: order_matters allows interruptions, fix this
     is_completed: bool = False
+    task_progress: float = 0.0 #between 0 and 1, used for tasks that require holding or repeated interactions
 
-    def update_completion_status(self) -> bool:
+    def update_task_progress(self) -> str:
         """
-        Update status to be 1 if completed (or 0 if not completed)
-
-        Returns True if task is (newly) completed
-
-        Generally should only be called on uncompleted or newly completed tasks
+        Update is_completed and task_progress.
         """
-
-        
-        if self.is_completed:
-            print("WARNING: update_completion_status called on completed Task")
-
+        self.task_progress = sum(1 for _, done in self.expected_interactions if done) / len(self.expected_interactions) if self.expected_interactions else 0
         self.is_completed = int(all(done for _, done in self.expected_interactions))
-        
-        if self.is_completed:
-            print("Task is completed!")
-            return True
-    
-    def check_new_interaction(self, interaction: Interaction) -> bool:
+            
+            
+    def check_new_interaction(self, interaction: Interaction) -> None:
         """
         Check if interaction is relevant to the task, and if it is update the task's interaction
-        to mark the necessary interaction completed
-
-        Returns True if the task is completed or False if not
+        to mark the necessary interaction completed (including task_progress)
         """
         print(f"checking task {self.task_id}")
         if self.is_completed:
@@ -89,7 +77,8 @@ class Task:
         if not success and self.order_matters:
             print(f"Player in task, but wrong action/order. Resetting progress on task {self.task_id}")
             self.reset_task_progress()
-        return self.update_completion_status()
+
+        self.update_task_progress()
      
     def player_in_task(self, player_id: str) -> bool:
         return any(player.player_id == player_id for player in self.players)
@@ -98,6 +87,7 @@ class Task:
         for i in range(len(self.expected_interactions)):
             inter, _ = self.expected_interactions[i]
             self.expected_interactions[i] = (inter, False)
+
 class TapAll(Task):
     """
     Task: 3 players must tap 3 different pucks
@@ -289,8 +279,26 @@ class GameManager:
         """
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
         for t in self.active_tasks:
+            if not t.player_in_task(player_id):
+                continue
+            old_progress = t.task_progress
             t.check_new_interaction(interact)
-        
+            if old_progress < t.task_progress:
+                print("Successful Tap!")
+                # TODO: notify phone of success
+                await self.connection_manager.send_to_phone(player_id, {
+                    "type": "tap_success"
+                })
+            else:
+                await self.connection_manager.send_to_phone(player_id, {
+                    "type": "tap_failure"
+                })
+            if old_progress != t.task_progress:
+                await self.connection_manager.send_to_phone([p.player_id for p in t.players], {
+                    "type": "task_progress",
+                    "task_id": t.task_id,
+                    "progress": t.task_progress
+                })        
         # If a task was completed, check for end of round conditions
         if await self.check_task_completion():
             if len(self.active_tasks) == 1:
