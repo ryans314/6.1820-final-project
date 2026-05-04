@@ -48,93 +48,121 @@ Furthermore, all messages must have a `type` attribute which specifies the type 
 ## From Server
 
 ### player_list
-```
+```json
 {
 "type": "player_list",
 "players": {
-    "player_id": phone id established in initial connection, 
-    "username":  name given by player when joining
+    "player_id": "phone id established in initial connection", 
+    "username":  "name given by player when joining"
     }
 }
 ```
 
 ### new_task
-```
+- round_number should be limited to {"1", "2", "3"}
+- target_pucks is an ordered list of len 2 lists, where the first element in target pucks represents the first player to tap and the color of the puck they need to tap, the 2nd element represents the 2nd player to tap and the color of the puck they need to tap, and so on.
+```json
 {
     "type": "new_task",
-    "round": 1 2 or 3,
-    "task_id": tracks each task assigned,
-    "task_type": tracks the type of task,
-    "task_description": description to be given to players,
-    "other_players": lists other players if a multiplayer task, None otherwise
+    "round": "{round_number} (string)",
+    "task_id": "tracks each task assigned (int)",
+    "task_type": "tracks the type of task",
+    "task_description": "description to be given to players",
+    "other_players": "lists other players if a multiplayer task, None otherwise",
+    "target_pucks": [
+        ["1st_player_username_to_tap", "1st_puck_color_to_tap"],
+        ["2nd_player_username_to_tap", "2nd_puck_color_to_tap"]
+    ]
 }
 ```
 
-### TODO: incorrect_puck
-```
+### incorrect_puck
+Sent when a player taps a puck that they did not need to
+(whether it was the wrong puck or out of order with other players/pucks)
+```json
 {
     "type": "incorrect_puck"
 }
 ```
 
-### task_complete
+### correct_puck
+```json
+{
+    "type": "correct_puck"
+}
 ```
+
+### task_complete
+```json
 {
     "type": "task_complete"
 }
 ```
 
-### TODO: game_status
-```
+### task_progress
+Sent to players involved in a task whenever their task changes progress
+
+```json
 {
-    "type": "game_status",
-    "state": either "lobby" "lobby" "in_progress" "voting" or  "imposter_revealed"
+    "type": "task_progress",
+    "task_id": "{task_id} (int)",
+    "progress": "{task_progress} (float)"
 }
 ```
 
-### TODO: infected
+### TODO: game_status
+The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_revealed"
+```json
+{
+    "type": "game_status",
+    "state": "{game_state}"
+}
 ```
+
+### infected
+```json
 {
     "type": "infected"
 }
 ```
 
 ### TODO: imposter_revealed
-```
+```json
 {
     "type": "imposter_revealed",
-    "imposter": imposter username
+    "imposter": "{imposter_username}"
 }
 ```
 
 ## From Phone
 ### start_game
-```
+```json
 {
     "type": "start_game"
 }
 ```
 
 ### nfc_tap
-```
+puckId should be constrained to {1, 2, 3}
+```json
 {
-    "type": "infect",
-    "target_id": the player id
+    "type": "nfc_tap",
+    "puck_id": "{puckId} (String)"
 }
 ```
 
 ### infect
 only sent by imposter
-```
+
+```json
 {
-    "type": "nfc_tap",
-    "puck_id": puckId (1 2 or 3)
+    "type": "infect",
+    "target_id": "{player_id} of the target"
 }
 ```
-
 ### TODO: imposter_reveal
 sent after voting starts
-```
+```json
 {
     "type": "imposter_reveal"
 }
