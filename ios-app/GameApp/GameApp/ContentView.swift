@@ -309,14 +309,15 @@ struct LobbyView: View {
                     Text("START THE GAME")
                         .font(.system(size: 18, weight: .bold))
                         .tracking(0.5)
-                        .foregroundColor(blue)
+                        .foregroundColor(blue.opacity(networkManager.lobbyPlayers.count < 3 ? 0.4 : 1.0))
                         .frame(maxWidth: .infinity)
                         .frame(height: 64)
                 }
-                .background(Color.black)
+                .background(networkManager.lobbyPlayers.count < 3 ? Color.gray : Color.black)
                 .clipShape(Capsule())
                 .padding(.horizontal, 24)
                 .padding(.bottom, 52)
+                .disabled(networkManager.lobbyPlayers.count < 3)
             }
         }
     }
@@ -531,7 +532,7 @@ struct GameView: View {
 
                 if !isCompleted {
                     GeometryReader { geo in
-                        (Text("Hold\n near puck for 3 secs\n")
+                        (Text("Hold\n near puck for 3 seconds\n")
                             .foregroundColor(Color(white: 0.38))
                         + Text("and tap the pop up")
                             .foregroundColor(.white))
