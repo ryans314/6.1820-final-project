@@ -9,16 +9,17 @@ import SwiftUI
 
 @main
 struct GameAppApp: App {
-    private let isDemoMode = true
-    @StateObject private var networkManager: NetworkManager
-
-    init() {
-        if isDemoMode {
-            _networkManager = StateObject(wrappedValue: NetworkManager.demo)
-        } else {
-            _networkManager = StateObject(wrappedValue: NetworkManager())
-        }
-    }
+//    private let isDemoMode = false
+    @StateObject private var networkManager: NetworkManager = NetworkManager()
+//
+//    init() {
+//        if isDemoMode {
+//            _networkManager = StateObject(wrappedValue: NetworkManager.demo)
+//        } else {
+//            _networkManager = StateObject(wrappedValue: NetworkManager())
+//            print("network manager called")
+//        }
+//    }
     
     var body: some Scene {
         WindowGroup {

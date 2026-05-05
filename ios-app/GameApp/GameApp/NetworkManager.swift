@@ -15,6 +15,7 @@ struct LobbyPlayer: Identifiable {
     let username: String
 }
 class NetworkManager: ObservableObject {
+    
     private var webSocketTask: URLSessionWebSocketTask?
     
     //Published variables - visible to SwiftUI views
@@ -29,6 +30,8 @@ class NetworkManager: ObservableObject {
     @Published var currentRound: String?
     @Published var taskError: Bool = false
     @Published var taskDescription: String?
+    @Published var taskDirection: String?
+    @Published var taskProgress: Float = 0.0
     @Published var uuid = UIDevice.current.identifierForVendor!.uuidString
     @Published var imposter: String?
     @Published var isInfected: Bool = false
@@ -37,6 +40,8 @@ class NetworkManager: ObservableObject {
     private var username: String = ""
     
     func connect(username: String) {
+        print("network manager called")
+        
         self.username = username
         DispatchQueue.main.async {
             self.connectionFailed = false
@@ -119,6 +124,7 @@ class NetworkManager: ObservableObject {
         
         DispatchQueue.main.async {
             if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                print("incoming: \(json)")
                 switch json["type"] as? String {
                 case "connection_ack":
                     self.isConnected = true
@@ -145,16 +151,29 @@ class NetworkManager: ObservableObject {
                     self.currentTask = json["task_type"] as? String
                     self.currentRound = json["round"] as? String
                     self.taskDescription = json["task_description"] as? String
-                    
+                    if let targetPucks = json["target_pucks"] as? [[String]] {
+                        let parts = targetPucks.map { "\($0[0]): \($0[1]) puck" }
+                        self.taskDirection = parts.joined(separator: ", ")
+                    }
+                    self.taskError = false
+                    self.taskProgress = 0.0
+
                 case "game_status":
                     self.gameStatus = json["status"] as? String ?? self.gameStatus
                 
                 case "task_complete":
                     self.currentTask = "Completed"
+                    self.taskProgress = 1.0
 
                 case "incorrect_puck":
                     self.taskError = true
                 
+                case "correct_puck":
+                    self.taskError = false
+                
+                case "task_progress":
+                    self.taskProgress = json["progress"] as? Float ?? 0.0
+                    
                 case "imposter_revealed":
                     self.imposter = json["imposter"] as? String
                     

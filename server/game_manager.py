@@ -193,7 +193,7 @@ class GameManager:
         self.players[imposter_id].is_imposter = True
 
         self.state = "in_progress"
-
+        self.round_num = 0
 
         # Send players their roles
         for player_id, player in self.players.items():
@@ -298,6 +298,7 @@ class GameManager:
         - trigger end of round voting if n-1 tasks completed
         """
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
+        success = False
         for t in self.active_tasks:
             if not t.player_in_task(player_id):
                 continue
@@ -309,16 +310,21 @@ class GameManager:
                 await self.connection_manager.send_to_phone(player_id, {
                     "type": "correct_puck"
                 })
-            else:
-                await self.connection_manager.send_to_phone(player_id, {
-                    "type": "incorrect_puck"
-                })
+                success = True
+
             if old_progress != t.task_progress:
                 await self.connection_manager.send_to_phone([p.player_id for p in t.players], {
                     "type": "task_progress",
                     "task_id": t.task_id,
                     "progress": t.task_progress
-                })        
+                })  
+        
+        if not success:
+             # if got here, then no task successfully matched
+            await self.connection_manager.send_to_phone(player_id, {
+                "type": "incorrect_puck"
+            })
+
         # If a task was completed, check for end of round conditions
         if await self.check_task_completion():
             if len(self.active_tasks) == 1:
@@ -384,6 +390,9 @@ class GameManager:
         if self.check_game_over():
             self.end_game()
     
+    def end_game(self):
+        print("game ended")
+
     def check_round_over(self) -> bool:
         """Check if all but one tasks for the round are completed"""
         if len(self.active_tasks) <= 1 and len([t for t in self.active_tasks if t.is_completed]) <= 1:

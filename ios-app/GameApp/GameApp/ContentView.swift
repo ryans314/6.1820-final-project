@@ -78,7 +78,7 @@ extension NetworkManager {
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var hasSeenRoleReveal = false
-    private let isDemoMode = true
+    private let isDemoMode = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -287,7 +287,7 @@ struct LobbyView: View {
                 .padding(.top, 52)
 
                 // ── Subtitle ─────────────────────────────────────
-                Text("\(networkManager.lobbyPlayers.count) / 4 joined · pocket your phone when we start")
+                Text("\(networkManager.lobbyPlayers.count) / 4 joined · keep your phone with you but don't show others")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.75))
                     .padding(.horizontal, 24)
@@ -500,8 +500,9 @@ struct GameView: View {
                     title: isCompleted
                         ? "TASK\nCOMPLETE!"
                         : (networkManager.taskDescription?.uppercased() ?? "STANDBY."),
-                    description: isCompleted ? "Nice work. Sit tight for the next round." : networkManager.taskDescription,
-                    hasError: networkManager.taskError
+                    description: isCompleted ? "Nice work. Sit tight for the next round." : networkManager.taskDirection,
+                    hasError: networkManager.taskError,
+                    progressBar: networkManager.taskProgress
                 )
                 .padding(.horizontal, 20)
                 .padding(.top, 56)
@@ -529,17 +530,20 @@ struct GameView: View {
                 }
 
                 if !isCompleted {
-                    (Text("Hold\n near puck for\n")
-                        .foregroundColor(Color(white: 0.38))
-                    + Text("10 secs")
-                        .foregroundColor(.white))
-                        .font(.system(size: 46, weight: .black))
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-                        .padding(.bottom, 52)
+                    GeometryReader { geo in
+                        (Text("Hold\n near puck for 3 secs\n")
+                            .foregroundColor(Color(white: 0.38))
+                        + Text("and tap the pop up")
+                            .foregroundColor(.white))
+                        .font(.system(size: geo.size.height * 0.1, weight: .black))
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .padding(.bottom, 24)
                 }
             }
         }
+        
         .onAppear {
             uwbManager.isImposter = networkManager.isImposter
             uwbManager.start(clientId: networkManager.uuid)
@@ -564,6 +568,7 @@ private struct GameTaskCard: View {
     let title: String
     let description: String?
     let hasError: Bool
+    let progressBar: Float
 
     private let blue = Color(red: 0.28, green: 0.62, blue: 0.97)
 
@@ -579,7 +584,7 @@ private struct GameTaskCard: View {
 
             // Large stacked title
             Text(title)
-                .font(.system(size: 72, weight: .black))
+                .font(.system(size: 25, weight: .black))
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 6)
                 .padding(.horizontal, 28)
@@ -592,11 +597,25 @@ private struct GameTaskCard: View {
             // Instruction / description text
             if let desc = description {
                 Text(desc)
-                    .font(.system(size: 15))
+                    .font(.system(size: 18))
                     .foregroundColor(.black.opacity(0.65))
                     .padding(.top, 20)
                     .padding(.horizontal, 28)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.black.opacity(0.15))
+                    .frame(height: 8)
+                
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.white)
+                    .frame(height: 8)
+                    .scaleEffect(x: CGFloat(progressBar), anchor: .leading)
+            }
+            .padding(.horizontal, 28)
+            .padding(.top, 20)
 
             Spacer().frame(height: 28)
         }
