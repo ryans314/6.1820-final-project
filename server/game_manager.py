@@ -59,6 +59,7 @@ class Task:
         
         success = False
         for i, (inter, done) in enumerate(self.expected_interactions):
+            
             expected_player_id = str(inter.player_id)
             given_player_id = str(interaction.player_id)
             expected_puck_id = int(inter.puck_id)
@@ -147,7 +148,7 @@ class TapOne(Task):
             order_matters=0,
         )
 
-taskTemplates: list[Task] = [TapOne, TapOrder, TapAll]
+taskTemplates: list[Task] = [TapAll, TapOne, TapOrder]
 
 class GameManager:
     def __init__(self, connection_manager):
@@ -299,6 +300,10 @@ class GameManager:
         """
         interact = Interaction(player_id=player_id, puck_id=puck_id, time=time)
         success = False
+        print("active tasks")
+        print(self.active_tasks)
+        print("active players")
+        print(self.connection_manager.active_phones)
         for t in self.active_tasks:
             if not t.player_in_task(player_id):
                 continue
@@ -316,7 +321,7 @@ class GameManager:
                 await self.connection_manager.send_to_phone([p.player_id for p in t.players], {
                     "type": "task_progress",
                     "task_id": t.task_id,
-                    "progress": t.task_progress
+                    "progress": round(t.task_progress, 2)
                 })  
         
         if not success:
@@ -387,7 +392,7 @@ class GameManager:
             "type": "infected"
         })
 
-        if self.check_game_over():
+        if self.check_imposter_wins():
             self.end_game()
     
     def end_game(self):
@@ -395,7 +400,7 @@ class GameManager:
 
     def check_round_over(self) -> bool:
         """Check if all but one tasks for the round are completed"""
-        if len(self.active_tasks) <= 1 and len([t for t in self.active_tasks if t.is_completed]) <= 1:
+        if len(self.active_tasks) == 0: #and len([t for t in self.active_tasks if t.is_completed]) <= 1
             return True
         return False
 

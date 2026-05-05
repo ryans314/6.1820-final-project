@@ -22,5 +22,11 @@
 		<string>_puck-game._tcp</string>
 		<string>_puck-game._udp</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>processing</string>
+		<string>fetch</string>
+		<string>nearby-interaction</string>
+	</array>
 </dict>
 </plist>

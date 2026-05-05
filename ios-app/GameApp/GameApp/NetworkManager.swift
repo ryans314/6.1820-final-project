@@ -172,7 +172,12 @@ class NetworkManager: ObservableObject {
                     self.taskError = false
                 
                 case "task_progress":
-                    self.taskProgress = json["progress"] as? Float ?? 0.0
+                    if let p = json["progress"] as? Double {
+                        self.taskProgress = Float(p)
+                    } else if let p = json["progress"] as? Float {
+                        self.taskProgress = Float(p)
+                    }
+                    print(self.taskProgress)
                     
                 case "imposter_revealed":
                     self.imposter = json["imposter"] as? String

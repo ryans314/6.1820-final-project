@@ -605,6 +605,8 @@ private struct GameTaskCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             
+            let _ = print("progressBar value: \(progressBar)")
+            
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.black.opacity(0.15))

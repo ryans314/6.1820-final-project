@@ -21,6 +21,7 @@ class ConnectionManager:
             self.active_phones.pop(client_id, None)
         else:
             self.active_pucks.pop(client_id, None)
+        print(f"Phone {client_id} disconnected")
 
     async def send_to_puck(self, puck_id: str, message: dict):
         if puck_id in self.active_pucks:

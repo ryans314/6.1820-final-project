@@ -46,7 +46,7 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             data = await websocket.receive_json()
             msg_type = data.get("type")
             
-            if msg_type == "start_game":
+            if msg_type == "start_game" and game.state == "lobby":
                 success = await game.start_game()
                 if not success:
                     await websocket.send_json({
@@ -74,7 +74,6 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             
             if game.check_imposter_wins():
                 game.end_game()
-                break
 
             if game.check_round_over():
                 print("Round over!")
