@@ -16,7 +16,7 @@ class Player:
     player_id: str
     username: str
     is_imposter: bool = False
-    status: str = "alive"  # "alive", "ghost", etc.
+    status: str = "alive"  # "alive", "infected", etc.
     completed_tasks: list[Task] = field(default_factory=list)
     current_task: Task = None
 
@@ -154,19 +154,31 @@ class GameManager:
     def __init__(self, connection_manager):
         self.connection_manager: ConnectionManager  = connection_manager
         self.players: dict[str, Player] = {} #player_id : Player Object
+        self.inactivePlayers: dict[str, Player] = {} #player_id : Player Object for players who have disconnected but may reconnect
         self.state: str = "lobby"  # "lobby", "in_progress", "voting", "imposter_revealed"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
         self.round_num: int = 0
         self.puck_colors: dict[int, str] = {}
+        self.num_rounds: int = 2
+        self.infection_occurred: bool = False #to track if an infection has occurred in the current round
 
     def add_player(self, player_id: str, username: str):
         # Create the object and store it by ID
         self.players[player_id] = Player(player_id=player_id, username=username)
 
+    def reconnect_player(self, player_id: str):
+        if player_id in self.inactivePlayers:
+            self.players[player_id] = self.inactivePlayers.pop(player_id)
+            print(f"Player {player_id} reconnected")
+        else:
+            print(f"Player {player_id} not found in inactive players. Cannot reconnect.")
+            
     def remove_player(self, player_id: str):
-        self.players.pop(player_id, None)
-    
+        if player_id in self.players:
+            self.inactivePlayers[player_id] = self.players.pop(player_id, None)
+            self.players.pop(player_id, None)
+
     async def broadcast_lobby(self):
         """Send list of players to all connected phones"""
         await self.connection_manager.broadcast_to_phones({
@@ -189,9 +201,12 @@ class GameManager:
             print("Not enough players!")
             return False
         
+        self.num_rounds = len(self.players) - 1 #number of rounds is number of non-imposters
+
         # Assign imposter
         imposter_id = random.choice(list(self.players.keys()))
         self.players[imposter_id].is_imposter = True
+        self.infection_occurred = False
 
         self.state = "in_progress"
         self.round_num = 0
@@ -256,13 +271,14 @@ class GameManager:
     async def end_round(self) -> None:
         """At the end of a round, reset the game state to prepare for the next round (clear active tasks)"""
         self.active_tasks.clear()
+        self.infection_occurred = False
         await self.connection_manager.broadcast_to_phones({
             "type": "end_round"
         })
 
     async def start_voting(self) -> None:
         """
-        After all tasks are completed, start voting
+        After all tasks are completed or all players are infected, start voting
         """
         self.state = "voting"
         await self.connection_manager.broadcast_to_phones({
@@ -285,7 +301,7 @@ class GameManager:
                 "other_players": other_players,
                 "task_description": current_task.task_description,
                 "target_pucks": [ #ordered list of [player_username, puck_color]
-                [self._player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
+                [self.player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
                       for inter, _ in current_task.expected_interactions
                 ]
             })
@@ -332,8 +348,13 @@ class GameManager:
 
         # If a task was completed, check for end of round conditions
         if await self.check_task_completion():
-            if len(self.active_tasks) == 1:
-                print("End of Round!")
+            if self.check_round_over():
+                print("Round over!")
+                await self.end_round()
+                if self.round_num == self.num_rounds: 
+                    await self.start_voting()
+                    return
+                await self.start_round()
 
 
     async def check_task_completion(self):
@@ -370,46 +391,81 @@ class GameManager:
         Handle infection:
         - update infected player's status
         - notify phones of infection after a delay (10-20 seconds)
+        - if all players are infected, end round and start voting immediately
         """
         # Verify infector is imposter
         infector_player = self.players.get(infector_id)
         if not infector_player or not infector_player.is_imposter:
             print(f"Player {infector_id} is not an imposter or does not exist. Cannot infect.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You are not the imposter and cannot infect other players."
+            })
+            return
+        
+        # Verify target player is not the imposter
+        if infected_id == infector_id:
+            print(f"Player {infector_id} cannot infect themselves.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You cannot infect yourself."
+            })
+            return
+        
+        # Verify infection hasn't already occurred this round 
+        if self.infection_occurred:
+            print("An infection has already occurred this round. Cannot infect again until next round.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You have already infected a player this round. Wait until the next round to infect again."
+            })
             return
         
         # Verify infected player is alive
         infected_player = self.players.get(infected_id)
-        if not infected_player or infected_player.status != "alive":
+        if not infected_player or infected_player.status == "infected":
             print(f"Player {infected_id} is not alive or does not exist. Cannot be infected.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": f"{self.player_id_to_username(infected_id)} is already infected."
+            })
             return
         
         infected_player.status = "infected"
+        self.infection_occurred = True
         delay = random.uniform(10,20)
+        await self.connection_manager.send_to_phone(infector_id, {
+            "type": "infection_success"
+        })
+        # Check if all players are infected - if so, end round and start voting immediately
+        if self.check_all_infected():
+            print(f"{infected_player.username} has been infected! Notifying now")
+            await self.connection_manager.send_to_phone(infected_id, {
+                "type": "infected"
+            })
+            await self.end_round()
+            await self.start_voting()
+            return
+
         print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
-        
+        # If not all infected, notify the newly infected player after a delay, but allow game to continue in meantime
         await asyncio.sleep(delay)
         await self.connection_manager.send_to_phone(infected_id, {
             "type": "infected"
         })
 
-        if self.check_imposter_wins():
-            self.end_game()
-    
-    def end_game(self):
-        print("game ended")
 
     def check_round_over(self) -> bool:
-        """Check if all but one tasks for the round are completed"""
+        """Check if all tasks for the round are completed"""
         if len(self.active_tasks) == 0: #and len([t for t in self.active_tasks if t.is_completed]) <= 1
             return True
         return False
 
-    def check_imposter_wins(self) -> bool:
+    def check_all_infected(self) -> bool:
         """
-        Check if the imposter wins (all other players infected)
+        Check if all other players are infected
         """
         if all(p.status != "alive" for p in self.players.values() if not p.is_imposter):
-            print("All non-imposters have been infected. Imposter wins!")
             return True
         return False
 
@@ -432,6 +488,23 @@ class GameManager:
         else:
             print("Error: No imposter found during reveal!")
 
-    def _player_id_to_username(self, player_id: str) -> str:
+    def player_id_to_username(self, player_id: str) -> str:
         player = self.players.get(player_id)
         return player.username if player else "Unknown"
+    
+    async def end_game(self) -> None:
+        """
+        broadcast end of game message to all phones, disconnect all clients, and reset game state
+        """
+        await self.connection_manager.broadcast_to_phones({
+            "type": "game_end"
+        })
+        # Reset game state
+        self.players.clear()
+        self.inactivePlayers.clear()
+        self.state = "lobby"
+        self.tap_sequence.clear()
+        self.active_tasks.clear()
+        self.round_num = 0
+        self.puck_colors.clear()
+        await self.connection_manager.close_all()

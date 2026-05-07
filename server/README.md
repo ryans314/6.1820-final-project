@@ -121,7 +121,7 @@ Sent to players involved in a task whenever their task changes progress
 }
 ```
 
-### TODO: game_status
+### game_status
 The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_revealed"
 ```json
 {
@@ -137,11 +137,36 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
 }
 ```
 
-### TODO: imposter_revealed
+### infection_success
+```json
+{
+    "type": "infection_success"
+}
+```
+
+### infection_failed
+`reason` should be a plaintext reason why the infection failed that can be displayed directly to the user. 
+
+```json
+{
+    "type": "infection_failed",
+    "reason": "{reason for failure}"
+}
+```
+
+### imposter_revealed
 ```json
 {
     "type": "imposter_revealed",
     "imposter": "{imposter_username}"
+}
+```
+
+### game_end
+Sent when the game is over and players are to be disconnected imminently
+```json
+{
+    "type": "game_end",
 }
 ```
 
@@ -178,10 +203,18 @@ only sent by imposter
     "target_id": "{player_id} of the target"
 }
 ```
-### TODO: imposter_reveal
+### imposter_reveal
 sent after voting starts
 ```json
 {
     "type": "imposter_reveal"
+}
+```
+
+### end_game
+sent after imposter is revealed to end the game and disconnect all players
+```json
+{
+    "type": "end_game"
 }
 ```

@@ -1,4 +1,5 @@
 import asyncio
+from sys import exception
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse, HTMLResponse
@@ -16,21 +17,29 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
     await manager.connect(websocket, client_type, client_id)
     try:
         identity = await websocket.receive_json()
-        if identity.get("type") != "identify":
-            await websocket.close(code=1008, reason="First message must be identify")
-            return
+        
+        # Check if player is reconnecting (if so, the identify json will be start_game. 
+        # need to catch that so weirdness doesn't happen by calling start_game midgame)
+        if client_id in game.inactivePlayers and game.inactivePlayers[client_id] is not None:
+            game.reconnect_player(client_id)
+            print(f"Player {client_id} reconnected and state restored")
+        # If not reconnecting, phone must send identify message with username to join lobby
+        else:
+            if identity.get("type") != "identify":
+                await websocket.close(code=1008, reason="First message must be identify")
+                return
 
-        # client_id = identity.get("player_id")
-        username = identity.get("username", client_id)
+            # client_id = identity.get("player_id")
+            username = identity.get("username", client_id)
 
-        if client_type == "phone":
-            game.add_player(player_id=client_id, username=username)
+            if client_type == "phone":
+                game.add_player(player_id=client_id, username=username)
 
         # Send ack
         await websocket.send_json({
             "type": "connection_ack",
             "player_id": client_id,
-            "username": username,
+            "username": game.player_id_to_username(client_id),
             "status": "ok"
         })
 
@@ -57,9 +66,10 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             elif game.state == "voting":
                 if msg_type == "imposter_reveal":
                     await game.reveal_imposter()
-                    break
                 continue # ignore all other messages during voting
-
+            elif game.state == "imposter_revealed":
+                if msg_type == "end_game":
+                    await game.end_game()
             # Phone taps puck
             elif client_type == "phone" and data.get("type") == "nfc_tap":
                 target_puck = data.get("puck_id")
@@ -69,24 +79,18 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                 
             elif client_type == "phone" and data.get("type") == "infect":
                 infected_id = data.get("target_id")
-                print(f"{infected_id} infected")
+                print(f"Attempting to infect player {infected_id}")
                 asyncio.create_task(game.handle_infection(client_id, infected_id, datetime.now()))
-            
-            if game.check_imposter_wins():
-                game.end_game()
 
-            if game.check_round_over():
-                print("Round over!")
-                await game.end_round()
-                if game.round_num == 3: 
-                    await game.start_voting()
-                    continue
+            # Don't need to check if all infected in core game loop since we check after every infection
 
-                await game.start_round()
+            # Don't need to check if all tasks completed in core game loop since we check after every task completion
                
             
 
-    except WebSocketDisconnect:
+    except Exception as e:
+        print(f"Error with client {client_id}: {e}")
+    finally:
         manager.disconnect(client_type, client_id)
         if client_type == "phone":
             game.remove_player(client_id)
