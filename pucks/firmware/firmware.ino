@@ -3,9 +3,7 @@
 #include <Adafruit_NeoPixel.h>
 #include "secrets.h"
 
-const int   SERVER_PORT = 8000;
-const char* PUCK_ID     = "puck_1";
-IPAddress   SERVER_IP(SECRET_SERVER_HOST);
+const char* PUCK_ID = "puck_2";
 
 #define NEOPIXEL_PIN   5
 #define NEOPIXEL_COUNT 16
@@ -77,7 +75,7 @@ void wsSend(const String& text) {
     if (len <= 125) {
         client.write((uint8_t)(0x80 | len));
     } else {
-        client.write((uint8_t)0xFE);
+        client.write((uint8_t)(0x80 | 126));
         client.write((uint8_t)((len >> 8) & 0xFF));
         client.write((uint8_t)(len & 0xFF));
     }
@@ -166,40 +164,45 @@ void connectWifi() {
 bool connectWebSocket() {
     if (WiFi.status() != WL_CONNECTED) return false;
 
-    Serial.print("TCP connecting to ");
-    Serial.print(SERVER_IP);
+Serial.print("TCP connecting to ");
+    Serial.print(SERVER_HOST);
     Serial.print(":");
     Serial.println(SERVER_PORT);
     int tcpResult = 0;
     for (int i = 0; i < 3; i++) {
-        tcpResult = client.connect(SERVER_IP, SERVER_PORT);
+        tcpResult = client.connect(SERVER_HOST, SERVER_PORT);
         if (tcpResult) break;
         Serial.print("TCP attempt ");
         Serial.print(i + 1);
         Serial.println(" failed, retrying...");
-        delay(500);
+        delay(2000);
     }
     if (!tcpResult) {
         Serial.println("TCP connect failed after 3 attempts");
         return false;
     }
+    Serial.println("TCP connected");
 
     String path = String("/ws/puck/") + PUCK_ID;
     client.print(String("GET ") + path + " HTTP/1.1\r\n");
-    client.print(String("Host: ") + SERVER_IP.toString() + "\r\n");
+    client.print(String("Host: ") + SERVER_HOST + "\r\n");
     client.print("Upgrade: websocket\r\n");
     client.print("Connection: Upgrade\r\n");
     client.print("Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n");
     client.print("Sec-WebSocket-Version: 13\r\n");
+    client.print("ngrok-skip-browser-warning: true\r\n");
     client.print("\r\n");
 
-    unsigned long timeout = millis() + 3000;
+    unsigned long timeout = millis() + 8000;
     String response = "";
     while (millis() < timeout) {
         while (client.available()) response += (char)client.read();
         if (response.indexOf("\r\n\r\n") >= 0) break;
         delay(10);
     }
+
+    Serial.print("Handshake response: ");
+    Serial.println(response.substring(0, 100));
 
     if (response.indexOf("101") < 0) {
         Serial.println("Handshake failed");
@@ -220,7 +223,6 @@ bool connectWebSocket() {
     return true;
 }
 
-// --- Arduino lifecycle ---
 
 void setup() {
     Serial.begin(115200);
@@ -230,6 +232,17 @@ void setup() {
     setColor(ring.Color(0, 0, 0));
 
     connectWifi();
+
+    WiFiSSLClient testSSL;
+    Serial.print("SSL test (google.com): ");
+    Serial.println(testSSL.connect("www.google.com", 443));
+    testSSL.stop();
+
+    WiFiSSLClient testSSL2;
+    Serial.print("SSL test (arduino.cc): ");
+    Serial.println(testSSL2.connect("www.arduino.cc", 443));
+    testSSL2.stop();
+
     connectWebSocket();
 
     if (wsConnected) {
