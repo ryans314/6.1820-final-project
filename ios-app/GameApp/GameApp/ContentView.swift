@@ -13,7 +13,7 @@ import NearbyInteraction
 extension NetworkManager {
     
     static var demo: NetworkManager {
-        let view_type = "entry" // options: (entry, lobby, imposter_no_task, agent_no_task, imposter_task, agent_task, agent_task_infected, imposter_task_error, agent_task_error, imposter_task_complete, agent_task_complete, voting, imposter_reveal)
+        let view_type = "entry" // options: (entry, lobby, imposter_no_task, agent_no_task, imposter_task, agent_task, agent_task_infected, imposter_task_error, agent_task_error, imposter_task_complete, agent_task_complete, voting, imposter_reveal, game_complete) — task_complete and poisoned are driven by currentTask/isInfected flags above
         
         let nm = NetworkManager()
         nm.isConnected      = true
@@ -70,7 +70,11 @@ extension NetworkManager {
         if (view_type == "agent_task_infected") {
             nm.isInfected = true
         }
-    
+
+        if (view_type == "game_complete") {
+            nm.gameStatus = "game_complete"
+        }
+
         return nm
     }
 }
@@ -78,6 +82,9 @@ extension NetworkManager {
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var hasSeenRoleReveal = false
+    @State private var showGameComplete = false
+    @State private var acknowledgedTaskComplete = false
+    @State private var acknowledgedPoisoned = false
     private let isDemoMode = false
 
     var body: some View {
@@ -106,16 +113,32 @@ struct ContentView: View {
                 if !hasSeenRoleReveal {
                     RoleRevealView(networkManager: networkManager, hasSeenRoleReveal: $hasSeenRoleReveal)
                 } else if networkManager.gameStatus == "in_progress" {
-                    GameView(networkManager: networkManager)
+                    if networkManager.isInfected && !acknowledgedPoisoned {
+                        PoisonedView(onBoohoo: { acknowledgedPoisoned = true })
+                    } else if networkManager.currentTask == "Completed" && !acknowledgedTaskComplete {
+                        TaskCompleteView(onContinue: { acknowledgedTaskComplete = true })
+                    } else {
+                        GameView(networkManager: networkManager)
+                    }
                 } else if networkManager.gameStatus == "voting" {
                     VotingView(networkManager: networkManager)
-                } else if networkManager.gameStatus == "imposter_revealed" {
-                    ImposterRevealView(networkManager: networkManager)
+                } else if networkManager.gameStatus == "imposter_revealed" && !showGameComplete {
+                    MoleRevealView(networkManager: networkManager, onContinue: { showGameComplete = true })
+                } else if networkManager.gameStatus == "game_complete" || showGameComplete {
+                    GameCompleteView(networkManager: networkManager)
                 }
             }
         }
         .onChange(of: networkManager.gameStarted) { _, started in
-            if !started { hasSeenRoleReveal = false }
+            if !started {
+                hasSeenRoleReveal = false
+                showGameComplete = false
+                acknowledgedTaskComplete = false
+                acknowledgedPoisoned = false
+            }
+        }
+        .onChange(of: networkManager.currentTask) { _, task in
+            if task != "Completed" { acknowledgedTaskComplete = false }
         }
     }
 }
@@ -487,9 +510,23 @@ private struct MoleMascotView: View {
 struct GameView: View {
     @ObservedObject var networkManager: NetworkManager
     @StateObject private var uwbManager = UWBManager()
-    @State private var showInfectedAlert = false
+    @State private var poisonDeliveredTo: String? = nil
+    @State private var showFakePoisoned = false
+    @State private var passedOnPoison = false
 
-    private var isCompleted: Bool { networkManager.currentTask == "Completed" }
+    private var nearestPlayerName: String {
+        guard let closest = uwbManager.nearbyPlayers.min(by: { $0.value < $1.value }) else { return "Agent" }
+        return networkManager.lobbyPlayers.first { $0.id == closest.key }?.username ?? "Agent"
+    }
+
+    private var nearestPlayerId: String? {
+        uwbManager.nearbyPlayers.min(by: { $0.value < $1.value })?.key
+    }
+
+    private var showPoisonAction: Bool {
+        networkManager.isImposter && uwbManager.hasNearbyPlayer && !passedOnPoison
+            && poisonDeliveredTo == nil && !showFakePoisoned
+    }
 
     var body: some View {
         ZStack {
@@ -498,10 +535,8 @@ struct GameView: View {
             VStack(spacing: 0) {
                 GameTaskCard(
                     round: networkManager.currentRound ?? "?",
-                    title: isCompleted
-                        ? "TASK\nCOMPLETE!"
-                        : (networkManager.taskDescription?.uppercased() ?? "STANDBY."),
-                    description: isCompleted ? "Nice work. Sit tight for the next round." : networkManager.taskDirection,
+                    title: networkManager.taskDescription?.uppercased() ?? "STANDBY.",
+                    description: networkManager.taskDirection,
                     hasError: networkManager.taskError,
                     progressBar: networkManager.taskProgress
                 )
@@ -510,56 +545,250 @@ struct GameView: View {
 
                 Spacer()
 
-                // Imposter infect button — only visible when a player is within UWB range
-                if networkManager.isImposter && uwbManager.hasNearbyPlayer {
-                    Button {
-                        if let closest = uwbManager.nearbyPlayers.min(by: { $0.value < $1.value }) {
-                            networkManager.sendInfect(targetId: closest.key)
+                GeometryReader { geo in
+                    (Text("Hold\n near puck for 3 seconds\n")
+                        .foregroundColor(Color(white: 0.38))
+                    + Text("and tap the pop up")
+                        .foregroundColor(.white))
+                    .font(.system(size: geo.size.height * 0.1, weight: .black))
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                }
+                .padding(.bottom, 24)
+            }
+
+            if showPoisonAction {
+                PoisonActionView(
+                    onPass: { passedOnPoison = true },
+                    onPoison: {
+                        let name = nearestPlayerName
+                        if let targetId = nearestPlayerId {
+                            networkManager.sendInfect(targetId: targetId)
                         }
-                    } label: {
-                        Text("INFECT")
+                        poisonDeliveredTo = name
+                    }
+                )
+            }
+
+            if let deliveredTo = poisonDeliveredTo {
+                PoisonDeliveredView(playerName: deliveredTo, onContinue: {
+                    poisonDeliveredTo = nil
+                    showFakePoisoned = true
+                })
+            }
+
+            if showFakePoisoned {
+                FakePoisonedView(onBoohoo: { showFakePoisoned = false })
+            }
+        }
+        .onAppear {
+            uwbManager.isImposter = networkManager.isImposter
+            uwbManager.start(clientId: networkManager.uuid)
+        }
+        .onDisappear {
+            uwbManager.stop()
+        }
+        .onChange(of: uwbManager.hasNearbyPlayer) { _, hasPlayer in
+            if !hasPlayer { passedOnPoison = false }
+        }
+    }
+}
+
+private struct PoisonActionView: View {
+    let onPass: () -> Void
+    let onPoison: () -> Void
+
+    private let pink = Color(red: 0.97, green: 0.22, blue: 0.60)
+
+    var body: some View {
+        ZStack {
+            pink.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("INCOGNITO MODE")
+                        .font(.system(size: 11, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Color.black.opacity(0.25))
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 56)
+
+                MoleMascotView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 16)
+
+                Spacer()
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("STRIKE")
+                    Text("NOW OR")
+                    Text("STAY LOW")
+                }
+                .font(.system(size: 72, weight: .black))
+                .foregroundColor(.black)
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                HStack(spacing: 12) {
+                    Button(action: onPass) {
+                        Text("PASS")
+                            .font(.system(size: 18, weight: .bold))
+                            .tracking(0.5)
+                            .foregroundColor(Color(white: 0.3))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 64)
+                    }
+                    .background(Color(white: 0.82).opacity(0.6))
+                    .clipShape(Capsule())
+
+                    Button(action: onPoison) {
+                        Text("POISON")
                             .font(.system(size: 18, weight: .bold))
                             .tracking(0.5)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 64)
                     }
-                    .background(Color(red: 0.97, green: 0.22, blue: 0.60))
+                    .background(Color.black)
                     .clipShape(Capsule())
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 12)
                 }
-
-                if !isCompleted {
-                    GeometryReader { geo in
-                        (Text("Hold\n near puck for 3 seconds\n")
-                            .foregroundColor(Color(white: 0.38))
-                        + Text("and tap the pop up")
-                            .foregroundColor(.white))
-                        .font(.system(size: geo.size.height * 0.1, weight: .black))
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding(.bottom, 24)
-                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
             }
         }
-        
-        .onAppear {
-            uwbManager.isImposter = networkManager.isImposter
-            uwbManager.start(clientId: networkManager.uuid)
-            if networkManager.isInfected { showInfectedAlert = true }
+    }
+}
+
+private struct PoisonDeliveredView: View {
+    let playerName: String
+    let onContinue: () -> Void
+
+    private let pink = Color(red: 0.97, green: 0.22, blue: 0.60)
+
+    var body: some View {
+        ZStack {
+            pink.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("INCOGNITO MODE")
+                        .font(.system(size: 11, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Color.black.opacity(0.25))
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 56)
+
+                MoleMascotView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 16)
+
+                Spacer()
+
+                Text("POISON DELIVERED TO")
+                    .font(.system(size: 13, weight: .bold))
+                    .tracking(0.5)
+                    .foregroundColor(Color.black.opacity(0.6))
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 8)
+
+                Text("(\(playerName.uppercased()))")
+                    .font(.system(size: 52, weight: .black))
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 24)
+
+                Spacer()
+
+                Button(action: onContinue) {
+                    Text("CONTINUE")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
         }
-        .onDisappear {
-            uwbManager.stop()
-        }
-        .onChange(of: networkManager.isInfected) { _, infected in
-            if infected { showInfectedAlert = true }
-        }
-        .alert("You've Been Infected!", isPresented: $showInfectedAlert) {
-            Button("OK") { }
-        } message: {
-            Text("The imposter got you. You are now infected.")
+    }
+}
+
+private struct FakePoisonedView: View {
+    let onBoohoo: () -> Void
+
+    private let red = Color(red: 1.0, green: 0.13, blue: 0.14)
+
+    var body: some View {
+        ZStack {
+            red.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("INCOGNITO MODE")
+                        .font(.system(size: 11, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Color.black.opacity(0.25))
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 56)
+
+                DeadFaceMascotView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 16)
+
+                Spacer()
+
+                Text("SYMPTOMS ARE SPREADING!")
+                    .font(.system(size: 13, weight: .bold))
+                    .tracking(0.5)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 10)
+
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("YOU'VE")
+                    Text("BEEN")
+                    Text("POISONED")
+                }
+                .font(.system(size: 72, weight: .black))
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                Button(action: onBoohoo) {
+                    Text("BOOHOO")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(red)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
         }
     }
 }
@@ -653,32 +882,304 @@ private struct GamePuckView: View {
 }
 
 
-struct VotingView: View {
-    @ObservedObject var networkManager: NetworkManager
-    
+struct TaskCompleteView: View {
+    let onContinue: () -> Void
+
+    private let blue = Color(red: 0.36, green: 0.72, blue: 0.97)
+
     var body: some View {
-        VStack(spacing: 16) {
-            Text("Time to vote!")
-                .font(.largeTitle).bold()
-            
-            Button("Done voting!") {
-                networkManager.imposterReveal()
+        ZStack {
+            blue.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+
+                // ── Checkmark mascot ─────────────────────────────
+                ZStack {
+                    Circle().fill(Color.black)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 80, weight: .heavy))
+                        .foregroundColor(blue)
+                }
+                .frame(width: 220, height: 220)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 56)
+
+                Spacer()
+
+                // ── Title ────────────────────────────────────────
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("TASK")
+                    Text("DONE!")
+                }
+                .font(.system(size: 80, weight: .black))
+                .foregroundColor(.black)
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                // ── Continue button ──────────────────────────────
+                Button(action: onContinue) {
+                    Text("CONTINUE")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.green)
-            
         }
     }
 }
 
-struct ImposterRevealView: View {
-    @ObservedObject var networkManager: NetworkManager
-    
+private struct DeadFaceMascotView: View {
     var body: some View {
-        VStack(spacing: 16) {
-            Text("The imposter is \(networkManager.imposter ?? "")")
-                .font(.largeTitle).bold()
-            
+        ZStack {
+            Circle().fill(Color.black)
+            HStack(spacing: 30) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 38, weight: .heavy))
+                    .foregroundColor(.white)
+                Image(systemName: "xmark")
+                    .font(.system(size: 38, weight: .heavy))
+                    .foregroundColor(.white)
+            }
+            .offset(y: -18)
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Color.white)
+                .frame(width: 56, height: 8)
+                .offset(y: 30)
+        }
+        .frame(width: 230, height: 230)
+    }
+}
+
+struct PoisonedView: View {
+    let onBoohoo: () -> Void
+
+    private let red = Color(red: 1.0, green: 0.13, blue: 0.14)
+
+    var body: some View {
+        ZStack {
+            red.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+
+                // ── Dead face mascot ─────────────────────────────
+                DeadFaceMascotView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 56)
+
+                Spacer()
+
+                // ── Label ────────────────────────────────────────
+                Text("SYMPTOMS ARE SPREADING!")
+                    .font(.system(size: 13, weight: .bold))
+                    .tracking(0.5)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 10)
+
+                // ── Title ────────────────────────────────────────
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("YOU'VE")
+                    Text("BEEN")
+                    Text("POISONED")
+                }
+                .font(.system(size: 72, weight: .black))
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                // ── Boohoo button ────────────────────────────────
+                Button(action: onBoohoo) {
+                    Text("BOOHOO")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(red)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
+        }
+    }
+}
+
+struct VotingView: View {
+    @ObservedObject var networkManager: NetworkManager
+
+    private let orange = Color(red: 1.0, green: 0.47, blue: 0.0)
+
+    var body: some View {
+        ZStack {
+            orange.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+
+                Spacer()
+
+                // ── Label pill ───────────────────────────────────
+                Text("VOTING PERIOD")
+                    .font(.system(size: 12, weight: .bold))
+                    .tracking(1.0)
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.black.opacity(0.15))
+                    .clipShape(Capsule())
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 16)
+
+                // ── Title ────────────────────────────────────────
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("GATHER")
+                    Text("UP.")
+                    Text("POINT")
+                    Text("FINGERS!")
+                }
+                .font(.system(size: 72, weight: .black))
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                // ── Reveal button ────────────────────────────────
+                Button(action: { networkManager.imposterReveal() }) {
+                    Text("REVEAL")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(orange)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
+        }
+    }
+}
+
+struct MoleRevealView: View {
+    @ObservedObject var networkManager: NetworkManager
+    let onContinue: () -> Void
+
+    private let pink = Color(red: 0.97, green: 0.22, blue: 0.60)
+
+    var body: some View {
+        ZStack {
+            pink.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+
+                // ── Mascot ───────────────────────────────────────
+                MoleMascotView()
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 56)
+
+                Spacer()
+
+                // ── Name ─────────────────────────────────────────
+                Text("(\((networkManager.imposter ?? "???").uppercased()))")
+                    .font(.system(size: 36, weight: .bold))
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 16)
+
+                // ── "WAS THE MOLE !" card ─────────────────────────
+                VStack(spacing: 0) {
+                    Text("WAS THE")
+                    Text("MOLE !")
+                }
+                .font(.system(size: 52, weight: .black))
+                .foregroundColor(pink)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 28)
+                .background(Color.black)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                // ── Continue button ──────────────────────────────
+                Button(action: onContinue) {
+                    Text("CONTINUE")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
+        }
+    }
+}
+
+struct GameCompleteView: View {
+    @ObservedObject var networkManager: NetworkManager
+
+    private let yellow = Color(red: 1.0, green: 0.87, blue: 0.0)
+
+    var body: some View {
+        ZStack {
+            yellow.ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+
+                // ── Mascot ───────────────────────────────────────
+                MascotView()
+                    .frame(width: 270, height: 270)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 44)
+                    .padding(.bottom, 22)
+
+                // ── Title ────────────────────────────────────────
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("YOU'VE")
+                    Text("COMPLETE")
+                    Text("THE GAME!")
+                }
+                .font(.system(size: 64, weight: .black))
+                .padding(.horizontal, 24)
+
+                // ── Subtitle ─────────────────────────────────────
+                Text("A real-world social deduction game. Find pucks. Trust no one. Vote with your gut.")
+                    .font(.system(size: 14))
+                    .foregroundColor(.black.opacity(0.7))
+                    .padding(.horizontal, 24)
+                    .padding(.top, 10)
+
+                Spacer()
+
+                // ── Play Again button ─────────────────────────────
+                Button(action: { networkManager.disconnect() }) {
+                    Text("PLAY AGAIN")
+                        .font(.system(size: 18, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(yellow)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 64)
+                }
+                .background(Color.black)
+                .clipShape(Capsule())
+                .padding(.horizontal, 24)
+                .padding(.bottom, 52)
+            }
         }
     }
 }
