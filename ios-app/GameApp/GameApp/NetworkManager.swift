@@ -36,6 +36,11 @@ class NetworkManager: ObservableObject {
     @Published var imposter: String?
     @Published var isInfected: Bool = false
     
+    // only used by imposter
+    @Published var playersInfected: [String: Bool] = [:] // uses player id
+    @Published var infectedSomeoneThisRound: Bool = false
+    @Published var infectionFailure: String?
+    
     private let urlBaseStr = "wss://recollect-conjure-thesis.ngrok-free.dev/ws/phone" // change depending on where server is
     private var username: String = ""
     
@@ -65,6 +70,29 @@ class NetworkManager: ObservableObject {
             self.connectionFailed = false
             self.lobbyPlayers = []
             self.gameStarted = false
+            self.currentTask = nil
+            self.gameStatus = "Lobby"
+            self.isImposter = false
+            self.errorMessage = nil
+            self.currentRound = nil
+            self.taskError = false
+            self.taskDescription = nil
+            self.taskDirection = nil
+            self.taskProgress = 0.0
+            self.imposter = nil
+            self.isInfected = false
+            self.playersInfected = [:]
+            self.infectedSomeoneThisRound = false
+        }
+    }
+    
+    func sendEndGame() {
+        let payload: [String: Any] = ["type": "end_game"]
+        if let data =  try? JSONSerialization.data(withJSONObject: payload),
+           let string = String(data: data, encoding: .utf8) {
+            webSocketTask?.send(.string(string)) {error in
+                if let error = error { print("Game end send error: \(error)")}
+            }
         }
     }
     
@@ -143,6 +171,9 @@ class NetworkManager: ObservableObject {
                     self.gameStarted = true
                     self.gameStatus = "in_progress"
                     self.isImposter = json["is_imposter"] as! Bool
+                    if let players = json["players"] as? [String: String] {
+                        self.playersInfected = players.mapValues { _ in false }
+                    }
                     
                 case "error":
                     self.errorMessage = json["message"] as? String
@@ -157,6 +188,7 @@ class NetworkManager: ObservableObject {
                     }
                     self.taskError = false
                     self.taskProgress = 0.0
+                    self.infectedSomeoneThisRound = false
 
                 case "game_status":
                     self.gameStatus = json["status"] as? String ?? self.gameStatus
@@ -185,6 +217,18 @@ class NetworkManager: ObservableObject {
                 case "infected":
                     self.isInfected = true
                     
+                case "end_game":
+                    self.disconnect()
+                    
+                case "infection_success":
+                    self.infectedSomeoneThisRound = true
+                    if let infected = json["player_id"] as? String {
+                        self.playersInfected[infected] = true
+                    }
+                
+                case "infection_failed":
+                    self.infectionFailure = json["reason"] as? String
+
                 default:
                     print("Unknown message type: \(json["type"] ?? "nil")")
                 }

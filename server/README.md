@@ -140,7 +140,8 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
 ### infection_success
 ```json
 {
-    "type": "infection_success"
+    "type": "infection_success",
+    "player_id": "{player_id}"
 }
 ```
 

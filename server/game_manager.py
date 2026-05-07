@@ -435,7 +435,8 @@ class GameManager:
         self.infection_occurred = True
         delay = random.uniform(10,20)
         await self.connection_manager.send_to_phone(infector_id, {
-            "type": "infection_success"
+            "type": "infection_success",
+            "player_id": infected_id
         })
         # Check if all players are infected - if so, end round and start voting immediately
         if self.check_all_infected():

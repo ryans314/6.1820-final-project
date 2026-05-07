@@ -13,7 +13,7 @@ import NearbyInteraction
 extension NetworkManager {
     
     static var demo: NetworkManager {
-        let view_type = "entry" // options: (entry, lobby, imposter_no_task, agent_no_task, imposter_task, agent_task, agent_task_infected, imposter_task_error, agent_task_error, imposter_task_complete, agent_task_complete, voting, imposter_reveal, game_complete) — task_complete and poisoned are driven by currentTask/isInfected flags above
+        let view_type = "imposter_no_task" // options: (entry, lobby, imposter_no_task, agent_no_task, imposter_task, agent_task, agent_task_infected, imposter_task_error, agent_task_error, imposter_task_complete, agent_task_complete, voting, imposter_reveal, game_complete) — task_complete and poisoned are driven by currentTask/isInfected flags above
         
         let nm = NetworkManager()
         nm.isConnected      = true
@@ -310,7 +310,7 @@ struct LobbyView: View {
                 .padding(.top, 52)
 
                 // ── Subtitle ─────────────────────────────────────
-                Text("\(networkManager.lobbyPlayers.count) / 4 joined · keep your phone with you but don't show others")
+                Text("\(networkManager.lobbyPlayers.count) / 4 joined · While waiting, set up your 3 game pucks by placing one on a table in the current room, one on the floor in a nearby room, and one on the other side of this room. Make sure that the pucks are far away from each other.")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.75))
                     .padding(.horizontal, 24)
@@ -418,11 +418,20 @@ struct RoleRevealView: View {
                     .lineLimit(1)
                     .padding(.horizontal, 24)
                     .padding(.bottom, 8)
+                
+                if (role == "MOLE") {
+                    Text("Try and get 2 meters within other players to infect them, but don't get caught! You can only infect one player per round, and they won't show up if you've already infected them. Use your phone to complete your tasks so you can blend in.")
+                        .font(.system(size: 14))
+                        .foregroundColor(.black.opacity(0.7))
+                        .padding(.horizontal, 24)
+                } else {
+                    Text("Use your phone to complete your tasks. Find the imposter, and stay away from them. They can infect you if you're within 2 meters of each other. Good luck!")
+                        .font(.system(size: 14))
+                        .foregroundColor(.black.opacity(0.7))
+                        .padding(.horizontal, 24)
+                }
 
-                Text("Complete your tasks. Spot the imposter. Survive the vote.")
-                    .font(.system(size: 14))
-                    .foregroundColor(.black.opacity(0.7))
-                    .padding(.horizontal, 24)
+                
 
                 Spacer()
 
@@ -513,19 +522,23 @@ struct GameView: View {
     @State private var poisonDeliveredTo: String? = nil
     @State private var showFakePoisoned = false
     @State private var passedOnPoison = false
+    @State private var awaitingInfectionResult = false
+    @State private var showInfectionFailureAlert = false
 
-    private var nearestPlayerName: String {
-        guard let closest = uwbManager.nearbyPlayers.min(by: { $0.value < $1.value }) else { return "Agent" }
-        return networkManager.lobbyPlayers.first { $0.id == closest.key }?.username ?? "Agent"
-    }
 
     private var nearestPlayerId: String? {
-        uwbManager.nearbyPlayers.min(by: { $0.value < $1.value })?.key
+        uwbManager.nearbyPlayers
+            .filter { networkManager.playersInfected[$0.key] == false }
+            .min(by: { $0.value < $1.value })?.key
+    }
+
+    private var nearestPlayerName: String {
+        guard let id = nearestPlayerId else { return "Agent" }
+        return networkManager.lobbyPlayers.first { $0.id == id }?.username ?? "Agent"
     }
 
     private var showPoisonAction: Bool {
-        networkManager.isImposter && uwbManager.hasNearbyPlayer && !passedOnPoison
-            && poisonDeliveredTo == nil && !showFakePoisoned
+        networkManager.isImposter && !networkManager.infectedSomeoneThisRound && (nearestPlayerId != nil) && !passedOnPoison && poisonDeliveredTo == nil && !showFakePoisoned
     }
 
     var body: some View {
@@ -564,19 +577,22 @@ struct GameView: View {
                         let name = nearestPlayerName
                         if let targetId = nearestPlayerId {
                             networkManager.sendInfect(targetId: targetId)
+                            awaitingInfectionResult = true
                         }
                         poisonDeliveredTo = name
                     }
                 )
             }
-
-            if let deliveredTo = poisonDeliveredTo {
-                PoisonDeliveredView(playerName: deliveredTo, onContinue: {
-                    poisonDeliveredTo = nil
-                    showFakePoisoned = true
-                })
+            
+            if (!awaitingInfectionResult && (networkManager.infectionFailure == nil) && networkManager.infectedSomeoneThisRound) {
+                if let deliveredTo = poisonDeliveredTo {
+                    PoisonDeliveredView(playerName: deliveredTo, onContinue: {
+                        poisonDeliveredTo = nil
+                        showFakePoisoned = true
+                    })
+                }
             }
-
+            
             if showFakePoisoned {
                 FakePoisonedView(onBoohoo: { showFakePoisoned = false })
             }
@@ -590,6 +606,25 @@ struct GameView: View {
         }
         .onChange(of: uwbManager.hasNearbyPlayer) { _, hasPlayer in
             if !hasPlayer { passedOnPoison = false }
+        }
+        .onChange(of: networkManager.infectedSomeoneThisRound) { old, new in
+            if new {
+                awaitingInfectionResult = false
+            }
+        }
+        .onChange(of: networkManager.infectionFailure) { old, new in
+            if new != nil {
+                awaitingInfectionResult = false
+                poisonDeliveredTo = nil
+                showInfectionFailureAlert = true
+            }
+        }
+        .alert("Infection Failed", isPresented: $showInfectionFailureAlert) {
+            Button("OK", role: .cancel) {
+                networkManager.infectionFailure = nil
+            }
+        } message: {
+            Text(networkManager.infectionFailure ?? "Something went wrong")
         }
     }
 }
@@ -1158,7 +1193,7 @@ struct GameCompleteView: View {
                 .padding(.horizontal, 24)
 
                 // ── Subtitle ─────────────────────────────────────
-                Text("A real-world social deduction game. Find pucks. Trust no one. Vote with your gut.")
+                Text("A real-world social deduction game")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.7))
                     .padding(.horizontal, 24)
@@ -1167,7 +1202,7 @@ struct GameCompleteView: View {
                 Spacer()
 
                 // ── Play Again button ─────────────────────────────
-                Button(action: { networkManager.disconnect() }) {
+                Button(action: { networkManager.sendEndGame() }) {
                     Text("PLAY AGAIN")
                         .font(.system(size: 18, weight: .bold))
                         .tracking(0.5)
