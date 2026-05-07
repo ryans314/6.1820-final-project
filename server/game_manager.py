@@ -159,6 +159,7 @@ class GameManager:
         self.active_tasks: list[Task] = []
         self.round_num: int = 0
         self.puck_colors: dict[int, str] = {}
+        self.num_rounds: int = 2
 
     def add_player(self, player_id: str, username: str):
         # Create the object and store it by ID
@@ -189,6 +190,8 @@ class GameManager:
             print("Not enough players!")
             return False
         
+        self.num_rounds = len(self.players) - 1 #number of rounds is number of non-imposters
+
         # Assign imposter
         imposter_id = random.choice(list(self.players.keys()))
         self.players[imposter_id].is_imposter = True
@@ -335,7 +338,7 @@ class GameManager:
             if self.check_round_over():
                 print("Round over!")
                 await self.end_round()
-                if self.round_num == 3: 
+                if self.round_num == self.num_rounds: 
                     await self.start_voting()
                     return
                 await self.start_round()
