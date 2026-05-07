@@ -1,4 +1,5 @@
 import asyncio
+from sys import exception
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse, HTMLResponse
@@ -16,21 +17,29 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
     await manager.connect(websocket, client_type, client_id)
     try:
         identity = await websocket.receive_json()
-        if identity.get("type") != "identify":
-            await websocket.close(code=1008, reason="First message must be identify")
-            return
+        
+        # Check if player is reconnecting (if so, the identify json will be start_game. 
+        # need to catch that so weirdness doesn't happen by calling start_game midgame)
+        if client_id in game.inactivePlayers and game.inactivePlayers[client_id] is not None:
+            game.reconnect_player(client_id)
+            print(f"Player {client_id} reconnected and state restored")
+        # If not reconnecting, phone must send identify message with username to join lobby
+        else:
+            if identity.get("type") != "identify":
+                await websocket.close(code=1008, reason="First message must be identify")
+                return
 
-        # client_id = identity.get("player_id")
-        username = identity.get("username", client_id)
+            # client_id = identity.get("player_id")
+            username = identity.get("username", client_id)
 
-        if client_type == "phone":
-            game.add_player(player_id=client_id, username=username)
+            if client_type == "phone":
+                game.add_player(player_id=client_id, username=username)
 
         # Send ack
         await websocket.send_json({
             "type": "connection_ack",
             "player_id": client_id,
-            "username": username,
+            "username": game.player_id_to_username(client_id),
             "status": "ok"
         })
 
@@ -78,7 +87,9 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                
             
 
-    except WebSocketDisconnect:
+    except Exception as e:
+        print(f"Error with client {client_id}: {e}")
+    finally:
         manager.disconnect(client_type, client_id)
         if client_type == "phone":
             game.remove_player(client_id)

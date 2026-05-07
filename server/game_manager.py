@@ -154,6 +154,7 @@ class GameManager:
     def __init__(self, connection_manager):
         self.connection_manager: ConnectionManager  = connection_manager
         self.players: dict[str, Player] = {} #player_id : Player Object
+        self.inactivePlayers: dict[str, Player] = {} #player_id : Player Object for players who have disconnected but may reconnect
         self.state: str = "lobby"  # "lobby", "in_progress", "voting", "imposter_revealed"
         self.tap_sequence: list[Interaction] = []  # List of (player_id, puck_id) tuples
         self.active_tasks: list[Task] = []
@@ -166,9 +167,18 @@ class GameManager:
         # Create the object and store it by ID
         self.players[player_id] = Player(player_id=player_id, username=username)
 
+    def reconnect_player(self, player_id: str):
+        if player_id in self.inactivePlayers:
+            self.players[player_id] = self.inactivePlayers.pop(player_id)
+            print(f"Player {player_id} reconnected")
+        else:
+            print(f"Player {player_id} not found in inactive players. Cannot reconnect.")
+            
     def remove_player(self, player_id: str):
-        self.players.pop(player_id, None)
-    
+        if player_id in self.players:
+            self.inactivePlayers[player_id] = self.players.pop(player_id, None)
+            self.players.pop(player_id, None)
+
     async def broadcast_lobby(self):
         """Send list of players to all connected phones"""
         await self.connection_manager.broadcast_to_phones({
@@ -291,7 +301,7 @@ class GameManager:
                 "other_players": other_players,
                 "task_description": current_task.task_description,
                 "target_pucks": [ #ordered list of [player_username, puck_color]
-                [self._player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
+                [self.player_id_to_username(inter.player_id), self.get_puck_color(f"puck_{inter.puck_id}")]
                       for inter, _ in current_task.expected_interactions
                 ]
             })
@@ -417,7 +427,7 @@ class GameManager:
             print(f"Player {infected_id} is not alive or does not exist. Cannot be infected.")
             await self.connection_manager.send_to_phone(infector_id, {
                 "type": "infection_failed",
-                "reason": f"{self._player_id_to_username(infected_id)} is already infected."
+                "reason": f"{self.player_id_to_username(infected_id)} is already infected."
             })
             return
         
@@ -478,6 +488,6 @@ class GameManager:
         else:
             print("Error: No imposter found during reveal!")
 
-    def _player_id_to_username(self, player_id: str) -> str:
+    def player_id_to_username(self, player_id: str) -> str:
         player = self.players.get(player_id)
         return player.username if player else "Unknown"
