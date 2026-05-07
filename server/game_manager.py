@@ -16,7 +16,7 @@ class Player:
     player_id: str
     username: str
     is_imposter: bool = False
-    status: str = "alive"  # "alive", "ghost", etc.
+    status: str = "alive"  # "alive", "infected", etc.
     completed_tasks: list[Task] = field(default_factory=list)
     current_task: Task = None
 
@@ -387,28 +387,46 @@ class GameManager:
         infector_player = self.players.get(infector_id)
         if not infector_player or not infector_player.is_imposter:
             print(f"Player {infector_id} is not an imposter or does not exist. Cannot infect.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You are not the imposter and cannot infect other players."
+            })
             return
         
         # Verify target player is not the imposter
         if infected_id == infector_id:
             print(f"Player {infector_id} cannot infect themselves.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You cannot infect yourself."
+            })
             return
         
         # Verify infection hasn't already occurred this round 
         if self.infection_occurred:
             print("An infection has already occurred this round. Cannot infect again until next round.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": "You have already infected a player this round. Wait until the next round to infect again."
+            })
             return
         
         # Verify infected player is alive
         infected_player = self.players.get(infected_id)
-        if not infected_player or infected_player.status != "alive":
+        if not infected_player or infected_player.status == "infected":
             print(f"Player {infected_id} is not alive or does not exist. Cannot be infected.")
+            await self.connection_manager.send_to_phone(infector_id, {
+                "type": "infection_failed",
+                "reason": f"{self._player_id_to_username(infected_id)} is already infected."
+            })
             return
         
         infected_player.status = "infected"
         self.infection_occurred = True
         delay = random.uniform(10,20)
-        
+        await self.connection_manager.send_to_phone(infector_id, {
+            "type": "infection_success"
+        })
         # Check if all players are infected - if so, end round and start voting immediately
         if self.check_all_infected():
             print(f"{infected_player.username} has been infected! Notifying now")
