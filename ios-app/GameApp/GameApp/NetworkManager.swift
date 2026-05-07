@@ -28,7 +28,7 @@ class NetworkManager: ObservableObject {
     @Published var isImposter: Bool = false
     @Published var errorMessage: String?
     @Published var currentRound: String?
-    @Published var taskError: Bool = false
+    @Published var taskError: Bool?
     @Published var taskDescription: String?
     @Published var taskDirection: String?
     @Published var taskProgress: Float = 0.0
@@ -42,7 +42,7 @@ class NetworkManager: ObservableObject {
     @Published var infectionFailure: String?
     
     private let urlBaseStr = "wss://recollect-conjure-thesis.ngrok-free.dev/ws/phone" // change depending on where server is
-    private var username: String = ""
+    @Published var username: String = ""
     
     func connect(username: String) {
         print("network manager called")
@@ -75,7 +75,7 @@ class NetworkManager: ObservableObject {
             self.isImposter = false
             self.errorMessage = nil
             self.currentRound = nil
-            self.taskError = false
+            self.taskError = nil
             self.taskDescription = nil
             self.taskDirection = nil
             self.taskProgress = 0.0
@@ -186,7 +186,7 @@ class NetworkManager: ObservableObject {
                         let parts = targetPucks.map { "\($0[0]): \($0[1]) puck" }
                         self.taskDirection = parts.joined(separator: ", ")
                     }
-                    self.taskError = false
+                    self.taskError = nil
                     self.taskProgress = 0.0
                     self.infectedSomeoneThisRound = false
 

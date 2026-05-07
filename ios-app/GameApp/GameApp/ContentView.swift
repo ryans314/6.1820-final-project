@@ -140,6 +140,16 @@ struct ContentView: View {
         .onChange(of: networkManager.currentTask) { _, task in
             if task != "Completed" { acknowledgedTaskComplete = false }
         }
+        .onAppear {
+            if networkManager.gameStatus != "lobby" {
+                networkManager.connect(username: networkManager.username)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            if networkManager.gameStatus != "lobby" && !networkManager.isConnected {
+                networkManager.connect(username: networkManager.username)
+            }
+        }
     }
 }
 
@@ -354,7 +364,7 @@ private struct LobbyPlayerRow: View {
     var body: some View {
         HStack {
             Text(name.uppercased())
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 17, weight: .bold))
                 .foregroundColor(.white)
             Spacer()
             HStack(spacing: 5) {
@@ -365,13 +375,13 @@ private struct LobbyPlayerRow: View {
                     .tracking(0.5)
             }
             .foregroundColor(isReady ? Color(white: 0.1) : Color.white.opacity(0.3))
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
             .background(isReady ? lime : Color.white.opacity(0.15))
             .clipShape(Capsule())
         }
-        .padding(.horizontal, 20)
-        .frame(height: 72)
+        .padding(.horizontal, 10)
+        .frame(height: 50)
         .background(Color.black)
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
@@ -832,7 +842,7 @@ private struct GameTaskCard: View {
     let round: String
     let title: String
     let description: String?
-    let hasError: Bool
+    let hasError: Bool?
     let progressBar: Float
 
     private let blue = Color(red: 0.28, green: 0.62, blue: 0.97)
@@ -840,10 +850,10 @@ private struct GameTaskCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Round / error label
-            Text(hasError ? "⚠ WRONG PUCK" : "\(round)/3 TASK")
+            Text(hasError == nil ? "\(round)/3 TASK" : hasError == true ? "⚠ WRONG PUCK" : "✓ CORRECT PUCK")
                 .font(.system(size: 13, weight: .bold))
                 .tracking(0.5)
-                .foregroundColor(hasError ? Color(red: 0.85, green: 0.1, blue: 0.1) : .black)
+                .foregroundColor(hasError == nil ? .black : hasError == true ? Color(red: 0.85, green: 0.1, blue: 0.1) : Color(red: 0.1, green: 0.7, blue: 0.1))
                 .padding(.top, 28)
                 .padding(.horizontal, 28)
 
