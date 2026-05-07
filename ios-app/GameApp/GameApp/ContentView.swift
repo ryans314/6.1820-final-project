@@ -141,12 +141,12 @@ struct ContentView: View {
             if task != "Completed" { acknowledgedTaskComplete = false }
         }
         .onAppear {
-            if networkManager.gameStatus != "lobby" {
+            if networkManager.gameStatus != "Lobby" {
                 networkManager.connect(username: networkManager.username)
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            if networkManager.gameStatus != "lobby" && !networkManager.isConnected {
+            if networkManager.gameStatus != "Lobby" && !networkManager.isConnected {
                 networkManager.connect(username: networkManager.username)
             }
         }
