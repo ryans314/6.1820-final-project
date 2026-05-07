@@ -66,9 +66,10 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
             elif game.state == "voting":
                 if msg_type == "imposter_reveal":
                     await game.reveal_imposter()
-                    break
                 continue # ignore all other messages during voting
-
+            elif game.state == "imposter_revealed":
+                if msg_type == "end_game":
+                    await game.end_game()
             # Phone taps puck
             elif client_type == "phone" and data.get("type") == "nfc_tap":
                 target_puck = data.get("puck_id")

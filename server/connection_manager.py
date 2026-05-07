@@ -22,6 +22,14 @@ class ConnectionManager:
         else:
             self.active_pucks.pop(client_id, None)
         print(f"Phone {client_id} disconnected")
+    
+    def close_all(self):
+        for ws in self.active_phones.values():
+            asyncio.create_task(ws.close())
+        for ws in self.active_pucks.values():
+            asyncio.create_task(ws.close())
+        self.active_phones.clear()
+        self.active_pucks.clear()
 
     async def send_to_puck(self, puck_id: str, message: dict):
         if puck_id in self.active_pucks:

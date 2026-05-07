@@ -144,7 +144,7 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
 }
 ```
 
-### infection_failure
+### infection_failed
 `reason` should be a plaintext reason why the infection failed that can be displayed directly to the user. 
 
 ```json
@@ -152,11 +152,21 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
     "type": "infection_failed",
     "reason": "{reason for failure}"
 }
+```
+
 ### imposter_revealed
 ```json
 {
     "type": "imposter_revealed",
     "imposter": "{imposter_username}"
+}
+```
+
+### game_end
+Sent when the game is over and players are to be disconnected imminently
+```json
+{
+    "type": "game_end",
 }
 ```
 
@@ -198,5 +208,13 @@ sent after voting starts
 ```json
 {
     "type": "imposter_reveal"
+}
+```
+
+### end_game
+sent after imposter is revealed to end the game and disconnect all players
+```json
+{
+    "type": "end_game"
 }
 ```

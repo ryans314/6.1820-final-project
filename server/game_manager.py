@@ -491,3 +491,20 @@ class GameManager:
     def player_id_to_username(self, player_id: str) -> str:
         player = self.players.get(player_id)
         return player.username if player else "Unknown"
+    
+    async def end_game(self) -> None:
+        """
+        broadcast end of game message to all phones, disconnect all clients, and reset game state
+        """
+        await self.connection_manager.broadcast_to_phones({
+            "type": "game_end"
+        })
+        # Reset game state
+        self.players.clear()
+        self.inactivePlayers.clear()
+        self.state = "lobby"
+        self.tap_sequence.clear()
+        self.active_tasks.clear()
+        self.round_num = 0
+        self.puck_colors.clear()
+        await self.connection_manager.close_all()
