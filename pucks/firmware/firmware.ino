@@ -8,7 +8,7 @@ const char* PUCK_ID = "puck_2";
 #define NEOPIXEL_PIN   5
 #define NEOPIXEL_COUNT 16
 
-WiFiSSLClient client;
+WiFiClient client;
 Adafruit_NeoPixel ring(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 bool wsConnected = false;
 
@@ -142,7 +142,7 @@ void scanWifi() {
 }
 
 void connectWifi() {
-    //scanWifi();
+    scanWifi();
     Serial.print("Connecting to WiFi");
     WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
     unsigned long timeout = millis() + 20000;
@@ -232,6 +232,17 @@ void setup() {
     setColor(ring.Color(0, 0, 0));
 
     connectWifi();
+
+    WiFiSSLClient testSSL;
+    Serial.print("SSL test (google.com): ");
+    Serial.println(testSSL.connect("www.google.com", 443));
+    testSSL.stop();
+
+    WiFiSSLClient testSSL2;
+    Serial.print("SSL test (arduino.cc): ");
+    Serial.println(testSSL2.connect("www.arduino.cc", 443));
+    testSSL2.stop();
+
     connectWebSocket();
 
     if (wsConnected) {
