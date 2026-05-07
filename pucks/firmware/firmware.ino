@@ -142,7 +142,7 @@ void scanWifi() {
 }
 
 void connectWifi() {
-    scanWifi();
+    //scanWifi();
     Serial.print("Connecting to WiFi");
     WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
     unsigned long timeout = millis() + 20000;
