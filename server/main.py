@@ -71,18 +71,10 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                 infected_id = data.get("target_id")
                 print(f"{infected_id} infected")
                 asyncio.create_task(game.handle_infection(client_id, infected_id, datetime.now()))
-            
-            if game.check_imposter_wins():
-                game.end_game()
 
-            if game.check_round_over():
-                print("Round over!")
-                await game.end_round()
-                if game.round_num == 3: 
-                    await game.start_voting()
-                    continue
+            # Don't need to check if all infected in core game loop since we check after every infection
 
-                await game.start_round()
+            # Don't need to check if all tasks completed in core game loop since we check after every task completion
                
             
 

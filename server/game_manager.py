@@ -262,7 +262,7 @@ class GameManager:
 
     async def start_voting(self) -> None:
         """
-        After all tasks are completed, start voting
+        After all tasks are completed or all players are infected, start voting
         """
         self.state = "voting"
         await self.connection_manager.broadcast_to_phones({
@@ -332,8 +332,13 @@ class GameManager:
 
         # If a task was completed, check for end of round conditions
         if await self.check_task_completion():
-            if len(self.active_tasks) == 1:
-                print("End of Round!")
+            if self.check_round_over():
+                print("Round over!")
+                await self.end_round()
+                if self.round_num == 3: 
+                    await self.start_voting()
+                    return
+                await self.start_round()
 
 
     async def check_task_completion(self):
@@ -387,29 +392,33 @@ class GameManager:
         delay = random.uniform(10,20)
         print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
         
+        # Check if all players are infected - if so, end round and start voting immediately
+        if self.check_all_infected():
+            await self.connection_manager.send_to_phone(infected_id, {
+                "type": "infected"
+            })
+            await self.end_round()
+            await self.start_voting()
+            return
+
+        # If not all infected, notify the newly infected player after a delay, but allow game to continue in meantime
         await asyncio.sleep(delay)
         await self.connection_manager.send_to_phone(infected_id, {
             "type": "infected"
         })
 
-        if self.check_imposter_wins():
-            self.end_game()
-    
-    def end_game(self):
-        print("game ended")
 
     def check_round_over(self) -> bool:
-        """Check if all but one tasks for the round are completed"""
+        """Check if all tasks for the round are completed"""
         if len(self.active_tasks) == 0: #and len([t for t in self.active_tasks if t.is_completed]) <= 1
             return True
         return False
 
-    def check_imposter_wins(self) -> bool:
+    def check_all_infected(self) -> bool:
         """
-        Check if the imposter wins (all other players infected)
+        Check if all other players are infected
         """
         if all(p.status != "alive" for p in self.players.values() if not p.is_imposter):
-            print("All non-imposters have been infected. Imposter wins!")
             return True
         return False
 
