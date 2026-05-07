@@ -160,6 +160,7 @@ class GameManager:
         self.round_num: int = 0
         self.puck_colors: dict[int, str] = {}
         self.num_rounds: int = 2
+        self.infection_occurred: bool = False #to track if an infection has occurred in the current round
 
     def add_player(self, player_id: str, username: str):
         # Create the object and store it by ID
@@ -195,6 +196,7 @@ class GameManager:
         # Assign imposter
         imposter_id = random.choice(list(self.players.keys()))
         self.players[imposter_id].is_imposter = True
+        self.infection_occurred = False
 
         self.state = "in_progress"
         self.round_num = 0
@@ -259,6 +261,7 @@ class GameManager:
     async def end_round(self) -> None:
         """At the end of a round, reset the game state to prepare for the next round (clear active tasks)"""
         self.active_tasks.clear()
+        self.infection_occurred = False
         await self.connection_manager.broadcast_to_phones({
             "type": "end_round"
         })
@@ -378,11 +381,22 @@ class GameManager:
         Handle infection:
         - update infected player's status
         - notify phones of infection after a delay (10-20 seconds)
+        - if all players are infected, end round and start voting immediately
         """
         # Verify infector is imposter
         infector_player = self.players.get(infector_id)
         if not infector_player or not infector_player.is_imposter:
             print(f"Player {infector_id} is not an imposter or does not exist. Cannot infect.")
+            return
+        
+        # Verify target player is not the imposter
+        if infected_id == infector_id:
+            print(f"Player {infector_id} cannot infect themselves.")
+            return
+        
+        # Verify infection hasn't already occurred this round 
+        if self.infection_occurred:
+            print("An infection has already occurred this round. Cannot infect again until next round.")
             return
         
         # Verify infected player is alive
@@ -392,11 +406,12 @@ class GameManager:
             return
         
         infected_player.status = "infected"
+        self.infection_occurred = True
         delay = random.uniform(10,20)
-        print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
         
         # Check if all players are infected - if so, end round and start voting immediately
         if self.check_all_infected():
+            print(f"{infected_player.username} has been infected! Notifying now")
             await self.connection_manager.send_to_phone(infected_id, {
                 "type": "infected"
             })
@@ -404,6 +419,7 @@ class GameManager:
             await self.start_voting()
             return
 
+        print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
         # If not all infected, notify the newly infected player after a delay, but allow game to continue in meantime
         await asyncio.sleep(delay)
         await self.connection_manager.send_to_phone(infected_id, {

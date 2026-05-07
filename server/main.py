@@ -69,7 +69,7 @@ async def websocket_endpoint(websocket: WebSocket, client_type: str, client_id: 
                 
             elif client_type == "phone" and data.get("type") == "infect":
                 infected_id = data.get("target_id")
-                print(f"{infected_id} infected")
+                print(f"Attempting to infect player {infected_id}")
                 asyncio.create_task(game.handle_infection(client_id, infected_id, datetime.now()))
 
             # Don't need to check if all infected in core game loop since we check after every infection
