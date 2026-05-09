@@ -320,7 +320,7 @@ struct LobbyView: View {
                 .padding(.top, 52)
 
                 // ── Subtitle ─────────────────────────────────────
-                Text("\(networkManager.lobbyPlayers.count) / 4 joined · While waiting, set up your 3 game pucks by placing one on a table in the current room, one on the floor in a nearby room, and one on the other side of this room. Make sure that the pucks are far away from each other.")
+                Text("\(networkManager.lobbyPlayers.count) / 8 joined · While waiting, set up your 3 game pucks by placing one on a table in the current room, one on the floor in a nearby room, and one on the other side of this room. Make sure that the pucks are far away from each other.")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.75))
                     .padding(.horizontal, 24)
@@ -558,6 +558,7 @@ struct GameView: View {
             VStack(spacing: 0) {
                 GameTaskCard(
                     round: networkManager.currentRound ?? "?",
+                    totalrounds: String(networkManager.playersInfected.count - 1),
                     title: networkManager.taskDescription?.uppercased() ?? "STANDBY.",
                     description: networkManager.taskDirection,
                     hasError: networkManager.taskError,
@@ -840,6 +841,7 @@ private struct FakePoisonedView: View {
 
 private struct GameTaskCard: View {
     let round: String
+    let totalrounds: String
     let title: String
     let description: String?
     let hasError: Bool?
@@ -850,7 +852,7 @@ private struct GameTaskCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Round / error label
-            Text(hasError == nil ? "\(round)/3 TASK" : hasError == true ? "⚠ WRONG PUCK" : "✓ CORRECT PUCK")
+            Text(hasError == nil ? "\(round)/\(totalrounds) TASK" : hasError == true ? "⚠ WRONG PUCK" : "✓ CORRECT PUCK")
                 .font(.system(size: 13, weight: .bold))
                 .tracking(0.5)
                 .foregroundColor(hasError == nil ? .black : hasError == true ? Color(red: 0.85, green: 0.1, blue: 0.1) : Color(red: 0.1, green: 0.7, blue: 0.1))

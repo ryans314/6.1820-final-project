@@ -159,7 +159,7 @@ The game state must be one of: "lobby" "in_progress" "voting" or  "imposter_reve
 ```json
 {
     "type": "imposter_revealed",
-    "imposter": "{imposter_username}"
+    "imposter_username": "{imposter_username}"
 }
 ```
 

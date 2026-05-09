@@ -171,9 +171,17 @@ class NetworkManager: ObservableObject {
                     self.gameStarted = true
                     self.gameStatus = "in_progress"
                     self.isImposter = json["is_imposter"] as! Bool
-                    if let players = json["players"] as? [String: String] {
-                        self.playersInfected = players.mapValues { _ in false }
+                    if let players = json["players"] as? [[String: Any]] {
+                        self.playersInfected = Dictionary(uniqueKeysWithValues:
+                            players.compactMap { player -> (String, Bool)? in
+                                guard let id = player["player_id"] as? String else { return nil }
+                                return (id, false)
+                            }
+                        )
+                        print("players")
+                        print(self.playersInfected)
                     }
+                    
                     
                 case "error":
                     self.errorMessage = json["message"] as? String
@@ -212,12 +220,12 @@ class NetworkManager: ObservableObject {
                     print(self.taskProgress)
                     
                 case "imposter_revealed":
-                    self.imposter = json["imposter"] as? String
+                    self.imposter = json["imposter_username"] as? String
                     
                 case "infected":
                     self.isInfected = true
                     
-                case "end_game":
+                case "game_end":
                     self.disconnect()
                     
                 case "infection_success":
