@@ -24,7 +24,7 @@ class NetworkManager: ObservableObject {
     @Published var lobbyPlayers: [LobbyPlayer] = []
     @Published var gameStarted = false
     @Published var currentTask: String?
-    @Published var gameStatus: String = "Lobby"
+    @Published var gameStatus: String = "lobby"
     @Published var isImposter: Bool = false
     @Published var errorMessage: String?
     @Published var currentRound: String?
@@ -41,7 +41,7 @@ class NetworkManager: ObservableObject {
     @Published var infectedSomeoneThisRound: Bool = false
     @Published var infectionFailure: String?
     
-    private let urlBaseStr = "wss://subway-mahogany-helper.ngrok-free.dev/ws/phone" // change depending on where server is
+    private let urlBaseStr = "wss://recollect-conjure-thesis.ngrok-free.dev/ws/phone" // change depending on where server is
     @Published var username: String = ""
     
     func connect(username: String) {
@@ -71,7 +71,7 @@ class NetworkManager: ObservableObject {
             self.lobbyPlayers = []
             self.gameStarted = false
             self.currentTask = nil
-            self.gameStatus = "Lobby"
+            self.gameStatus = "lobby"
             self.isImposter = false
             self.errorMessage = nil
             self.currentRound = nil
@@ -219,9 +219,9 @@ class NetworkManager: ObservableObject {
                     }
                     print(self.taskProgress)
                     
-                case "imposter_revealed":
+                case "imposter_reveal":
                     self.imposter = json["imposter_username"] as? String
-                    
+                                    
                 case "infected":
                     self.isInfected = true
                     

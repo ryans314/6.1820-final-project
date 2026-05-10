@@ -38,7 +38,7 @@ extension NetworkManager {
             nm.isConnected = false
         } else if (view_type == "lobby") {
             nm.gameStarted = false
-            nm.gameStatus = "Lobby"
+            nm.gameStatus = "lobby"
         }
         
         if (view_type == "imposter_no_task" || view_type == "imposter_task" || view_type == "imposter_task_error" || view_type == "imposter_task_complete" ) {
@@ -162,12 +162,12 @@ struct ContentView: View {
             if task != "Completed" { acknowledgedTaskComplete = false }
         }
         .onAppear {
-            if networkManager.gameStatus != "Lobby" {
+            if networkManager.gameStatus != "lobby" {
                 networkManager.connect(username: networkManager.username)
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            if networkManager.gameStatus != "Lobby" && !networkManager.isConnected {
+            if networkManager.gameStatus != "lobby" && !networkManager.isConnected {
                 networkManager.connect(username: networkManager.username)
             }
         }
