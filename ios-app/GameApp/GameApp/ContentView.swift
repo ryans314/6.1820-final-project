@@ -82,7 +82,7 @@ extension NetworkManager {
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var hasSeenRoleReveal = false
-    @State private var showGameComplete = false
+    @State private var showGameComplete = f
     @State private var acknowledgedTaskComplete = false
     @State private var acknowledgedPoisoned = false
     // ── DEMO MODE ── set to true to run a local 3-player simulation on one device
@@ -800,14 +800,16 @@ private struct PoisonActionView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Spacer()
-                    Text("INCOGNITO MODE")
-                        .font(.system(size: 11, weight: .bold))
-                        .tracking(0.5)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(Color.black.opacity(0.25))
-                        .clipShape(Capsule())
+                    Button(action: onPass) {
+                        Text("INCOGNITO MODE")
+                            .font(.system(size: 11, weight: .bold))
+                            .tracking(0.5)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(Color.black.opacity(0.25))
+                            .clipShape(Capsule())
+                    }
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 56)
@@ -933,14 +935,16 @@ private struct FakePoisonedView: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Spacer()
-                    Text("INCOGNITO MODE")
-                        .font(.system(size: 11, weight: .bold))
-                        .tracking(0.5)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(Color.black.opacity(0.25))
-                        .clipShape(Capsule())
+                    Button(action: onBoohoo) {
+                        Text("INCOGNITO MODE")
+                            .font(.system(size: 11, weight: .bold))
+                            .tracking(0.5)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(Color.black.opacity(0.25))
+                            .clipShape(Capsule())
+                    }
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 56)
