@@ -82,7 +82,7 @@ extension NetworkManager {
 struct ContentView: View {
     @ObservedObject var networkManager: NetworkManager
     @State private var hasSeenRoleReveal = false
-    @State private var showGameComplete = f
+    @State private var showGameComplete = false
     @State private var acknowledgedTaskComplete = false
     @State private var acknowledgedPoisoned = false
     // ── DEMO MODE ── set to true to run a local 3-player simulation on one device
