@@ -204,7 +204,7 @@ class GameManager:
         self.num_rounds = len(self.players) - 1 #number of rounds is number of non-imposters
 
         # Assign imposter
-        imposter_id = random.choice(list(self.players.keys()))
+        imposter_id = "special" #random.choice(list(self.players.keys()))
         self.players[imposter_id].is_imposter = True
         self.infection_occurred = False
 
