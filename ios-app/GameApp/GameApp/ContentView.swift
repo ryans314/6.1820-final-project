@@ -209,7 +209,7 @@ struct ConnectView: View {
                 .padding(.horizontal, 24)
 
                 // ── Subtitle ────────────────────────────────────
-                Text("A real-world social deduction game. Find pucks. Trust no one. Vote with your gut.")
+                Text("A real-world social deduction game")
                     .font(.system(size: 14))
                     .foregroundColor(.black.opacity(0.7))
                     .padding(.horizontal, 24)
@@ -562,20 +562,20 @@ struct GameView: View {
     @State private var showFakePoisonOverlay = false   // fake poison display — no game state change
 
 
-    private var nearestPlayerId: String? {
+    private var toInfectPlayerId: String? {
         uwbManager.nearbyPlayers
-            .filter { networkManager.playersInfected[$0.key] == false }
-            .filter { $0.value <= 1.5 }
-            .min(by: { $0.value < $1.value })?.key
+            .filter { $0.value <= 1.5 && networkManager.playersInfected[$0.key] == false }
+            .keys
+            .randomElement()
     }
 
     private var nearestPlayerName: String {
-        guard let id = nearestPlayerId else { return "Agent" }
+        guard let id = toInfectPlayerId else { return "Agent" }
         return networkManager.lobbyPlayers.first { $0.id == id }?.username ?? "Agent"
     }
 
     private var showPoisonAction: Bool {
-        networkManager.isImposter && !networkManager.infectedSomeoneThisRound && (nearestPlayerId != nil) && !passedOnPoison && poisonDeliveredTo == nil && !showFakePoisoned
+        networkManager.isImposter && !networkManager.infectedSomeoneThisRound && (toInfectPlayerId != nil) && !passedOnPoison && poisonDeliveredTo == nil && !showFakePoisoned
     }
 
     var body: some View {
@@ -633,7 +633,7 @@ struct GameView: View {
                     onPass: { passedOnPoison = true },
                     onPoison: {
                         let name = nearestPlayerName
-                        if let targetId = nearestPlayerId {
+                        if let targetId = toInfectPlayerId {
                             networkManager.sendInfect(targetId: targetId)
                             awaitingInfectionResult = true
                         }
@@ -661,7 +661,7 @@ struct GameView: View {
                     onPass: { showManualPoisonAction = false },
                     onPoison: {
                         showManualPoisonAction = false
-                        if let targetId = nearestPlayerId {
+                        if let targetId = toInfectPlayerId {
                             // Real game: infect the nearest UWB player as normal
                             networkManager.sendInfect(targetId: targetId)
                             awaitingInfectionResult = true
@@ -762,8 +762,8 @@ struct GameView: View {
         .onDisappear {
             uwbManager.stop()
         }
-        .onChange(of: uwbManager.hasNearbyPlayer) { _, hasPlayer in
-            if !hasPlayer { passedOnPoison = false }
+        .onChange(of: uwbManager.currentNearbyPlayers) { _, nearbyPlayers in
+            passedOnPoison = false
         }
         .onChange(of: networkManager.infectedSomeoneThisRound) { old, new in
             if new {

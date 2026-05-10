@@ -17,6 +17,7 @@ class UWBManager: NSObject, ObservableObject {
     // Published state (only imposter reads this)
     @Published var nearbyPlayers: [String: Float] = [:]
     @Published var hasNearbyPlayer = false
+    @Published var currentNearbyPlayers: Set<String> = []
 
     // Multipeer
     private let serviceType = "puck-game"
@@ -134,11 +135,14 @@ class UWBManager: NSObject, ObservableObject {
     }
 
     private func updateNearbyStatus() {
-        let wasNearby = hasNearbyPlayer
-        hasNearbyPlayer = nearbyPlayers.values.contains { $0 <= 1.5 } //TODO: CHANGE IT BACK TO 2
-        if hasNearbyPlayer != wasNearby {
-            uwbLog("🚨 hasNearbyPlayer changed → \(hasNearbyPlayer)")
-        }
+        let newNearbyPlayers = Set(nearbyPlayers.filter { $0.value <= 1.5 }.keys)
+        let enteredPlayers = newNearbyPlayers.subtracting(currentNearbyPlayers)
+        
+        guard !enteredPlayers.isEmpty else { return }
+        
+        currentNearbyPlayers = newNearbyPlayers
+        hasNearbyPlayer = true
+        uwbLog("🚨 players entered nearby range → \(enteredPlayers)")
     }
 
     private func removePeer(_ peer: MCPeerID) {

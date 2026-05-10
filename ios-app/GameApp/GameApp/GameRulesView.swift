@@ -29,23 +29,23 @@ struct GameRulesView: View {
                     VStack(spacing: 12) {
                         RuleCard(
                             number: "01",
-                            title:  "FIND THE PUCKS.",
-                            description:   "Agents complete tasks at colored pucks scattered around the space."
+                            title:  "SET UP THE PUCKS",
+                            description:   "Place the 3 pucks far away from each other. At least in 2 different rooms."
                         )
                         RuleCard(
                             number: "02",
-                            title:  "THE MOLE INFECTS.",
-                            description:   "One imposter walks among you. Get close, they may poison you silently."
+                            title:  "WORK TOGETHER",
+                            description:   "Everyone must finish their tasks to move onto the next round."
                         )
                         RuleCard(
                             number: "03",
-                            title:  "NO INFECT = MOLE LOSES.",
-                            description:   "If the round ends and the mole hasn't infected anyone, agents win by default."
+                            title:  "THE MOLE POISONS",
+                            description:   "One imposter walks among you. Every round, they can poison one agent by getting closer than 1.5m."
                         )
                         RuleCard(
                             number: "04",
                             title:  "GATHER & VOTE.",
-                            description:   "When tasks finish, regroup to vote on the mole. You have one chance to get it right!"
+                            description:   "If the imposter poisons everyone, and doesn't get voted out. They win. Otherwise, you win."
                         )
                     }
                     .padding(.horizontal, 24)
