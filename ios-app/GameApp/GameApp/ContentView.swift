@@ -85,6 +85,8 @@ struct ContentView: View {
     @State private var showGameComplete = false
     @State private var acknowledgedTaskComplete = false
     @State private var acknowledgedPoisoned = false
+    // ── DEMO MODE ── set to true to run a local 3-player simulation on one device
+    // ── set back to false for production builds
     private let isDemoMode = false
 
     var body: some View {
@@ -94,7 +96,16 @@ struct ContentView: View {
                 ConnectView(
                     networkManager: networkManager,
                     onJoin: isDemoMode
-                        ? { _ in networkManager.isConnected = true }
+                        ? { name in
+                            // DEMO MODE: skip server, seed 3 mock players in the lobby
+                            networkManager.username = name.isEmpty ? "Awa" : name
+                            networkManager.lobbyPlayers = [
+                                LobbyPlayer(id: "demo-001", username: networkManager.username),
+                                LobbyPlayer(id: "demo-002", username: "Player 2"),
+                                LobbyPlayer(id: "demo-003", username: "Player 3"),
+                            ]
+                            networkManager.isConnected = true
+                          }
                         : { name in networkManager.connect(username: name) }
                 )
             } else if !networkManager.gameStarted {
@@ -103,6 +114,13 @@ struct ContentView: View {
                     networkManager: networkManager,
                     onStartGame: isDemoMode
                         ? {
+                            // DEMO MODE: assign role + first task locally, no server needed
+                            networkManager.isImposter = true // change to true to test the Mole role
+                            networkManager.playersInfected = ["demo-002": false, "demo-003": false]
+                            networkManager.currentTask = "OneTap"
+                            networkManager.taskDescription = "Tap the red puck"
+                            networkManager.taskDirection = "Red: 1 puck"
+                            networkManager.currentRound = "1"
                             networkManager.gameStarted = true
                             networkManager.gameStatus = "in_progress"
                           }
@@ -117,15 +135,18 @@ struct ContentView: View {
                         PoisonedView(onBoohoo: { acknowledgedPoisoned = true })
                     } else if networkManager.currentTask == "Completed" && !acknowledgedTaskComplete {
                         TaskCompleteView(onContinue: { acknowledgedTaskComplete = true })
+                    } else if networkManager.currentTask == "Completed" {
+                        // Task done + acknowledged → show waiting screen until server moves to voting
+                        WaitingForOthersView(networkManager: networkManager, isDemoMode: isDemoMode)
                     } else {
-                        GameView(networkManager: networkManager)
+                        GameView(networkManager: networkManager, isDemoMode: isDemoMode)
                     }
                 } else if networkManager.gameStatus == "voting" {
-                    VotingView(networkManager: networkManager)
+                    VotingView(networkManager: networkManager, isDemoMode: isDemoMode)
                 } else if networkManager.gameStatus == "imposter_revealed" && !showGameComplete {
                     MoleRevealView(networkManager: networkManager, onContinue: { showGameComplete = true })
                 } else if networkManager.gameStatus == "game_complete" || showGameComplete {
-                    GameCompleteView(networkManager: networkManager)
+                    GameCompleteView(networkManager: networkManager, isDemoMode: isDemoMode)
                 }
             }
         }
@@ -528,13 +549,17 @@ private struct MoleMascotView: View {
 
 struct GameView: View {
     @ObservedObject var networkManager: NetworkManager
+    var isDemoMode: Bool = false
+    var isDemoModeUWB: Bool = false
     @StateObject private var uwbManager = UWBManager()
     @State private var poisonDeliveredTo: String? = nil
     @State private var showFakePoisoned = false
     @State private var passedOnPoison = false
     @State private var awaitingInfectionResult = false
     @State private var showInfectionFailureAlert = false
-    @State private var isDemoMode: Bool = false
+    @State private var showIncognitoMenu = false      // incognito mode action sheet
+    @State private var showManualPoisonAction = false  // PASS/POISON overlay (no UWB required)
+    @State private var showFakePoisonOverlay = false   // fake poison display — no game state change
 
 
     private var nearestPlayerId: String? {
@@ -558,6 +583,26 @@ struct GameView: View {
             Color.black.ignoresSafeArea()
 
             VStack(spacing: 0) {
+                // Incognito pill — part of layout flow, sits above the task card
+                if networkManager.isImposter || isDemoMode {
+                    HStack {
+                        Spacer()
+                        Button(action: { showIncognitoMenu = true }) {
+                            Text("INCOGNITO MODE")
+                                .font(.system(size: 11, weight: .bold))
+                                .tracking(0.5)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .background(Color(white: 0.18))
+                                .clipShape(Capsule())
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 56)
+                    .padding(.bottom, 12)
+                }
+
                 GameTaskCard(
                     round: networkManager.currentRound ?? "?",
                     totalrounds: String(networkManager.playersInfected.count - 1),
@@ -567,7 +612,7 @@ struct GameView: View {
                     progressBar: networkManager.taskProgress
                 )
                 .padding(.horizontal, 20)
-                .padding(.top, 56)
+                .padding(.top, (networkManager.isImposter || isDemoMode) ? 0 : 56)
 
                 Spacer()
 
@@ -609,8 +654,81 @@ struct GameView: View {
             if showFakePoisoned {
                 FakePoisonedView(onBoohoo: { showFakePoisoned = false })
             }
-            
+
+            // INCOGNITO → PASS / POISON: real poison flow, no UWB proximity required
+            if showManualPoisonAction {
+                PoisonActionView(
+                    onPass: { showManualPoisonAction = false },
+                    onPoison: {
+                        showManualPoisonAction = false
+                        if let targetId = nearestPlayerId {
+                            // Real game: infect the nearest UWB player as normal
+                            networkManager.sendInfect(targetId: targetId)
+                            awaitingInfectionResult = true
+                            poisonDeliveredTo = nearestPlayerName
+                        } else if isDemoMode,
+                                  let target = networkManager.playersInfected.first(where: { !$0.value }) {
+                            // Demo mode: no UWB — infect the first available mock player
+                            networkManager.sendInfect(targetId: target.key)
+                            awaitingInfectionResult = true
+                            poisonDeliveredTo = networkManager.lobbyPlayers
+                                .first { $0.id == target.key }?.username ?? "Agent"
+                        }
+                    }
+                )
+            }
+
+            // INCOGNITO → FAKE POISON SCREEN: visual decoy only — no networking, no game state change
+            if showFakePoisonOverlay {
+                FakePoisonedView(onBoohoo: { showFakePoisonOverlay = false })
+            }
+
+            // DEMO MODE: floating buttons to skip ahead
             if isDemoMode {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        VStack(alignment: .trailing, spacing: 8) {
+                            // Mark task complete → shows TaskCompleteView then WaitingForOthersView
+                            Button("DEMO ▶ TASK DONE") {
+                                networkManager.currentTask = "Completed"
+                                networkManager.taskProgress = 1.0
+                            }
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.orange.opacity(0.85))
+                            .clipShape(Capsule())
+
+                            // Skip straight to voting
+                            Button("DEMO ▶ VOTING") {
+                                networkManager.gameStatus = "voting"
+                            }
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.orange.opacity(0.85))
+                            .clipShape(Capsule())
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 40)
+                    }
+                }
+            }
+
+            // Incognito Mode custom modal — on top of everything in the ZStack
+            if showIncognitoMenu {
+                IncognitoMenuView(
+                    onPassPoison: { showIncognitoMenu = false; showManualPoisonAction = true },
+                    onFakePoison: { showIncognitoMenu = false; showFakePoisonOverlay = true },
+                    onDismiss:    { showIncognitoMenu = false }
+                )
+            }
+            
+            if isDemoModeUWB {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("DEMO — NEARBY PLAYERS")
                         .font(.system(size: 12, weight: .bold))
@@ -868,6 +986,120 @@ private struct FakePoisonedView: View {
     }
 }
 
+private struct IncognitoMenuView: View {
+    let onPassPoison: () -> Void
+    let onFakePoison: () -> Void
+    let onDismiss:    () -> Void
+
+    private let blue     = Color(red: 0.28, green: 0.62, blue: 0.97)
+    private let pink     = Color(red: 0.97, green: 0.22, blue: 0.60)
+    private let charcoal = Color(red: 0.12, green: 0.12, blue: 0.12)
+
+    var body: some View {
+        ZStack {
+            // Dimmed backdrop — tap outside to dismiss
+            Color.black.opacity(0.65)
+                .ignoresSafeArea()
+                .onTapGesture { onDismiss() }
+
+            // Card
+            VStack(alignment: .leading, spacing: 0) {
+
+                // ── Header ───────────────────────────────────
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("INCOGNITO MODE")
+                            .font(.system(size: 12, weight: .bold))
+                            .tracking(1.0)
+                            .foregroundColor(blue)
+                        Text("Choose your cover.")
+                            .font(.system(size: 26, weight: .black))
+                            .foregroundColor(.white)
+                    }
+                    Spacer()
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.white.opacity(0.55))
+                            .frame(width: 32, height: 32)
+                            .background(Color.white.opacity(0.10))
+                            .clipShape(Circle())
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 24)
+                .padding(.bottom, 24)
+
+                // ── PASS / POISON ─────────────────────────────
+                Button(action: onPassPoison) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("PASS / POISON")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.white)
+                            Text("Real mole action")
+                                .font(.system(size: 12))
+                                .foregroundColor(.white.opacity(0.50))
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(blue)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
+                }
+                .background(blue.opacity(0.12))
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(blue, lineWidth: 1.5))
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .padding(.horizontal, 20)
+
+                // ── FAKE POISON SCREEN ────────────────────────
+                Button(action: onFakePoison) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("FAKE POISON SCREEN")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.white)
+                            Text("Visual bluff only — no game effect")
+                                .font(.system(size: 12))
+                                .foregroundColor(.white.opacity(0.50))
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(pink)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 14)
+                }
+                .background(pink.opacity(0.12))
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(pink, lineWidth: 1.5))
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
+
+                // ── Cancel ────────────────────────────────────
+                Button(action: onDismiss) {
+                    Text("CANCEL")
+                        .font(.system(size: 14, weight: .bold))
+                        .tracking(0.5)
+                        .foregroundColor(.white.opacity(0.38))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .padding(.bottom, 20)
+            }
+            .background(charcoal)
+            .overlay(RoundedRectangle(cornerRadius: 28).stroke(blue.opacity(0.55), lineWidth: 1.5))
+            .clipShape(RoundedRectangle(cornerRadius: 28))
+            .padding(.horizontal, 24)
+        }
+    }
+}
+
 private struct GameTaskCard: View {
     let round: String
     let totalrounds: String
@@ -1091,6 +1323,7 @@ struct PoisonedView: View {
 
 struct VotingView: View {
     @ObservedObject var networkManager: NetworkManager
+    var isDemoMode: Bool = false
 
     private let orange = Color(red: 1.0, green: 0.47, blue: 0.0)
 
@@ -1128,7 +1361,15 @@ struct VotingView: View {
                 Spacer()
 
                 // ── Reveal button ────────────────────────────────
-                Button(action: { networkManager.imposterReveal() }) {
+                Button(action: {
+                    if isDemoMode {
+                        // DEMO MODE: reveal locally instead of sending WebSocket message
+                        networkManager.imposter = "Player 3"
+                        networkManager.gameStatus = "imposter_revealed"
+                    } else {
+                        networkManager.imposterReveal()
+                    }
+                }) {
                     Text("REVEAL")
                         .font(.system(size: 18, weight: .bold))
                         .tracking(0.5)
@@ -1208,6 +1449,7 @@ struct MoleRevealView: View {
 
 struct GameCompleteView: View {
     @ObservedObject var networkManager: NetworkManager
+    var isDemoMode: Bool = false
 
     private let yellow = Color(red: 1.0, green: 0.87, blue: 0.0)
 
@@ -1243,7 +1485,14 @@ struct GameCompleteView: View {
                 Spacer()
 
                 // ── Play Again button ─────────────────────────────
-                Button(action: { networkManager.sendEndGame() }) {
+                Button(action: {
+                    if isDemoMode {
+                        // DEMO MODE: reset state locally instead of sending WebSocket message
+                        networkManager.disconnect()
+                    } else {
+                        networkManager.sendEndGame()
+                    }
+                }) {
                     Text("PLAY AGAIN")
                         .font(.system(size: 18, weight: .bold))
                         .tracking(0.5)
