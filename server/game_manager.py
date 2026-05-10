@@ -508,4 +508,4 @@ class GameManager:
         self.active_tasks.clear()
         self.round_num = 0
         self.puck_colors.clear()
-        await self.connection_manager.close_all()
+        self.connection_manager.close_all()

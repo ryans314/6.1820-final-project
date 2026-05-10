@@ -1,0 +1,1501 @@
+index,ramp_rate,t_start,t_ack,latency_ms,success,error
+1,1500,17023.2427371,17028.3463583,5103.621199999907,True,
+7,1500,17023.2563144,17028.3468277,5090.513299997838,True,
+10,1500,17023.2678156,17028.3472858,5079.470199998468,True,
+12,1500,17023.2761893,17028.3478509,5071.661600002699,True,
+11,1500,17023.2743224,17028.3483112,5073.988799998915,True,
+4,1500,17023.2511198,17028.3488003,5097.6804999991145,True,
+9,1500,17023.2627647,17028.3492816,5086.516899998969,True,
+5,1500,17023.252631,17028.3502359,5097.6049000018975,True,
+3,1500,17023.2475273,17028.3506644,5103.137100002641,True,
+6,1500,17023.254317,17028.3511247,5096.807699999772,True,
+8,1500,17023.2576504,17028.3516759,5094.025500002317,True,
+2,1500,17023.2459102,17028.35219,5106.279800002085,True,
+0,1500,17023.0833009,17028.3526553,5269.354399999429,True,
+15,1500,17023.2854232,17028.3531678,5067.744600000879,True,
+16,1500,17023.2988755,17028.3536917,5054.816199997731,True,
+17,1500,17023.299771,17028.3541787,5054.407699997682,True,
+18,1500,17023.3008264,17028.3546236,5053.797200002009,True,
+19,1500,17023.3019584,17028.3550997,5053.14129999897,True,
+20,1500,17023.3025847,17028.3556091,5053.02440000014,True,
+21,1500,17023.3035104,17028.3560581,5052.547699997376,True,
+22,1500,17023.3052414,17028.3565226,5051.281199997902,True,
+23,1500,17023.3060915,17028.3569895,5050.898000001325,True,
+24,1500,17023.3069507,17028.3577065,5050.755799999024,True,
+25,1500,17023.3078448,17028.3580258,5050.180999998702,True,
+26,1500,17023.308761,17028.3585997,5049.8387000006915,True,
+27,1500,17023.3095073,17028.358908,5049.400699997932,True,
+35,1500,17023.321304,17028.3594934,5038.189399998373,True,
+28,1500,17023.3103182,17028.3599633,5049.645099999907,True,
+34,1500,17023.3208231,17028.3601299,5039.306800001214,True,
+30,1500,17023.3185346,17028.3607241,5042.1894999999495,True,
+29,1500,17023.3108449,17028.3608778,5050.032900002407,True,
+36,1500,17023.321752,17028.3617249,5039.972900001885,True,
+33,1500,17023.3202057,17028.3625737,5042.3679999985325,True,
+37,1500,17023.3221735,17028.3632664,5041.092899999057,True,
+41,1500,17023.3576613,17028.3637615,5006.100200000219,True,
+42,1500,17023.3582037,17028.3645791,5006.375400000252,True,
+46,1500,17023.3607876,17028.3647599,5003.972300000896,True,
+38,1500,17023.3533766,17028.3655085,5012.131899999076,True,
+31,1500,17023.3191908,17028.3657229,5046.532099997421,True,
+39,1500,17023.3563531,17028.3782989,5021.94579999923,True,
+40,1500,17023.3570819,17028.3788891,5021.807199998875,True,
+43,1500,17023.3588023,17028.3794969,5020.6945999998425,True,
+48,1500,17023.3617974,17028.3799772,5018.179799997597,True,
+49,1500,17023.3641211,17028.3804971,5016.375999999582,True,
+32,1500,17023.3197126,17028.3811229,5061.410299997078,True,
+44,1500,17023.3593247,17028.3813358,5022.011100001691,True,
+51,1500,17023.3706631,17028.3819112,5011.248099999648,True,
+52,1500,17023.3712895,17028.3822096,5010.920100001385,True,
+50,1500,17023.369032,17028.3826023,5013.570300001447,True,
+45,1500,17023.3601655,17028.3830249,5022.859400000016,True,
+47,1500,17023.3612546,17028.3837686,5022.514000000228,True,
+53,1500,17023.373662,17028.3839418,5010.279799997079,True,
+13,1500,17023.2787425,17028.3846414,5105.898900001193,True,
+54,1500,17023.3748637,17028.384882,5010.018299999501,True,
+55,1500,17023.3754759,17028.3855291,5010.053199999675,True,
+56,1500,17023.379293,17028.3860086,5006.715599996824,True,
+57,1500,17023.3808451,17028.3865054,5005.660300001182,True,
+58,1500,17023.3821695,17028.3868201,5004.650599999877,True,
+171,1500,17023.510502,17028.4079274,4897.42539999861,True,
+14,1500,17023.2816629,17028.4084112,5126.748299997416,True,
+59,1500,17023.3830817,17028.4089436,5025.861899997835,True,
+60,1500,17023.3841239,17028.4094336,5025.3097000022535,True,
+61,1500,17023.3854823,17028.409747,5024.264700001368,True,
+62,1500,17023.3865454,17028.4104168,5023.871400000644,True,
+63,1500,17023.3874508,17028.4107296,5023.278799999389,True,
+64,1500,17023.3880948,17028.4113388,5023.243999999977,True,
+66,1500,17023.389964,17028.4118121,5021.848099997442,True,
+65,1500,17023.3892124,17028.4121259,5022.91349999723,True,
+67,1500,17023.3907786,17028.4127677,5021.989099997882,True,
+68,1500,17023.3915219,17028.4130197,5021.497800000361,True,
+69,1500,17023.3923815,17028.4136582,5021.276699997543,True,
+70,1500,17023.3936524,17028.4141329,5020.480500003032,True,
+71,1500,17023.3947027,17028.41451,5019.807299999229,True,
+72,1500,17023.3955426,17028.4150721,5019.529500001227,True,
+74,1500,17023.398535,17028.4153879,5016.852900000231,True,
+76,1500,17023.401261,17028.4160447,5014.783700000407,True,
+75,1500,17023.3991062,17028.4165646,5017.4584000014875,True,
+73,1500,17023.3963443,17028.4168136,5020.469300001423,True,
+77,1500,17023.4018566,17028.4175729,5015.716300000349,True,
+78,1500,17023.4025745,17028.4177996,5015.225099999952,True,
+79,1500,17023.4032696,17028.4182036,5014.933999998902,True,
+82,1500,17023.4067632,17028.4188575,5012.094300000172,True,
+83,1500,17023.4073473,17028.4190354,5011.688099999446,True,
+80,1500,17023.4047561,17028.4197071,5014.95100000102,True,
+81,1500,17023.4058561,17028.4199072,5014.051100002689,True,
+84,1500,17023.4078792,17028.4207744,5012.895200001367,True,
+85,1500,17023.4235368,17028.4209242,4997.387399998843,True,
+86,1500,17023.4249522,17028.421485,4996.532799999841,True,
+87,1500,17023.4258982,17028.4216498,4995.751599999494,True,
+88,1500,17023.4269314,17028.4222924,4995.3609999975015,True,
+89,1500,17023.4275612,17028.4224519,4994.890700003452,True,
+91,1500,17023.429308,17028.4230844,4993.776400002389,True,
+90,1500,17023.4285003,17028.4232355,4994.735199998104,True,
+92,1500,17023.4300701,17028.4237984,4993.72829999993,True,
+93,1500,17023.4307696,17028.4239579,4993.188299999019,True,
+94,1500,17023.4318505,17028.4245038,4992.653299999802,True,
+95,1500,17023.4328382,17028.4246818,4991.8436000007205,True,
+96,1500,17023.4342045,17028.4252458,4991.041299999779,True,
+97,1500,17023.435137,17028.4253995,4990.262499999517,True,
+98,1500,17023.436978,17028.4259498,4988.971799997671,True,
+99,1500,17023.4377471,17028.4261021,4988.354999997682,True,
+100,1500,17023.4390032,17028.4267617,4987.758499999472,True,
+101,1500,17023.4401725,17028.4269178,4986.745300000621,True,
+102,1500,17023.44113,17028.4274639,4986.333900000318,True,
+103,1500,17023.4419854,17028.4276084,4985.623000000487,True,
+104,1500,17023.4429954,17028.4302192,4987.223799998901,True,
+105,1500,17023.4435863,17028.4306108,4987.02449999837,True,
+106,1500,17023.4448876,17028.4306308,4985.7432000026165,True,
+107,1500,17023.4460916,17028.4306432,4984.551600002305,True,
+108,1500,17023.4472511,17028.4306587,4983.407600000646,True,
+109,1500,17023.4483933,17028.4306681,4982.274800000596,True,
+110,1500,17023.4498654,17028.4307918,4980.926399999589,True,
+111,1500,17023.4512788,17028.4308824,4979.603600000701,True,
+112,1500,17023.4522071,17028.4310324,4978.825300000608,True,
+113,1500,17023.4531018,17028.4314963,4978.394499998103,True,
+114,1500,17023.4543697,17028.4318142,4977.444500000274,True,
+116,1500,17023.4566333,17028.4323245,4975.691200001165,True,
+115,1500,17023.4554856,17028.4334059,4977.920299999823,True,
+117,1500,17023.4574174,17028.4339559,4976.538499999151,True,
+118,1500,17023.4581364,17028.4345152,4976.378799998201,True,
+119,1500,17023.4677497,17028.4351322,4967.382499999076,True,
+120,1500,17023.4685965,17028.4356556,4967.05909999946,True,
+121,1500,17023.4693331,17028.4362084,4966.8752999969,True,
+122,1500,17023.4704088,17028.4367551,4966.346299999714,True,
+123,1500,17023.4714015,17028.437292,4965.890499999659,True,
+124,1500,17023.4724729,17028.4378179,4965.345000000525,True,
+126,1500,17023.4780736,17028.4383424,4960.268800001359,True,
+125,1500,17023.4733152,17028.4388961,4965.5808999996225,True,
+127,1500,17023.4790253,17028.439425,4960.39970000129,True,
+130,1500,17023.4804873,17028.4397389,4959.251600001153,True,
+129,1500,17023.4801328,17028.440411,4960.278200000175,True,
+128,1500,17023.4797075,17028.440962,4961.254500001814,True,
+131,1500,17023.480803,17028.4414883,4960.685300000478,True,
+132,1500,17023.4819081,17028.4417938,4959.885700001905,True,
+134,1500,17023.4848058,17028.4424745,4957.668700000795,True,
+137,1500,17023.4861783,17028.4430107,4956.832399999257,True,
+138,1500,17023.4865143,17028.4431697,4956.655400001182,True,
+135,1500,17023.485407,17028.4439126,4958.505599999626,True,
+136,1500,17023.4858079,17028.4440654,4958.257499998581,True,
+133,1500,17023.4838345,17028.444814,4960.979499999667,True,
+139,1500,17023.4868093,17028.4458856,4959.076299997832,True,
+143,1500,17023.4910081,17028.4461249,4955.116799999814,True,
+142,1500,17023.490622,17028.4468613,4956.239299997833,True,
+141,1500,17023.4897713,17028.4476297,4957.858400000987,True,
+140,1500,17023.487805,17028.4480722,4960.267200000089,True,
+144,1500,17023.4913405,17028.4483406,4957.000099999277,True,
+149,1500,17023.494071,17028.4489619,4954.890900000464,True,
+145,1500,17023.4916523,17028.4496032,4957.95089999956,True,
+147,1500,17023.4932434,17028.4498349,4956.591499998467,True,
+146,1500,17023.4925417,17028.4505708,4958.0290999983845,True,
+150,1500,17023.4943619,17028.4511041,4956.742200000008,True,
+148,1500,17023.4937266,17028.4548018,4961.07519999714,True,
+153,1500,17023.4987046,17028.4554521,4956.747500000347,True,
+151,1500,17023.4966066,17028.4557788,4959.172199996829,True,
+152,1500,17023.4979359,17028.456407,4958.471100002498,True,
+154,1500,17023.4990734,17028.4569394,4957.866000000649,True,
+155,1500,17023.5009964,17028.4575586,4956.562200000917,True,
+157,1500,17023.5025993,17028.4581623,4955.562999999529,True,
+158,1500,17023.50337,17028.4586879,4955.317900003138,True,
+159,1500,17023.5037397,17028.4593448,4955.605099999957,True,
+160,1500,17023.5040564,17028.4595945,4955.538099999103,True,
+162,1500,17023.505431,17028.4602733,4954.842299997836,True,
+163,1500,17023.5061831,17028.4604299,4954.246799999964,True,
+156,1500,17023.5015253,17028.4613158,4959.790500000963,True,
+164,1500,17023.5065641,17028.4614765,4954.912400000467,True,
+161,1500,17023.5043537,17028.4622128,4957.859100002679,True,
+165,1500,17023.5068607,17028.462355,4955.494300000282,True,
+170,1500,17023.5101717,17028.4631841,4953.012400001171,True,
+166,1500,17023.5071437,17028.463346,4956.202299999859,True,
+168,1500,17023.5094175,17028.4715921,4962.174599997525,True,
+167,1500,17023.5084476,17028.4771182,4968.670599999314,True,
+172,1500,17023.5108638,17028.4880333,4977.169500001764,True,
+169,1500,17023.509838,17028.5008211,4990.983099996811,True,
+173,1500,17023.5130158,17028.5109581,4997.942300000432,True,
+176,1500,17023.5155903,17028.516202,5000.611699997535,True,
+174,1500,17023.5148197,17028.5208046,5005.984899999021,True,
+175,1500,17023.5152646,17028.5250674,5009.802800002944,True,
+177,1500,17023.5161246,17028.5304927,5014.3681000008655,True,
+179,1500,17023.5194717,17028.5348086,5015.336899999966,True,
+178,1500,17023.5180094,17028.5390576,5021.048200000223,True,
+181,1500,17023.5207837,17028.543752,5022.968299999775,True,
+180,1500,17023.5201599,17028.5594572,5039.297300001635,True,
+182,1500,17023.521234,17028.573556,5052.321999999549,True,
+183,1500,17023.5228942,17028.5871757,5064.281499999197,True,
+185,1500,17023.5253146,17028.6083964,5083.081799999491,True,
+186,1500,17023.5258549,17028.6251401,5099.285200001759,True,
+184,1500,17023.5241458,17028.6343395,5110.193700002128,True,
+187,1500,17023.5262389,17028.663042,5136.80309999836,True,
+188,1500,17023.5273232,17028.6796208,5152.297600001475,True,
+192,1500,17023.5297896,17028.6965937,5166.804099997535,True,
+189,1500,17023.5282776,17028.7285316,5200.254000003042,True,
+195,1500,17023.5307365,17028.7438842,5213.147700000263,True,
+191,1500,17023.5294557,17028.756527,5227.071299999807,True,
+190,1500,17023.5290504,17028.7634377,5234.387299999071,True,
+193,1500,17023.530086,17028.7695604,5239.4744000012,True,
+196,1500,17023.5311038,17028.7752475,5244.143700001587,True,
+194,1500,17023.5303894,17028.7795976,5249.208200002613,True,
+262,1500,17023.589719,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+260,1500,17023.5886771,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+261,1500,17023.5892316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+263,1500,17023.5900425,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+264,1500,17023.5903433,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+265,1500,17023.5906386,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+266,1500,17023.5924642,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+267,1500,17023.5936889,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+268,1500,17023.5943949,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+269,1500,17023.5950836,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+270,1500,17023.5956751,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+271,1500,17023.5963543,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+272,1500,17023.5970476,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+197,1500,17023.5336279,17028.7927645,5259.136600001511,True,
+273,1500,17023.597773,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+274,1500,17023.5983708,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+275,1500,17023.5990954,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+276,1500,17023.6001353,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+277,1500,17023.6009722,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+278,1500,17023.6013555,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+279,1500,17023.6023519,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+280,1500,17023.6033444,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+281,1500,17023.6039705,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+282,1500,17023.6044112,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+283,1500,17023.6052418,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+284,1500,17023.6057705,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+285,1500,17023.6064659,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+287,1500,17023.6126973,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+286,1500,17023.6121087,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+289,1500,17023.6144611,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+288,1500,17023.6137822,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+290,1500,17023.6149753,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+292,1500,17023.6176202,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+291,1500,17023.616012,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+295,1500,17023.6191216,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+293,1500,17023.6183144,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+294,1500,17023.6187527,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+297,1500,17023.6205319,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+296,1500,17023.6194932,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+298,1500,17023.6209633,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+299,1500,17023.6213108,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+300,1500,17023.6226712,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+301,1500,17023.6239535,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+302,1500,17023.6243882,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+303,1500,17023.625212,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+304,1500,17023.6261374,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+305,1500,17023.6272919,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+306,1500,17023.6282417,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+307,1500,17023.6288695,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+308,1500,17023.6298378,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+309,1500,17023.6306116,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+310,1500,17023.6310915,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+311,1500,17023.6320591,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+312,1500,17023.633515,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+313,1500,17023.6344871,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+314,1500,17023.6352363,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+315,1500,17023.6361748,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+316,1500,17023.6370369,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+317,1500,17023.6379017,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+318,1500,17023.6386627,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+201,1500,17023.5368941,17028.8136975,5276.8034000000625,True,
+198,1500,17023.5356331,17028.8374573,5301.824199999828,True,
+319,1500,17023.6393743,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+320,1500,17023.6400972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+321,1500,17023.6407487,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+322,1500,17023.641553,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+323,1500,17023.642413,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+324,1500,17023.6431083,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+325,1500,17023.64377,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+326,1500,17023.6445425,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+328,1500,17023.6460195,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+327,1500,17023.645164,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+330,1500,17023.6473789,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+329,1500,17023.646778,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+331,1500,17023.648175,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+332,1500,17023.6487853,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+333,1500,17023.6492001,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+334,1500,17023.6506036,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+335,1500,17023.6516494,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+336,1500,17023.6523781,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+337,1500,17023.6532904,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+338,1500,17023.6540603,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+339,1500,17023.6551936,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+340,1500,17023.656039,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+341,1500,17023.656699,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+343,1500,17023.6579744,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+342,1500,17023.6570607,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+344,1500,17023.6589876,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+345,1500,17023.6595615,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+346,1500,17023.6599581,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+347,1500,17023.6608566,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+348,1500,17023.6617523,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+349,1500,17023.6624534,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+350,1500,17023.6629685,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+351,1500,17023.6636456,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+352,1500,17023.6644409,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+354,1500,17023.6660004,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+353,1500,17023.6653834,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+355,1500,17023.6665471,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+357,1500,17023.6672623,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+356,1500,17023.6669249,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+358,1500,17023.6683258,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+359,1500,17023.6695641,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+360,1500,17023.6702156,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+361,1500,17023.6706089,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+362,1500,17023.6712886,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+363,1500,17023.6718623,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+364,1500,17023.6727822,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+365,1500,17023.6733148,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+366,1500,17023.6739852,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+367,1500,17023.6748447,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+368,1500,17023.6757518,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+369,1500,17023.676399,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+370,1500,17023.6772967,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+371,1500,17023.6780634,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+372,1500,17023.6790064,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+373,1500,17023.6799493,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+374,1500,17023.6808825,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+375,1500,17023.6815624,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+376,1500,17023.6822994,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+377,1500,17023.6831068,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+378,1500,17023.6841892,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+379,1500,17023.6851704,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+380,1500,17023.685916,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+381,1500,17023.6867484,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+382,1500,17023.6877636,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+383,1500,17023.6883602,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+384,1500,17023.6891314,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+385,1500,17023.6899761,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+386,1500,17023.6906817,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+387,1500,17023.6913394,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+389,1500,17023.6928679,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+388,1500,17023.6920289,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+390,1500,17023.693288,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+391,1500,17023.694052,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+392,1500,17023.6945626,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+393,1500,17023.6955566,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+394,1500,17023.6962995,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+395,1500,17023.6968729,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+396,1500,17023.6974759,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+397,1500,17023.6981086,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+401,1500,17023.7001455,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+399,1500,17023.6991699,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+400,1500,17023.6998103,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+402,1500,17023.7004332,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+403,1500,17023.7007191,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+398,1500,17023.6986407,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+404,1500,17023.701918,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+405,1500,17023.7032368,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+406,1500,17023.7039794,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+407,1500,17023.7043454,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+408,1500,17023.7051967,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+200,1500,17023.536566,17028.8576352,5321.069199999329,True,
+409,1500,17023.7058553,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+410,1500,17023.7067585,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+411,1500,17023.7074823,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+412,1500,17023.7081277,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+413,1500,17023.7088219,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+414,1500,17023.7095473,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+415,1500,17023.7104893,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+416,1500,17023.7110619,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+417,1500,17023.7115512,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+418,1500,17023.7124735,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+419,1500,17023.7138115,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+420,1500,17023.7144091,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+421,1500,17023.7147907,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+422,1500,17023.7155187,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+423,1500,17023.7165645,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+424,1500,17023.7174786,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+425,1500,17023.7180363,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+426,1500,17023.7184091,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+427,1500,17023.7187316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+428,1500,17023.7197156,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+429,1500,17023.7210824,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+430,1500,17023.7217998,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+431,1500,17023.722513,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+432,1500,17023.7229053,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+433,1500,17023.7238909,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+434,1500,17023.724504,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+435,1500,17023.7255149,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+436,1500,17023.7262852,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+437,1500,17023.7270748,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+438,1500,17023.7276953,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+439,1500,17023.7284275,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+440,1500,17023.7291914,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+441,1500,17023.7299088,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+442,1500,17023.7306241,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+443,1500,17023.7313979,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+444,1500,17023.7320793,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+445,1500,17023.7331252,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+446,1500,17023.7343713,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+447,1500,17023.7350408,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+448,1500,17023.7357542,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+449,1500,17023.7365182,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+450,1500,17023.7372845,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+451,1500,17023.7381536,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+452,1500,17023.7390323,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+453,1500,17023.7399656,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+454,1500,17023.7416423,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+455,1500,17023.7426053,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+456,1500,17023.7436263,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+457,1500,17023.7444323,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+458,1500,17023.7453252,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+459,1500,17023.7460085,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+460,1500,17023.7467112,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+461,1500,17023.7473777,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+462,1500,17023.7480716,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+463,1500,17023.7488938,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+464,1500,17023.7499303,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+465,1500,17023.7513891,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+466,1500,17023.7522329,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+467,1500,17023.753056,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+468,1500,17023.7538781,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+469,1500,17023.7547662,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+470,1500,17023.7552508,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+471,1500,17023.7556338,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+472,1500,17023.7573972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+473,1500,17023.7582215,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+474,1500,17023.7591666,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+475,1500,17023.7602544,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+476,1500,17023.7613751,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+477,1500,17023.762304,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+203,1500,17023.5386907,17028.9004523,5361.761600001046,True,
+478,1500,17023.7628531,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+479,1500,17023.7649237,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+480,1500,17023.7660344,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+481,1500,17023.7672476,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+482,1500,17023.7682198,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+483,1500,17023.769138,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+484,1500,17023.7700266,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+485,1500,17023.770646,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+486,1500,17023.7713475,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+487,1500,17023.7720538,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+488,1500,17023.7729246,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+490,1500,17023.7745147,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+489,1500,17023.7737957,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+491,1500,17023.7750655,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+492,1500,17023.7757526,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+493,1500,17023.7766443,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+494,1500,17023.7775194,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+495,1500,17023.7783101,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+496,1500,17023.7790655,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+497,1500,17023.7797946,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+498,1500,17023.7804567,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+499,1500,17023.7813895,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+500,1500,17023.7823157,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+501,1500,17023.7836228,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+502,1500,17023.7846585,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+503,1500,17023.7855304,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+199,1500,17023.5361726,17028.9129754,5376.802799997677,True,
+504,1500,17023.7860047,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+505,1500,17023.7868959,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+506,1500,17023.7876981,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+507,1500,17023.7887895,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+508,1500,17023.789834,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+509,1500,17023.79059,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+510,1500,17023.7912941,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+511,1500,17023.7919242,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+513,1500,17023.7933445,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+512,1500,17023.7927914,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+514,1500,17023.7937691,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+515,1500,17023.7944648,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+516,1500,17023.7949764,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+517,1500,17023.7957589,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+518,1500,17023.7966839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+519,1500,17023.7975433,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+520,1500,17023.7984053,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+521,1500,17023.7996796,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+522,1500,17023.800635,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+523,1500,17023.801452,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+524,1500,17023.801909,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+525,1500,17023.802465,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+526,1500,17023.8037623,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+527,1500,17023.8044076,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+528,1500,17023.8048443,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+529,1500,17023.8057507,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+530,1500,17023.8063634,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+531,1500,17023.8071302,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+532,1500,17023.8077341,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+533,1500,17023.808465,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+534,1500,17023.8088095,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+536,1500,17023.8106147,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+535,1500,17023.8096747,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+538,1500,17023.8116686,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+537,1500,17023.8112114,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+539,1500,17023.8121416,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+540,1500,17023.8127485,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+541,1500,17023.8136791,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+542,1500,17023.8142344,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+544,1500,17023.8149112,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+543,1500,17023.8145967,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+545,1500,17023.8156381,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+546,1500,17023.8170293,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+547,1500,17023.8179418,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+548,1500,17023.8192488,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+549,1500,17023.8202216,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+552,1500,17023.8225255,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+553,1500,17023.8232561,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+554,1500,17023.8236174,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+551,1500,17023.8220867,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+550,1500,17023.8212345,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+564,1500,17023.8284157,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+561,1500,17023.827519,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+567,1500,17023.8292793,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+563,1500,17023.8281306,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+568,1500,17023.8296717,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+565,1500,17023.8286943,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+560,1500,17023.8271918,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+559,1500,17023.8268853,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+555,1500,17023.8239418,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+556,1500,17023.8258254,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+572,1500,17023.8308372,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+558,1500,17023.8265713,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+562,1500,17023.8278316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+571,1500,17023.8305479,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+557,1500,17023.8262431,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+570,1500,17023.830268,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+569,1500,17023.8299785,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+566,1500,17023.828993,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+573,1500,17023.8311263,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+574,1500,17023.831415,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+575,1500,17023.8317187,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+202,1500,17023.5371959,17028.9326562,5395.460299998376,True,
+205,1500,17023.5397129,17028.9368342,5397.121300000435,True,
+204,1500,17023.5393065,17028.9433036,5403.997100002016,True,
+206,1500,17023.5419014,17028.9502706,5408.36919999856,True,
+207,1500,17023.5423574,17028.9555009,5413.143499998114,True,
+576,1500,17023.8320114,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+577,1500,17023.8326501,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+578,1500,17023.8372446,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+579,1500,17023.840781,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+580,1500,17023.8419182,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+581,1500,17023.8424212,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+582,1500,17023.8427932,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+583,1500,17023.8439716,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+584,1500,17023.8447024,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+586,1500,17023.8463431,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+585,1500,17023.8453809,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+587,1500,17023.8469499,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+588,1500,17023.8475257,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+589,1500,17023.8480701,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+591,1500,17023.8506242,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+590,1500,17023.8492595,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+592,1500,17023.8511839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+593,1500,17023.8519488,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+594,1500,17023.852741,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+595,1500,17023.8535673,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+596,1500,17023.8542364,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+597,1500,17023.8545511,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+598,1500,17023.8558388,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+599,1500,17023.8563486,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+600,1500,17023.8567579,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+602,1500,17023.8583131,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+601,1500,17023.8573578,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+603,1500,17023.8589868,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+604,1500,17023.8594293,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+606,1500,17023.8636839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+605,1500,17023.8597442,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+607,1500,17023.8642834,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+608,1500,17023.8653749,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+609,1500,17023.8670398,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+610,1500,17023.8676983,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+611,1500,17023.8681197,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+612,1500,17023.86902,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+613,1500,17023.8698721,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+614,1500,17023.8708723,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+615,1500,17023.8714926,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+616,1500,17023.8721617,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+617,1500,17023.8727951,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+618,1500,17023.8733585,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+619,1500,17023.8740434,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+620,1500,17023.8746225,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+621,1500,17023.8751927,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+622,1500,17023.8757718,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+623,1500,17023.8763375,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+624,1500,17023.8768798,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+625,1500,17023.8774031,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+626,1500,17023.8779509,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+627,1500,17023.8785374,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+628,1500,17023.8788559,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+629,1500,17023.8794168,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+630,1500,17023.880047,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+631,1500,17023.8807596,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+632,1500,17023.8819111,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+633,1500,17023.882834,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+634,1500,17023.8838303,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+635,1500,17023.8844972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+636,1500,17023.8850062,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+637,1500,17023.886292,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+639,1500,17023.8886866,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+638,1500,17023.8875816,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+641,1500,17023.8904898,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+640,1500,17023.8897967,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+642,1500,17023.8911936,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+645,1500,17023.8929964,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+643,1500,17023.8919169,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+644,1500,17023.892532,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+647,1500,17023.8936316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+648,1500,17023.8939148,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+646,1500,17023.8933266,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+655,1500,17023.8980845,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+656,1500,17023.8984491,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+651,1500,17023.8968882,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+649,1500,17023.895099,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+657,1500,17023.8987819,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+650,1500,17023.8965019,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+653,1500,17023.8974956,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+658,1500,17023.8991244,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+654,1500,17023.8977881,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+652,1500,17023.897205,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+663,1500,17023.9036972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+662,1500,17023.9033741,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+659,1500,17023.8996039,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+665,1500,17023.9043111,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+664,1500,17023.9040113,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+660,1500,17023.9026065,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+661,1500,17023.9030388,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+666,1500,17023.9045896,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+673,1500,17023.9098456,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+674,1500,17023.9102459,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+671,1500,17023.9092662,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+679,1500,17023.9117713,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+667,1500,17023.9048739,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+677,1500,17023.9112075,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+669,1500,17023.9085925,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+675,1500,17023.9106253,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+680,1500,17023.9120532,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+676,1500,17023.9109239,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+668,1500,17023.9079318,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+681,1500,17023.9123647,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+672,1500,17023.9095624,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+670,1500,17023.9089724,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+678,1500,17023.9114852,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+682,1500,17023.9126528,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+683,1500,17023.9152995,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+684,1500,17023.9172312,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+685,1500,17023.9183269,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+686,1500,17023.9193778,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+208,1500,17023.544051,17028.9702567,5426.205699997809,True,
+688,1500,17023.9209863,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+687,1500,17023.9203001,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+689,1500,17023.9213922,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+690,1500,17023.9220176,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+691,1500,17023.9228348,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+692,1500,17023.9235682,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+693,1500,17023.9239763,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+694,1500,17023.9246048,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+695,1500,17023.9255671,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+696,1500,17023.9263744,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+697,1500,17023.9270768,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+698,1500,17023.927687,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+699,1500,17023.9280244,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+700,1500,17023.9289269,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+701,1500,17023.9294894,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+702,1500,17023.9301496,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+703,1500,17023.9312487,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+209,1500,17023.5459441,17028.9966699,5450.725800001237,True,
+704,1500,17023.9320753,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+705,1500,17023.9329318,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+707,1500,17023.9343163,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+706,1500,17023.9338347,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+708,1500,17023.9346562,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+709,1500,17023.9356516,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+711,1500,17023.9371874,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+710,1500,17023.9366484,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+712,1500,17023.9378508,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+713,1500,17023.9385053,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+715,1500,17023.9400077,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+714,1500,17023.9396,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+717,1500,17023.9414938,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+716,1500,17023.9408445,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+718,1500,17023.9418567,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+719,1500,17023.942658,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+720,1500,17023.9434395,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+721,1500,17023.9440403,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+722,1500,17023.9443649,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+723,1500,17023.9450764,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+724,1500,17023.9458324,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+725,1500,17023.9466285,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+726,1500,17023.9471911,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+727,1500,17023.9480972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+728,1500,17023.9487089,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+729,1500,17023.9490686,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+730,1500,17023.9503883,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+732,1500,17023.9519586,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+731,1500,17023.9514002,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+733,1500,17023.9523771,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+734,1500,17023.9533147,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+736,1500,17023.9549422,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+735,1500,17023.9541055,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+737,1500,17023.9554581,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+738,1500,17023.9558501,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+739,1500,17023.9567664,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+740,1500,17023.957686,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+210,1500,17023.5471059,17029.0117259,5464.619999998831,True,
+741,1500,17023.9583159,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+742,1500,17023.9587448,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+743,1500,17023.9594879,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+744,1500,17023.9603678,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+745,1500,17023.9611694,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+746,1500,17023.9618939,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+747,1500,17023.9622762,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+748,1500,17023.9625878,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+749,1500,17023.9636068,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+750,1500,17023.9646132,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+751,1500,17023.9653116,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+752,1500,17023.9663982,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+753,1500,17023.9670963,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+754,1500,17023.9681923,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+755,1500,17023.9692351,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+756,1500,17023.9700879,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+757,1500,17023.9709494,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+758,1500,17023.9716734,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+759,1500,17023.9724458,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+760,1500,17023.973221,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+761,1500,17023.9739718,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+762,1500,17023.9746454,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+763,1500,17023.9752553,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+764,1500,17023.9758104,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+765,1500,17023.9764414,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+766,1500,17023.9773912,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+767,1500,17023.9781315,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+768,1500,17023.9786194,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+769,1500,17023.9793603,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+770,1500,17023.9801425,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+771,1500,17023.9808702,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+772,1500,17023.981736,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+773,1500,17023.9826331,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+774,1500,17023.9833881,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+775,1500,17023.9843556,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+776,1500,17023.9849798,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+777,1500,17023.9858912,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+778,1500,17023.9864271,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+211,1500,17023.5481702,17029.0363093,5488.139100001717,True,
+779,1500,17023.9868272,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+212,1500,17023.5493923,17029.0619473,5512.555000001157,True,
+780,1500,17023.987577,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+781,1500,17023.9882138,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+782,1500,17023.9891625,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+783,1500,17023.9897828,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+785,1500,17023.9911185,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+784,1500,17023.990451,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+786,1500,17023.9914642,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+787,1500,17023.9922203,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+788,1500,17023.992906,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+789,1500,17023.9938104,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+790,1500,17023.9945405,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+791,1500,17023.9952035,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+792,1500,17023.9963296,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+793,1500,17023.996815,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+794,1500,17023.9976096,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+796,1500,17023.9994768,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+795,1500,17023.998338,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+798,1500,17024.0008057,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+799,1500,17024.0011514,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+797,1500,17024.0003343,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+800,1500,17024.0014686,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+801,1500,17024.0025319,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+802,1500,17024.0034139,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+803,1500,17024.0042647,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+804,1500,17024.0049839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+805,1500,17024.005879,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+806,1500,17024.0064439,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+807,1500,17024.00685,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+214,1500,17023.5514223,17029.0871506,5535.72830000121,True,
+213,1500,17023.5505011,17029.0917286,5541.227500001696,True,
+217,1500,17023.5533871,17029.0958689,5542.481799999223,True,
+808,1500,17024.0077442,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+809,1500,17024.0084384,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+810,1500,17024.0093299,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+811,1500,17024.0099314,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+812,1500,17024.0106301,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+813,1500,17024.0113457,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+814,1500,17024.0121871,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+815,1500,17024.0128178,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+816,1500,17024.0137573,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+817,1500,17024.0144999,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+818,1500,17024.0152874,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+218,1500,17023.5536964,17029.1039081,5550.211700003274,True,
+215,1500,17023.5518661,17029.110268,5558.401900001627,True,
+219,1500,17023.5540105,17029.1156569,5561.646400001337,True,
+216,1500,17023.5529409,17029.1211175,5568.176599997969,True,
+819,1500,17024.0168046,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+820,1500,17024.0178582,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+821,1500,17024.0185578,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+822,1500,17024.0194767,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+823,1500,17024.020097,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+824,1500,17024.0204887,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+220,1500,17023.5543707,17029.1272123,5572.841600001993,True,
+221,1500,17023.5562626,17029.133509,5577.246400000149,True,
+222,1500,17023.5571368,17029.1378249,5580.68810000259,True,
+223,1500,17023.5582258,17029.1465763,5588.3505000019795,True,
+224,1500,17023.5591211,17029.1612327,5602.111600001081,True,
+874,1500,17024.0562546,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+875,1500,17024.0566939,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+876,1500,17024.0571968,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+877,1500,17024.0579163,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+878,1500,17024.0585336,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+879,1500,17024.0594129,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+880,1500,17024.0598913,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+881,1500,17024.0602079,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+882,1500,17024.0610407,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+883,1500,17024.0618352,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+884,1500,17024.0625075,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+885,1500,17024.0634012,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+886,1500,17024.0641461,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+887,1500,17024.0648358,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+888,1500,17024.0652024,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+889,1500,17024.0665443,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+890,1500,17024.0674683,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+891,1500,17024.0682577,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+892,1500,17024.0686601,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+893,1500,17024.0695068,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+894,1500,17024.0702878,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+895,1500,17024.0713026,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+896,1500,17024.0720882,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+897,1500,17024.0727589,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+225,1500,17023.5599449,17029.1713042,5611.359300000913,True,
+898,1500,17024.0734337,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+899,1500,17024.0743832,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+900,1500,17024.0750218,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+901,1500,17024.0753712,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+902,1500,17024.0761593,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+903,1500,17024.0767619,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+904,1500,17024.0778293,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+905,1500,17024.0784211,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+906,1500,17024.0788064,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+907,1500,17024.0798221,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+908,1500,17024.0804938,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+909,1500,17024.0808328,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+910,1500,17024.0813952,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+911,1500,17024.08195,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+912,1500,17024.0832794,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+913,1500,17024.0841484,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+914,1500,17024.0847739,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+915,1500,17024.0855346,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+916,1500,17024.0861344,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+917,1500,17024.086796,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+918,1500,17024.0874667,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+919,1500,17024.0879959,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+920,1500,17024.0884898,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+921,1500,17024.0889533,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+922,1500,17024.089458,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+923,1500,17024.0902163,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+924,1500,17024.0911131,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+925,1500,17024.0919417,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+926,1500,17024.095596,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+927,1500,17024.0962494,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+928,1500,17024.0970637,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+929,1500,17024.0974599,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+930,1500,17024.0977609,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+931,1500,17024.0988289,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+932,1500,17024.1002469,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+933,1500,17024.1013363,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+934,1500,17024.102222,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+935,1500,17024.1029817,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+936,1500,17024.1035773,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+937,1500,17024.1042817,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+938,1500,17024.104858,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+939,1500,17024.1053936,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+940,1500,17024.1062994,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+942,1500,17024.1073919,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+941,1500,17024.1066716,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+943,1500,17024.1081255,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+945,1500,17024.1092815,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+226,1500,17023.5609175,17029.1879363,5627.018800001679,True,
+944,1500,17024.1088837,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+946,1500,17024.1099973,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+947,1500,17024.1105293,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+948,1500,17024.1112979,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+949,1500,17024.1121515,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+950,1500,17024.1130138,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+951,1500,17024.1137654,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+952,1500,17024.1144634,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+953,1500,17024.1154111,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+955,1500,17024.1169541,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+954,1500,17024.1163216,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+956,1500,17024.1177789,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+957,1500,17024.1184125,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+958,1500,17024.1193518,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+959,1500,17024.1198814,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+960,1500,17024.1202164,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+961,1500,17024.1211866,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+962,1500,17024.1218796,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+963,1500,17024.1226015,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+964,1500,17024.1232108,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+965,1500,17024.123991,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+967,1500,17024.1253465,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+966,1500,17024.1246299,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+968,1500,17024.1257311,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+969,1500,17024.1264312,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+970,1500,17024.1271394,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+971,1500,17024.1283203,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+972,1500,17024.1289545,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+973,1500,17024.1294587,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+974,1500,17024.1297763,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+975,1500,17024.1304244,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+976,1500,17024.1311089,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+977,1500,17024.1318544,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+978,1500,17024.1326586,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+979,1500,17024.1341332,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+980,1500,17024.1349711,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+981,1500,17024.1356324,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+982,1500,17024.136244,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+983,1500,17024.136845,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+984,1500,17024.1375287,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+985,1500,17024.1381826,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+986,1500,17024.138768,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+227,1500,17023.5618,17029.2083583,5646.558299999015,True,
+987,1500,17024.1393888,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+988,1500,17024.1401419,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+989,1500,17024.1407541,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+991,1500,17024.1420215,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+990,1500,17024.1414117,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+992,1500,17024.1427746,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+993,1500,17024.1434417,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+994,1500,17024.1441412,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+995,1500,17024.1448302,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+996,1500,17024.1455183,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+997,1500,17024.1461668,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+998,1500,17024.1467896,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+999,1500,17024.1474475,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1000,1500,17024.1481222,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1001,1500,17024.14873,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1002,1500,17024.1494709,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+228,1500,17023.5626187,17029.2230619,5660.443199998554,True,
+1044,1500,17024.1782748,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1045,1500,17024.1791512,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1046,1500,17024.1801526,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1047,1500,17024.1806862,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1048,1500,17024.1815406,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1049,1500,17024.1824604,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1050,1500,17024.183529,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1051,1500,17024.1842331,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1052,1500,17024.1851732,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+229,1500,17023.5634547,17029.2360729,5672.618199998396,True,
+230,1500,17023.5642388,17029.2405049,5676.266099999339,True,
+231,1500,17023.565146,17029.2452269,5680.080899997847,True,
+232,1500,17023.5661834,17029.2511037,5684.920300001977,True,
+233,1500,17023.5674382,17029.2564354,5688.997199998994,True,
+235,1500,17023.568676,17029.2623964,5693.7204000023485,True,
+234,1500,17023.5679257,17029.2759345,5708.008800000243,True,
+236,1500,17023.5690823,17029.2918736,5722.791299998789,True,
+237,1500,17023.5694544,17029.3145347,5745.080299999245,True,
+1151,1500,17024.2616931,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1152,1500,17024.2625271,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1153,1500,17024.2632332,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1154,1500,17024.2640518,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1155,1500,17024.264804,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1156,1500,17024.2655728,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1157,1500,17024.2667415,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1158,1500,17024.2675223,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1159,1500,17024.268175,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1160,1500,17024.2687727,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1161,1500,17024.2695284,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1162,1500,17024.2701774,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1163,1500,17024.2707839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1165,1500,17024.2720219,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+238,1500,17023.570693,17029.3402059,5769.512899998517,True,
+1164,1500,17024.2714245,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1166,1500,17024.2726292,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1167,1500,17024.2733507,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1168,1500,17024.2741524,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1169,1500,17024.2748432,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1170,1500,17024.2755213,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1171,1500,17024.2760954,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1172,1500,17024.2766243,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1173,1500,17024.2772882,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1174,1500,17024.2780264,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1175,1500,17024.2790496,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1176,1500,17024.2797661,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1177,1500,17024.2804255,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1178,1500,17024.2813279,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1179,1500,17024.2821928,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1180,1500,17024.2836636,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1181,1500,17024.2844543,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1182,1500,17024.2852058,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1183,1500,17024.2858355,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1184,1500,17024.2864552,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1185,1500,17024.287091,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1186,1500,17024.2877935,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1187,1500,17024.2883858,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1188,1500,17024.2889996,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1189,1500,17024.289641,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1190,1500,17024.2902268,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1192,1500,17024.2915856,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1191,1500,17024.2908867,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1193,1500,17024.292303,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1194,1500,17024.2935923,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1195,1500,17024.2943554,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1196,1500,17024.2952456,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1197,1500,17024.2959572,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1198,1500,17024.2966321,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1199,1500,17024.2972867,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1200,1500,17024.2979287,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1201,1500,17024.2985274,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1202,1500,17024.2990752,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1203,1500,17024.2999851,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1204,1500,17024.3008141,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1205,1500,17024.3015702,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1206,1500,17024.3022538,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1207,1500,17024.3029227,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1208,1500,17024.3036273,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1209,1500,17024.3043275,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1210,1500,17024.3049328,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1211,1500,17024.305668,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1212,1500,17024.3063829,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1213,1500,17024.3070385,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1214,1500,17024.3077437,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1215,1500,17024.3084113,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1216,1500,17024.3090074,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1217,1500,17024.3095979,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1218,1500,17024.3103678,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1219,1500,17024.3114503,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1220,1500,17024.312311,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1221,1500,17024.3131085,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1222,1500,17024.3137962,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1223,1500,17024.3144235,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1224,1500,17024.3150128,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1225,1500,17024.3157962,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1226,1500,17024.316939,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1227,1500,17024.3176204,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1228,1500,17024.3182403,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1229,1500,17024.3188557,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+239,1500,17023.5715985,17029.3622338,5790.635299999849,True,
+242,1500,17023.5729411,17029.3639354,5790.99430000133,True,
+1230,1500,17024.3194127,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1231,1500,17024.3199311,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1232,1500,17024.3204915,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1233,1500,17024.3210609,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1234,1500,17024.3215862,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1235,1500,17024.3221038,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1236,1500,17024.3226037,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1237,1500,17024.3230864,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1238,1500,17024.3237609,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1239,1500,17024.3244736,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+241,1500,17023.5726159,17029.3711373,5798.521400000027,True,
+240,1500,17023.5722309,17029.3752596,5803.028700000141,True,
+243,1500,17023.5736272,17029.39242,5818.792800000665,True,
+244,1500,17023.5744101,17029.3925833,5818.173200001183,True,
+1240,1500,17024.3250681,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1241,1500,17024.3256046,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1242,1500,17024.326414,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1243,1500,17024.3270886,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1244,1500,17024.327733,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1245,1500,17024.3283508,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1246,1500,17024.3321639,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1247,1500,17024.3334174,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1248,1500,17024.3341831,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1249,1500,17024.3348686,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1250,1500,17024.3355474,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1251,1500,17024.3361666,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1252,1500,17024.3367573,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1253,1500,17024.3373987,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1254,1500,17024.3378735,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1255,1500,17024.3383653,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1257,1500,17024.3398486,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1256,1500,17024.3390043,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1258,1500,17024.3403719,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1259,1500,17024.3409222,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1260,1500,17024.341719,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1261,1500,17024.3423461,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1262,1500,17024.3429555,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1263,1500,17024.3436052,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1264,1500,17024.3442511,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1265,1500,17024.3447704,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1266,1500,17024.3455575,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1267,1500,17024.3462614,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1268,1500,17024.3471533,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1269,1500,17024.3477969,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1270,1500,17024.3484377,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1271,1500,17024.3490664,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1272,1500,17024.3501081,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1273,1500,17024.3512257,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1274,1500,17024.3520262,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1275,1500,17024.3526519,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1276,1500,17024.3534037,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1277,1500,17024.354063,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1278,1500,17024.3548274,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1279,1500,17024.3554824,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1280,1500,17024.3561497,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1281,1500,17024.3567385,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1282,1500,17024.3573143,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1283,1500,17024.3578531,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1284,1500,17024.3583942,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1285,1500,17024.358904,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1286,1500,17024.3594071,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1287,1500,17024.3599464,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1288,1500,17024.3606281,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1289,1500,17024.3613231,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1290,1500,17024.3619094,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1291,1500,17024.3624861,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1292,1500,17024.363136,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1293,1500,17024.3637886,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1294,1500,17024.3644421,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1295,1500,17024.3650359,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1296,1500,17024.3656004,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1297,1500,17024.366721,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1298,1500,17024.3677295,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1299,1500,17024.3686819,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1300,1500,17024.3693775,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1301,1500,17024.3700588,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1302,1500,17024.3706873,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1303,1500,17024.3712467,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1304,1500,17024.3719193,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1305,1500,17024.3725943,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1307,1500,17024.3739489,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1306,1500,17024.3733152,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1308,1500,17024.374661,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1309,1500,17024.3752327,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1310,1500,17024.3759737,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1311,1500,17024.3768972,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1312,1500,17024.3775731,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1313,1500,17024.378217,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1314,1500,17024.3788885,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1315,1500,17024.3794599,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1316,1500,17024.3800751,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1317,1500,17024.3807309,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1318,1500,17024.3813247,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1319,1500,17024.3819388,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1320,1500,17024.3827291,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1321,1500,17024.3836259,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1322,1500,17024.3844213,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1323,1500,17024.3851072,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1324,1500,17024.3859201,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1325,1500,17024.3867119,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1326,1500,17024.3874208,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1327,1500,17024.3883192,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1328,1500,17024.3892506,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1330,1500,17024.3904467,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1329,1500,17024.3898581,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1331,1500,17024.3909124,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1332,1500,17024.391747,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1333,1500,17024.3926105,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1334,1500,17024.3933701,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1335,1500,17024.394117,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1336,1500,17024.3947156,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1337,1500,17024.3954207,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1338,1500,17024.3960963,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1339,1500,17024.3966543,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1340,1500,17024.3972173,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1341,1500,17024.3978567,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1342,1500,17024.3985306,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1343,1500,17024.3993039,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1344,1500,17024.4003878,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1345,1500,17024.4010316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1346,1500,17024.4018926,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1347,1500,17024.4025519,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1348,1500,17024.4031702,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+245,1500,17023.5747942,17029.4103736,5835.579399998096,True,
+246,1500,17023.5759498,17029.4276132,5851.663400000689,True,
+1349,1500,17024.4037045,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1350,1500,17024.4043474,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1351,1500,17024.404992,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1352,1500,17024.4055049,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1353,1500,17024.406528,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1354,1500,17024.4072183,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1355,1500,17024.4078585,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1356,1500,17024.4084477,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1357,1500,17024.4090668,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1358,1500,17024.4096319,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1359,1500,17024.4105961,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1360,1500,17024.4113138,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1361,1500,17024.4116648,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1362,1500,17024.4125259,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1363,1500,17024.4133306,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1364,1500,17024.4140011,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1365,1500,17024.4146408,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1366,1500,17024.4153186,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1367,1500,17024.4160361,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1368,1500,17024.4167521,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1369,1500,17024.4175377,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1370,1500,17024.4181209,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1371,1500,17024.4189216,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1372,1500,17024.4195608,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1374,1500,17024.4205762,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1373,1500,17024.4199041,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1376,1500,17024.4216578,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1375,1500,17024.4209239,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1377,1500,17024.4224795,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1378,1500,17024.4230002,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1379,1500,17024.4236078,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1380,1500,17024.424387,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1381,1500,17024.4252448,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1382,1500,17024.4259849,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1383,1500,17024.4269899,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1384,1500,17024.4277031,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1385,1500,17024.4283907,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1386,1500,17024.4290869,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1387,1500,17024.4299684,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1389,1500,17024.4312944,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1388,1500,17024.4306776,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1390,1500,17024.4316549,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1391,1500,17024.4326825,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1392,1500,17024.4339985,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1393,1500,17024.4344424,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1394,1500,17024.4353327,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1395,1500,17024.436114,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1396,1500,17024.4368804,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1397,1500,17024.4375895,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1398,1500,17024.4382195,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1399,1500,17024.4388692,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1400,1500,17024.4397471,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1401,1500,17024.4403785,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1402,1500,17024.4410292,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1403,1500,17024.4417023,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1404,1500,17024.442373,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1405,1500,17024.4429636,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1406,1500,17024.4438468,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1407,1500,17024.444616,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1408,1500,17024.4454726,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1409,1500,17024.446322,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1410,1500,17024.4470809,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1411,1500,17024.4478023,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1412,1500,17024.448615,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1413,1500,17024.449553,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1414,1500,17024.4506602,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1415,1500,17024.4512936,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1416,1500,17024.4518969,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1417,1500,17024.4527103,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1418,1500,17024.4534082,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1419,1500,17024.4540853,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1420,1500,17024.4546209,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1421,1500,17024.4551957,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1422,1500,17024.4557401,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1423,1500,17024.456312,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1424,1500,17024.4568838,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1425,1500,17024.4574459,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1426,1500,17024.4579795,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1427,1500,17024.4584878,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1428,1500,17024.4592112,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1429,1500,17024.4601163,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1431,1500,17024.4617022,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1430,1500,17024.4609224,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1432,1500,17024.462135,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1433,1500,17024.4632193,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1434,1500,17024.4641031,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1435,1500,17024.4651042,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1436,1500,17024.4661152,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1437,1500,17024.4667962,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1438,1500,17024.4679386,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1439,1500,17024.4687821,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1440,1500,17024.4699266,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1441,1500,17024.4709002,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1442,1500,17024.4718165,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1443,1500,17024.4726002,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1444,1500,17024.4733189,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1445,1500,17024.4740023,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+247,1500,17023.5766763,17029.4567222,5880.045900001278,True,
+1446,1500,17024.4748195,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1447,1500,17024.4756295,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1448,1500,17024.4764441,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1449,1500,17024.4772733,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1450,1500,17024.4780872,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1451,1500,17024.4791362,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1452,1500,17024.4800106,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1453,1500,17024.4810386,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1454,1500,17024.4820116,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1455,1500,17024.4833868,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1456,1500,17024.4842522,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1457,1500,17024.4850526,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1458,1500,17024.4861111,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1459,1500,17024.4872402,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1460,1500,17024.4878247,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1461,1500,17024.4890033,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1462,1500,17024.4900108,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1463,1500,17024.490906,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1464,1500,17024.4915605,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1465,1500,17024.492599,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1466,1500,17024.4934305,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1467,1500,17024.4940581,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1468,1500,17024.495046,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1469,1500,17024.4965157,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1472,1500,17024.4989138,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1470,1500,17024.4972213,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1471,1500,17024.4981041,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1473,1500,17024.499648,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1474,1500,17024.5002484,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1475,1500,17024.5007784,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1476,1500,17024.5015211,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1477,1500,17024.5029788,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1478,1500,17024.5042751,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1479,1500,17024.5051254,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1480,1500,17024.5060157,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1481,1500,17024.5068498,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1482,1500,17024.5077604,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1483,1500,17024.5085002,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1484,1500,17024.5093791,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1485,1500,17024.5104282,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1486,1500,17024.5114555,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1487,1500,17024.512407,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1488,1500,17024.51316,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1489,1500,17024.5135728,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1490,1500,17024.5142839,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1491,1500,17024.5150219,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1492,1500,17024.5161149,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1493,1500,17024.5171314,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1494,1500,17024.5177988,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1495,1500,17024.518516,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1496,1500,17024.5191835,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1497,1500,17024.5198499,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1498,1500,17024.5205612,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+1499,1500,17024.5211482,,,False,ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+248,1500,17023.5776396,17029.4833618,5905.722200001037,True,
+250,1500,17023.5796023,17029.5048683,5925.265999998373,True,
+249,1500,17023.5786761,17029.5099507,5931.274599999597,True,
+251,1500,17023.5808296,17029.5165308,5935.7012000000395,True,
+252,1500,17023.5813996,17029.5215288,5940.129200000229,True,
+253,1500,17023.5823989,17029.5256468,5943.247900002461,True,
+254,1500,17023.5835142,17029.530509,5946.994800000539,True,
+255,1500,17023.5845804,17029.5504033,5965.822900001513,True,
+256,1500,17023.585507,17029.5754117,5989.904699999897,True,
+257,1500,17023.5863726,17029.5932724,6006.899800002429,True,
+259,1500,17023.5877711,17029.6082286,6020.457499998884,True,
+258,1500,17023.5870792,17029.6291716,6042.09240000273,True,
+825,1500,17024.0211127,17029.6352443,5614.131599999382,True,
+826,1500,17024.0220341,17029.6408708,5618.836700003158,True,
+827,1500,17024.0228526,17029.6465656,5623.713000000862,True,
+828,1500,17024.0235368,17029.6554568,5631.919999999809,True,
+829,1500,17024.0241626,17029.686003,5661.840400000074,True,
+830,1500,17024.0247832,17029.7007395,5675.956300001417,True,
+832,1500,17024.0259194,17029.7122701,5686.35070000164,True,
+831,1500,17024.0255416,17029.7245279,5698.986300001707,True,
+835,1500,17024.0278251,17029.7436311,5715.805999996519,True,
+833,1500,17024.0268285,17029.7497047,5722.876200001338,True,
+834,1500,17024.027441,17029.754357,5726.916000003257,True,
+837,1500,17024.0290512,17029.7585696,5729.518399999506,True,
+836,1500,17024.028143,17029.7630648,5734.921800001757,True,
+838,1500,17024.0294274,17029.7684983,5739.070899999206,True,
+839,1500,17024.0301478,17029.7739458,5743.797999999515,True,
+841,1500,17024.0319262,17029.7781452,5746.219000000565,True,
+840,1500,17024.0313354,17029.7840022,5752.666799999133,True,
+842,1500,17024.032273,17029.789672,5757.398999998259,True,
+843,1500,17024.0336301,17029.7952498,5761.619700002484,True,
+844,1500,17024.0347058,17029.8014073,5766.701500000636,True,
+846,1500,17024.0362707,17029.8208088,5784.5381000006455,True,
+845,1500,17024.0353994,17029.8369484,5801.548999999795,True,
+847,1500,17024.0368861,17029.8601243,5823.238200002379,True,
+848,1500,17024.0372736,17029.8886136,5851.340000001073,True,
+849,1500,17024.0379969,17029.911685,5873.688100000436,True,
+850,1500,17024.038896,17029.9260495,5887.153500003478,True,
+851,1500,17024.0397823,17029.9307552,5890.972900000634,True,
+852,1500,17024.040472,17029.9363555,5895.883500001219,True,
+854,1500,17024.0419078,17029.9410339,5899.126099997375,True,
+853,1500,17024.0412173,17029.9455998,5904.382500000793,True,
+855,1500,17024.0422513,17029.9604288,5918.177499999729,True,
+857,1500,17024.0438179,17029.9761951,5932.377199998882,True,
+858,1500,17024.0444755,17030.0050179,5960.542400000122,True,
+856,1500,17024.0430272,17030.0482014,6005.174199999601,True,
+859,1500,17024.0448872,17030.0538695,6008.982299998024,True,
+860,1500,17024.0452799,17030.0588194,6013.539499999752,True,
+861,1500,17024.045597,17030.063295,6017.697999999655,True,
+862,1500,17024.0468419,17030.0691809,6022.33900000283,True,
+863,1500,17024.0476647,17030.0847292,6037.06450000027,True,
+864,1500,17024.0483719,17030.0944968,6046.124899999995,True,
+865,1500,17024.0492002,17030.1182716,6069.071400001121,True,
+866,1500,17024.0502906,17030.1308139,6080.523299999186,True,
+867,1500,17024.0508567,17030.1434548,6092.598100000032,True,
+868,1500,17024.0516651,17030.1566253,6104.960199998459,True,
+869,1500,17024.0526783,17030.1642717,6111.5934000008565,True,
+870,1500,17024.0534104,17030.1692854,6115.874999999505,True,
+871,1500,17024.0538078,17030.1737144,6119.9066000008315,True,
+872,1500,17024.0545365,17030.1776683,6123.131799999101,True,
+873,1500,17024.0555647,17030.1849393,6129.374600001029,True,
+1053,1500,17024.1859107,17030.1909621,6005.05140000314,True,
+1054,1500,17024.1865584,17030.1982536,6011.69519999894,True,
+1055,1500,17024.1874934,17030.2104347,6022.94129999791,True,
+1056,1500,17024.1882064,17030.2168474,6028.641000000789,True,
+1057,1500,17024.1888859,17030.2214387,6032.552799999394,True,
+1058,1500,17024.1896552,17030.2270668,6037.41159999845,True,
+1059,1500,17024.1908489,17030.2321664,6041.317499999423,True,
+1060,1500,17024.1916295,17030.2369216,6045.292099999642,True,
+1061,1500,17024.1923942,17030.2420416,6049.64739999923,True,
+1062,1500,17024.1930255,17030.2566659,6063.640399999713,True,
+1063,1500,17024.1937565,17030.2669111,6073.154599998816,True,
+1064,1500,17024.1945024,17030.2784453,6083.942899997055,True,
+1065,1500,17024.1951895,17030.2841923,6089.0028000030725,True,
+1066,1500,17024.195825,17030.2900182,6094.193200002337,True,
+1067,1500,17024.1966887,17030.2939752,6097.286499996699,True,
+1068,1500,17024.1975091,17030.2979208,6100.411700001132,True,
+1069,1500,17024.1981706,17030.3027849,6104.614299998502,True,
+1070,1500,17024.1989155,17030.3056578,6106.7422999985865,True,
+1071,1500,17024.1999008,17030.308325,6108.4242000033555,True,
+1072,1500,17024.2008924,17030.3120064,6111.113999999361,True,
+1073,1500,17024.2013951,17030.3173339,6115.938799997821,True,
+1074,1500,17024.202425,17030.3214332,6119.008199999371,True,
+1075,1500,17024.2031198,17030.3267998,6123.680000000604,True,
+1076,1500,17024.2038007,17030.3325815,6128.780799997912,True,
+1077,1500,17024.2046688,17030.3366375,6131.968699999561,True,
+1078,1500,17024.2056405,17030.3412557,6135.615200000757,True,
+1079,1500,17024.2064912,17030.3461499,6139.658700001746,True,
+1080,1500,17024.2072732,17030.3577987,6150.525499997457,True,
+1082,1500,17024.2090238,17030.3677909,6158.767100001569,True,
+1081,1500,17024.2081952,17030.3787281,6170.532899999671,True,
+1083,1500,17024.209707,17030.3936862,6183.979199999158,True,
+1084,1500,17024.2102969,17030.4090372,6198.740299998462,True,
+1085,1500,17024.2111243,17030.4219823,6210.857999998552,True,
+1086,1500,17024.2123675,17030.4325342,6220.166700000846,True,
+1087,1500,17024.2130351,17030.4359911,6222.955999997794,True,
+1088,1500,17024.2136927,17030.4390293,6225.336600000446,True,
+1089,1500,17024.214331,17030.4426682,6228.337200001988,True,
+1090,1500,17024.2151574,17030.4471429,6231.9854999987,True,
+1091,1500,17024.2161065,17030.4527035,6236.596999999165,True,
+1092,1500,17024.2171374,17030.4573069,6240.169500000775,True,
+1093,1500,17024.2179634,17030.4617424,6243.779000000359,True,
+1094,1500,17024.2188477,17030.4664095,6247.561799998948,True,
+1095,1500,17024.2195264,17030.4702422,6250.715800000762,True,
+1096,1500,17024.2202164,17030.4742192,6254.002800000308,True,
+1097,1500,17024.2208676,17030.4786452,6257.777599999827,True,
+1098,1500,17024.2213779,17030.4841407,6262.76279999729,True,
+1099,1500,17024.2222409,17030.4895313,6267.290400002821,True,
+1100,1500,17024.2230015,17030.4991064,6276.104900000064,True,
+1101,1500,17024.2238166,17030.5083891,6284.57250000065,True,
+1102,1500,17024.2244973,17030.526427,6301.929699999164,True,
+1103,1500,17024.2251854,17030.537513,6312.327600000572,True,
+1003,1500,17024.1503537,17030.5497698,6399.416100000963,True,
+1004,1500,17024.150893,17030.5611606,6410.267599996587,True,
+1005,1500,17024.1517551,17030.5716125,6419.857400000183,True,
+1006,1500,17024.1526896,17030.5837249,6431.035300000076,True,
+1007,1500,17024.1534372,17030.5883532,6434.9160000019765,True,
+1008,1500,17024.1541439,17030.5929431,6438.799200001085,True,
+1009,1500,17024.1547711,17030.5968015,6442.030400001386,True,
+1010,1500,17024.155356,17030.6019754,6446.619400001509,True,
+1011,1500,17024.1560059,17030.6066747,6450.66880000013,True,
+1012,1500,17024.1566369,17030.6110244,6454.387500001758,True,
+1013,1500,17024.1571774,17030.6218896,6464.712199998758,True,
+1014,1500,17024.1577777,17030.6353891,6477.611400001479,True,
+1015,1500,17024.1583941,17030.652707,6494.3129000021145,True,
+1016,1500,17024.1590697,17030.6667111,6507.641399999557,True,
+1017,1500,17024.1597155,17030.6796715,6519.955999996455,True,
+1018,1500,17024.1607463,17030.6897751,6529.028799999651,True,
+1019,1500,17024.1612754,17030.7003312,6539.055799999915,True,
+1020,1500,17024.161874,17030.7042625,6542.3884999981965,True,
+1021,1500,17024.1625408,17030.7075926,6545.051799999783,True,
+1022,1500,17024.1631816,17030.7113873,6548.205700000835,True,
+1023,1500,17024.1638196,17030.7183148,6554.495200001838,True,
+1024,1500,17024.1644866,17030.722268,6557.781400002568,True,
+1025,1500,17024.1650735,17030.726264,6561.190500000521,True,
+1026,1500,17024.1657619,17030.7302682,6564.506300001085,True,
+1027,1500,17024.1667166,17030.7371897,6570.473100000527,True,
+1028,1500,17024.1674514,17030.7420004,6574.549000000843,True,
+1029,1500,17024.1680579,17030.7546811,6586.6232000007585,True,
+1030,1500,17024.1686674,17030.7588182,6590.15079999881,True,
+1031,1500,17024.1693176,17030.7703882,6601.070599997911,True,
+1032,1500,17024.1699775,17030.7861842,6616.206699996837,True,
+1033,1500,17024.170655,17030.8084672,6637.812199998734,True,
+1034,1500,17024.1713255,17030.823748,6652.422499999375,True,
+1035,1500,17024.1721228,17030.8455673,6673.444500000187,True,
+1036,1500,17024.1726778,17030.8581055,6685.4276999983995,True,
+1037,1500,17024.1733915,17030.8624885,6689.096999998583,True,
+1038,1500,17024.1740662,17030.8695622,6695.496000000276,True,
+1039,1500,17024.174675,17030.8737659,6699.090900001465,True,
+1040,1500,17024.1752491,17030.877815,6702.565899999172,True,
+1041,1500,17024.1759818,17030.8851501,6709.168299999874,True,
+1042,1500,17024.1766608,17030.8899739,6713.31310000096,True,
+1043,1500,17024.1773393,17030.8954469,6718.107599997893,True,
+1104,1500,17024.2258703,17030.901073,6675.202700000227,True,
+1105,1500,17024.2265225,17030.9065557,6680.033199998434,True,
+1106,1500,17024.2272068,17030.9110577,6683.850900000834,True,
+1107,1500,17024.2278644,17030.928133,6700.268600001436,True,
+1108,1500,17024.2285899,17030.9488561,6720.26619999815,True,
+1109,1500,17024.2291543,17030.9717038,6742.549500002497,True,
+1110,1500,17024.2298644,17030.9934019,6763.5374999990745,True,
+1111,1500,17024.2305571,17031.0055869,6775.029799999174,True,
+1112,1500,17024.2311739,17031.010828,6779.654099998879,True,
+1113,1500,17024.2320787,17031.0193251,6787.246399999276,True,
+1114,1500,17024.2331188,17031.0237952,6790.676399999938,True,
+1115,1500,17024.2340273,17031.0285161,6794.488799998362,True,
+1116,1500,17024.234695,17031.0354973,6800.802300000214,True,
+1117,1500,17024.2353258,17031.0404727,6805.146899998363,True,
+1118,1500,17024.2359819,17031.044787,6808.805099997699,True,
+1119,1500,17024.2366795,17031.0504655,6813.7859999987995,True,
+1120,1500,17024.2373571,17031.0569772,6819.620100002794,True,
+1121,1500,17024.2379958,17031.0626784,6824.682600003143,True,
+1122,1500,17024.2386502,17031.085256,6846.605799997633,True,
+1123,1500,17024.2394178,17031.103774,6864.356199999747,True,
+1124,1500,17024.2402148,17031.1247819,6884.567099998094,True,
+1125,1500,17024.2411034,17031.1457361,6904.632699999638,True,
+1126,1500,17024.2418835,17031.1566233,6914.73980000228,True,
+1127,1500,17024.2423434,17031.1613875,6919.044099999155,True,
+1128,1500,17024.2430663,17031.169068,6926.001699997869,True,
+1129,1500,17024.2439966,17031.1745121,6930.515500000183,True,
+1130,1500,17024.2449303,17031.1793886,6934.458300002007,True,
+1131,1500,17024.2455383,17031.1853897,6939.851399998588,True,
+1133,1500,17024.2471869,17031.2042437,6957.056799998099,True,
+1132,1500,17024.2464227,17031.2263504,6979.927700002008,True,
+1134,1500,17024.247584,17031.2452034,6997.6194000009855,True,
+1135,1500,17024.2479311,17031.2664155,7018.484399999579,True,
+1136,1500,17024.2491738,17031.2767402,7027.566400000069,True,
+1137,1500,17024.2505703,17031.2804511,7029.880800000683,True,
+1138,1500,17024.2513723,17031.2854105,7034.038199999486,True,
+1139,1500,17024.2524516,17031.2888751,7036.423499997909,True,
+1140,1500,17024.2531877,17031.2935699,7040.382200000749,True,
+1141,1500,17024.2539568,17031.299296,7045.339200001763,True,
+1142,1500,17024.254678,17031.303788,7049.109999999928,True,
+1144,1500,17024.256202,17031.3087263,7052.524300001096,True,
+1143,1500,17024.2554605,17031.3135433,7058.082799998374,True,
+1145,1500,17024.2567492,17031.3174037,7060.654499997327,True,
+1146,1500,17024.257616,17031.3191847,7061.568700002681,True,
+1147,1500,17024.2585896,17031.3199387,7061.3491000003705,True,
+1148,1500,17024.2592609,17031.3204922,7061.231300001964,True,
+1149,1500,17024.260159,17031.3210558,7060.896799997863,True,
+1150,1500,17024.2609627,17031.3213659,7060.403200001019,True,

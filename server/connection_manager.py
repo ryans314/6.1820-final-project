@@ -40,21 +40,40 @@ class ConnectionManager:
         Send message to all phones corresponding to all ids in player_ids
         """
         if isinstance(player_ids, str) and player_ids in self.active_phones:
-            await self.active_phones[player_ids].send_json(message)
-            return True
-        
+            ws = self.active_phones[player_ids]
+            if not ws:
+                return False
+            try:
+                await ws.send_json(message)
+                return True
+            except Exception as e:
+                # print(f"Error sending message to phone {player_ids}: {e}")
+                self.active_phones.pop(player_ids, None)
+                return False
+
         verified_player_ids = [player_id for player_id in player_ids if player_id in self.active_phones]
         
-        await asyncio.gather(
-            *[self.active_phones[player_id].send_json(message) for player_id in verified_player_ids]
+        results = await asyncio.gather(
+            *[self.active_phones[player_id].send_json(message) for player_id in verified_player_ids],
+            return_exceptions=True
         )
 
+        for player_id, result in zip(verified_player_ids, results):
+            if isinstance(result, Exception):
+                # print(f"Error sending message to phone {player_id}: {result}")
+                self.active_phones.pop(player_id, None)
         if len(verified_player_ids) != len(player_ids):
-            print("WARNING: at least one player id is not an active player")
+            # print("WARNING: at least one player id is not an active player")
             return False
         return True
     
     async def broadcast_to_phones(self, message: dict): 
-        await asyncio.gather(
-            *[ws.send_json(message) for ws in self.active_phones.values()]
+        items = list(self.active_phones.items())
+        results = await asyncio.gather(
+            *[ws.send_json(message) for _, ws in items],
+            return_exceptions=True
         )
+        for (player_id, _), result in zip(items, results):
+            if isinstance(result, Exception):
+                # print(f"Error sending message to phone {player_id}: {result}")
+                self.active_phones.pop(player_id, None)
