@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import statistics
 
 
 def parse_ramp_rate(filename: str) -> int | None:
@@ -99,24 +100,27 @@ def make_plot(data: dict[int, dict], target: int, output: str) -> None:
     print(f"\nPlot saved to {output}")
 
 # TEST 2 PLOTS
-def load_message_results(pattern: str) -> dict[int, dict]:
+def load_message_results(pattern: str) -> dict[float, dict]:
     """
     Load message CSVs matching pattern. Returns a dict mapping
-    n_clients -> {"p50": ..., "p95": ..., "p99": ..., "throughput": ...}
+    rate_per_client -> {"p50": ..., "p95": ..., "p99": ..., "total": ...}
     """
-    files = sorted(glob.glob(pattern))
+    files = sorted(glob.glob(pattern),
+                   key=lambda f: float(re.search(r"rate([\d.]+)", 
+                                                  Path(f).name).group(1))
+                   if re.search(r"rate([\d.]+)", Path(f).name) else 0)
+
     if not files:
         print(f"ERROR: No files matched pattern '{pattern}'", file=sys.stderr)
         sys.exit(1)
 
     data = {}
     for filepath in files:
-        # Parse n_clients from filename: results_messages_clients{N}.csv
-        match = re.search(r"clients(\d+)", Path(filepath).name)
+        match = re.search(r"rate([\d.]+)", Path(filepath).name)
         if not match:
-            print(f"  Skipping {filepath} (could not parse client count)")
+            print(f"  Skipping {filepath} (could not parse rate)")
             continue
-        n_clients = int(match.group(1))
+        rate = float(match.group(1))
 
         latencies = []
         with open(filepath, newline="") as f:
@@ -136,53 +140,50 @@ def load_message_results(pattern: str) -> dict[int, dict]:
         total = len(latencies)
         q = statistics.quantiles(latencies, n=100) if total >= 100 else None
 
-        data[n_clients] = {
+        data[rate] = {
             "p50": statistics.median(latencies),
             "p95": q[94] if q else max(latencies),
             "p99": q[98] if q else max(latencies),
             "total": total,
         }
         print(f"  Loaded {filepath}: {total} messages, "
-              f"p50={data[n_clients]['p50']:.2f}ms")
+              f"p50={data[rate]['p50']:.2f}ms")
 
     return data
 
 
-def make_latency_plot(data: dict[int, dict], output: str) -> None:
+def make_latency_plot(data: dict[float, dict], output: str) -> None:
     """
-    Plot p50/p95/p99 latency vs concurrent client count.
+    Plot p50/p95/p99 round-trip latency vs message rate per client.
+    Linear y-axis.
     """
-    counts = sorted(data.keys())
-    p50s = [data[n]["p50"] for n in counts]
-    p95s = [data[n]["p95"] for n in counts]
-    p99s = [data[n]["p99"] for n in counts]
+    rates = sorted(data.keys())
+    p50s = [data[r]["p50"] for r in rates]
+    p95s = [data[r]["p95"] for r in rates]
+    p99s = [data[r]["p99"] for r in rates]
 
     fig, ax = plt.subplots(figsize=(8, 5))
 
-    ax.plot(counts, p50s, marker="o", linewidth=2, markersize=8,
+    ax.plot(rates, p50s, marker="o", linewidth=2, markersize=8,
             color="#2E86AB", label="p50")
-    ax.plot(counts, p95s, marker="s", linewidth=2, markersize=8,
+    ax.plot(rates, p95s, marker="s", linewidth=2, markersize=8,
             color="#E63946", label="p95")
-    ax.plot(counts, p99s, marker="^", linewidth=2, markersize=8,
+    ax.plot(rates, p99s, marker="^", linewidth=2, markersize=8,
             color="#F4A261", label="p99")
 
-    # Annotate final data point for each line so the values are readable
-    for values, label, color in [
-        (p50s, "p50", "#2E86AB"),
-        (p95s, "p95", "#E63946"),
-        (p99s, "p99", "#F4A261"),
-    ]:
+    # Annotate final value of each line
+    for values, color in [(p50s, "#2E86AB"), (p95s, "#E63946"), (p99s, "#F4A261")]:
         ax.annotate(f"{values[-1]:.1f}ms",
-                    xy=(counts[-1], values[-1]),
+                    xy=(rates[-1], values[-1]),
                     xytext=(8, 0), textcoords="offset points",
                     va="center", fontsize=9, color=color)
 
-    ax.set_xlabel("Concurrent clients", fontsize=12)
+    ax.set_xlabel("Message rate per client (msgs/sec)", fontsize=12)
     ax.set_ylabel("Round-trip latency (ms)", fontsize=12)
-    ax.set_yscale("log")
-    ax.set_title("Message latency scales with concurrent clients", fontsize=13)
+    ax.set_title("Round-trip latency vs. message rate", fontsize=13)
     ax.legend(fontsize=11)
-    ax.grid(alpha=0.3, which="both")
+    ax.set_ylim(bottom=0)
+    ax.grid(alpha=0.3)
     plt.tight_layout()
     plt.savefig(output, dpi=150)
     print(f"\nPlot saved to {output}")
@@ -217,7 +218,7 @@ def main():
                         help="Which plot to generate (default: both)")
     parser.add_argument("--pattern-connections", default="results/results_rate*.csv")
     parser.add_argument("--pattern-messages",
-                        default="results/results_messages_clients*.csv")
+                        default="results/results_messages_rate*.csv")
     parser.add_argument("--target", type=int, default=1000,
                         help="Connection target for success rate plot")
     parser.add_argument("--output-connections", default="success_rate.png")

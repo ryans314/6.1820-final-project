@@ -2,6 +2,7 @@
 import asyncio
 import argparse
 import csv
+from html import parser
 import json
 import statistics
 import time
@@ -202,7 +203,7 @@ async def test_messages(base_url: str, n_clients: int, msgs_per_client: int,
 
     # Write CSV
     if results_rows:
-        output_path = Path(output_dir) / f"results_messages_clients{n_clients}.csv"
+        output_path = Path(output_dir) / f"results_messages_rate{int(rate_per_client)}.csv"
         output_path.parent.mkdir(parents=True, exist_ok=True)
         with open(output_path, "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=results_rows[0].keys())
@@ -212,6 +213,7 @@ async def test_messages(base_url: str, n_clients: int, msgs_per_client: int,
 
     return {
         "n_clients": n_clients,
+        "rate_per_client": rate_per_client,
         "total": total,
         "errors": errors,
         "throughput": throughput,
@@ -219,15 +221,15 @@ async def test_messages(base_url: str, n_clients: int, msgs_per_client: int,
     }
 
 
-async def sweep_messages(base_url: str, client_counts: list[int],
-                         msgs_per_client: int, rate_per_client: float,
+async def sweep_messages(base_url: str, n_clients: int,
+                         msgs_per_client: int, rates: list[float],
                          cooldown: int, output_dir: str):
     """
-    Run test_messages at each client count in client_counts.
-    msgs_per_client and rate_per_client are held fixed across runs.
+    Run test_messages at a fixed client count, iterating over
+    each rate in `rates`. Holds n_clients and msgs_per_client fixed.
     """
     summary = []
-    for i, n_clients in enumerate(client_counts):
+    for i, rate in enumerate(rates):
         if i > 0:
             print(f"\nCooling down for {cooldown}s...")
             await asyncio.sleep(cooldown)
@@ -236,24 +238,24 @@ async def sweep_messages(base_url: str, client_counts: list[int],
             base_url=base_url,
             n_clients=n_clients,
             msgs_per_client=msgs_per_client,
-            rate_per_client=rate_per_client,
+            rate_per_client=rate,
             output_dir=output_dir,
         )
         summary.append(result)
 
-    # Print final summary table
     print(f"\n\n{'='*78}")
     print(f"{'MESSAGE SWEEP SUMMARY':^78}")
     print(f"{'='*78}")
-    print(f"{'clients':>8} {'completed':>10} {'errors':>7} {'msg/s':>9} "
+    print(f"{'rate/client':>12} {'completed':>10} {'errors':>7} {'msg/s':>9} "
           f"{'p50 ms':>9} {'p95 ms':>9} {'p99 ms':>9}")
     print("-" * 78)
     for r in summary:
         def fmt(v):
             return f"{v:9.2f}" if v is not None else f"{'N/A':>9}"
-        print(f"{r['n_clients']:>8} {r['total']:>10} {r['errors']:>7} "
+        print(f"{r['rate_per_client']:>12.1f} {r['total']:>10} {r['errors']:>7} "
               f"{r['throughput']:>9.1f} {fmt(r['p50'])} "
               f"{fmt(r['p95'])} {fmt(r['p99'])}")
+
 # ---------------------------------------------------------------------------
 # Test 3: latency scaling sweep — runs test_messages at increasing load
 # ---------------------------------------------------------------------------
@@ -415,22 +417,22 @@ def main():
                     help="Seconds between runs (default: 10)")
     p4.add_argument("--output-dir", default="results",
                     help="Where to write CSVs (default: results/)")
-    args = parser.parse_args()
 
     p5 = sub.add_parser("sweep-messages",
-                        help="Run message latency test at multiple client counts")
-    p5.add_argument("--clients", type=int, nargs="+",
-                    default=[10, 50, 100, 250, 500, 1000],
-                    help="Client counts to test "
-                        "(default: 10 50 100 250 500 1000)")
+                        help="Run message latency test at multiple message rates")
+    p5.add_argument("--clients", type=int, default=50,
+                    help="Fixed number of concurrent clients (default: 50)")
     p5.add_argument("--msgs", type=int, default=20,
                     help="Messages per client per run (default: 20)")
-    p5.add_argument("--rate", type=float, default=5.0,
-                    help="Messages per second per client (default: 5)")
+    p5.add_argument("--rates", type=float, nargs="+",
+                    default=[1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0],
+                    help="Message rates per client to test "
+                        "(default: 1 2 5 10 20 50 100)")
     p5.add_argument("--cooldown", type=int, default=10,
                     help="Seconds between runs (default: 10)")
     p5.add_argument("--output-dir", default="results",
                     help="Where to write CSVs (default: results/)")
+    args = parser.parse_args()
     
     if args.cmd == "connections":
         asyncio.run(test_connections(args.url, args.target, args.ramp_rate, args.hold))
@@ -446,7 +448,7 @@ def main():
     elif args.cmd == "sweep-messages":
         asyncio.run(sweep_messages(
             args.url, args.clients, args.msgs,
-            args.rate, args.cooldown, args.output_dir,
+            args.rates, args.cooldown, args.output_dir,
         ))
 if __name__ == "__main__":
     main()
