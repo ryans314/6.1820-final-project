@@ -534,11 +534,13 @@ struct GameView: View {
     @State private var passedOnPoison = false
     @State private var awaitingInfectionResult = false
     @State private var showInfectionFailureAlert = false
+    @State private var isDemoMode: Bool = false
 
 
     private var nearestPlayerId: String? {
         uwbManager.nearbyPlayers
             .filter { networkManager.playersInfected[$0.key] == false }
+            .filter { $0.value <= 1.5 }
             .min(by: { $0.value < $1.value })?.key
     }
 
@@ -606,6 +608,33 @@ struct GameView: View {
             
             if showFakePoisoned {
                 FakePoisonedView(onBoohoo: { showFakePoisoned = false })
+            }
+            
+            if isDemoMode {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("DEMO — NEARBY PLAYERS")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.yellow)
+
+                    if uwbManager.nearbyPlayers.isEmpty {
+                        Text("No players detected")
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                    } else {
+                        ForEach(Array(uwbManager.nearbyPlayers.sorted(by: { $0.value < $1.value })), id: \.key) { id, distance in
+                            let name = networkManager.lobbyPlayers.first { $0.id == id }?.username ?? id
+                            Text("\(name): \(String(format: "%.2f", distance))m")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                    }
+                }
+                .padding(12)
+                .background(Color.black.opacity(0.75))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.yellow, lineWidth: 1))
+                .cornerRadius(8)
+                .padding(20)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
             }
         }
         .onAppear {

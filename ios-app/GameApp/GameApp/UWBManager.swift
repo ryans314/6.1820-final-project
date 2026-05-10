@@ -1,4 +1,3 @@
-//
 //  UWBManager.swift
 //  GameApp
 //
@@ -31,6 +30,15 @@ class UWBManager: NSObject, ObservableObject {
     // that existed when queue.sync writes were nested inside DispatchQueue.main.asyncAfter callbacks.
     private var peerSessions: [MCPeerID: NISession] = [:]
     private let queue = DispatchQueue(label: "uwb.manager", attributes: .concurrent)
+
+    // Track peers we've seen so we can re-invite after a drop.
+    // Guarded by `queue` (same concurrent+barrier pattern).
+    private var knownPeers: Set<MCPeerID> = []
+
+    // Per-peer reconnect attempt counters so we don't spam indefinitely.
+    private var reconnectAttempts: [MCPeerID: Int] = [:]
+    private let maxReconnectAttempts = 5
+    private let reconnectDelay: Double = 2.0
 
     var clientId: String = ""
     var isImposter = false
@@ -67,6 +75,8 @@ class UWBManager: NSObject, ObservableObject {
             uwbLog("🗑️ Invalidating \(self.peerSessions.count) NISession(s)")
             self.peerSessions.values.forEach { $0.invalidate() }
             self.peerSessions.removeAll()
+            self.knownPeers.removeAll()
+            self.reconnectAttempts.removeAll()
         }
         DispatchQueue.main.async {
             self.nearbyPlayers.removeAll()
@@ -84,6 +94,8 @@ class UWBManager: NSObject, ObservableObject {
 
         queue.async(flags: .barrier) {
             self.peerSessions[peer] = niSession
+            // Reset reconnect counter on a successful NI session start.
+            self.reconnectAttempts[peer] = 0
             uwbLog("💾 Stored NISession for \(peer.displayName) — total sessions: \(self.peerSessions.count)")
         }
 
@@ -123,7 +135,7 @@ class UWBManager: NSObject, ObservableObject {
 
     private func updateNearbyStatus() {
         let wasNearby = hasNearbyPlayer
-        hasNearbyPlayer = nearbyPlayers.values.contains { $0 <= 5.0 }
+        hasNearbyPlayer = nearbyPlayers.values.contains { $0 <= 1.5 } //TODO: CHANGE IT BACK TO 2
         if hasNearbyPlayer != wasNearby {
             uwbLog("🚨 hasNearbyPlayer changed → \(hasNearbyPlayer)")
         }
@@ -141,6 +153,50 @@ class UWBManager: NSObject, ObservableObject {
             self.updateNearbyStatus()
         }
     }
+
+    // MARK: - Reconnection
+
+    /// Called whenever a peer drops (MCSession notConnected, browser lostPeer,
+    /// or NISession invalidated). Uses the same lexicographic invite rule as
+    /// the browser delegate so only one side drives the re-invite.
+    private func attemptReconnect(to peer: MCPeerID) {
+        var attempts = 0
+        queue.sync { attempts = reconnectAttempts[peer] ?? 0 }
+
+        guard attempts < maxReconnectAttempts else {
+            uwbLog("🚫 Max reconnect attempts reached for \(peer.displayName) — giving up")
+            queue.async(flags: .barrier) { self.reconnectAttempts.removeValue(forKey: peer) }
+            return
+        }
+
+        queue.async(flags: .barrier) {
+            self.reconnectAttempts[peer] = attempts + 1
+        }
+
+        let delay = reconnectDelay * Double(attempts + 1)
+        uwbLog("🔁 Scheduling reconnect to \(peer.displayName) in \(delay)s (attempt \(attempts + 1)/\(maxReconnectAttempts))")
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            guard let self = self else { return }
+
+            // Only attempt if not already connected.
+            let alreadyConnected = self.mcSession.connectedPeers.contains(peer)
+            guard !alreadyConnected else {
+                uwbLog("✅ \(peer.displayName) already reconnected — skipping re-invite")
+                return
+            }
+
+            // Re-use the same lexicographic rule: the greater peer ID sends the invite.
+            if self.myPeerID.displayName > peer.displayName {
+                uwbLog("📨 Re-inviting \(peer.displayName) (we are lexicographically greater)")
+                self.browser.invitePeer(peer, to: self.mcSession, withContext: nil, timeout: 10)
+            } else {
+                uwbLog("⏳ Waiting for \(peer.displayName) to re-invite us")
+                // The other side will re-invite us; if they don't, we'll retry on the
+                // next lostPeer / notConnected callback, which the browser will fire again.
+            }
+        }
+    }
 }
 
 // MARK: - MCSession Delegate
@@ -156,12 +212,25 @@ extension UWBManager: MCSessionDelegate {
         uwbLog("🔗 MCSession peer \(peer.displayName) → \(stateLabel)")
 
         if state == .connected {
+            // Reset reconnect counter — connection succeeded.
+            queue.async(flags: .barrier) {
+                self.knownPeers.insert(peer)
+                self.reconnectAttempts[peer] = 0
+            }
             uwbLog("⏳ Waiting 0.3s before starting NISession with \(peer.displayName)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.startNISession(with: peer)
             }
         } else if state == .notConnected {
             removePeer(peer)
+
+            // Only reconnect to peers we've successfully connected to before
+            // (avoids reconnecting to peers that were merely discovered but rejected).
+            var isKnown = false
+            queue.sync { isKnown = knownPeers.contains(peer) }
+            if isKnown {
+                attemptReconnect(to: peer)
+            }
         }
     }
 
@@ -219,11 +288,28 @@ extension UWBManager: MCNearbyServiceBrowserDelegate {
         if willInvite {
             browser.invitePeer(peer, to: mcSession, withContext: nil, timeout: 10)
         }
+        // Mark as known immediately upon discovery so that if the MC connection
+        // later drops before completing, we still attempt to reconnect.
+        queue.async(flags: .barrier) { self.knownPeers.insert(peer) }
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peer: MCPeerID) {
         uwbLog("👋 Lost peer from browser: \(peer.displayName)")
-        removePeer(peer)
+        // Don't remove immediately — the peer may just be temporarily out of
+        // Bluetooth range. If the MCSession also drops, notConnected fires and
+        // attemptReconnect handles it. Only clean up the NI layer here if the
+        // MC session is already gone.
+        let stillConnected = mcSession.connectedPeers.contains(peer)
+        if !stillConnected {
+            removePeer(peer)
+            var isKnown = false
+            queue.sync { isKnown = knownPeers.contains(peer) }
+            if isKnown {
+                attemptReconnect(to: peer)
+            }
+        } else {
+            uwbLog("ℹ️ \(peer.displayName) lost from browser but MC session still active — not removing")
+        }
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
@@ -301,6 +387,22 @@ extension UWBManager: NISessionDelegate {
     func session(_ session: NISession, didInvalidateWith error: Error) {
         var peer: MCPeerID?
         queue.sync { peer = peerSessions.first { $0.value === session }?.key }
-        uwbLog("❌ NISession invalidated for \(peer?.displayName ?? "unknown"): \(error.localizedDescription)")
+        let peerName = peer?.displayName ?? "unknown"
+        uwbLog("❌ NISession invalidated for \(peerName): \(error.localizedDescription)")
+
+        // NISession invalidation doesn't mean the MC connection is gone.
+        // If the MC peer is still connected, restart the NI layer directly
+        // rather than going through a full MC reconnect cycle.
+        guard let peer = peer else { return }
+        let stillConnected = mcSession.connectedPeers.contains(peer)
+        if stillConnected {
+            uwbLog("🔄 MC still connected to \(peerName) — restarting NISession directly")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.startNISession(with: peer)
+            }
+        } else {
+            uwbLog("🔌 MC also disconnected from \(peerName) — relying on MC reconnect path")
+            // MCSession delegate's notConnected will fire and call attemptReconnect.
+        }
     }
 }
