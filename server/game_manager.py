@@ -444,8 +444,8 @@ class GameManager:
             await self.connection_manager.send_to_phone(infected_id, {
                 "type": "infected"
             })
-            await self.end_round()
-            await self.start_voting()
+            # await self.end_round()
+            # await self.start_voting()
             return
 
         print(f"{infected_player.username} has been infected! Notifying in {delay:.2f} seconds...")
