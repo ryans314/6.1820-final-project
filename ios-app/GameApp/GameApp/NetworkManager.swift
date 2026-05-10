@@ -41,7 +41,7 @@ class NetworkManager: ObservableObject {
     @Published var infectedSomeoneThisRound: Bool = false
     @Published var infectionFailure: String?
     
-    private let urlBaseStr = "wss://recollect-conjure-thesis.ngrok-free.dev/ws/phone" // change depending on where server is
+    private let urlBaseStr = "wss://subway-mahogany-helper.ngrok-free.dev/ws/phone" // change depending on where server is
     @Published var username: String = ""
     
     func connect(username: String) {
