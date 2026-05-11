@@ -148,7 +148,9 @@ class TapOne(Task):
             order_matters=0,
         )
 
-taskTemplates: list[Task] = [TapAll, TapOne, TapOrder]
+# taskTemplates: list[Task] = [TapAll, TapOne, TapOrder]
+# omit TapAll for sub-3 players
+taskTemplates: list[Task] = [TapOne, TapOrder]
 
 class GameManager:
     def __init__(self, connection_manager):
@@ -197,7 +199,7 @@ class GameManager:
         """
         Starts the game. Returns True on success, False on failure
         """
-        if len(self.players) < 3:
+        if len(self.players) < 2:
             print("Not enough players!")
             return False
         
@@ -433,7 +435,9 @@ class GameManager:
         
         infected_player.status = "infected"
         self.infection_occurred = True
-        delay = random.uniform(10,20)
+        # delay = random.uniform(10,20)
+        #shorter delay for demo
+        delay = random.uniform(1,3)
         await self.connection_manager.send_to_phone(infector_id, {
             "type": "infection_success",
             "player_id": infected_id
